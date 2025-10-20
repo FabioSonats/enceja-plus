@@ -8,6 +8,8 @@ class AppRoutes {
 
   // Rotas de estudo
   static const String study = '/study';
+  static const String mathGames = '/study/math-games';
+  static const String additionGame = '/study/math-games/addition';
   static const String lesson = '/lesson';
   static const String quiz = '/quiz';
   static const String simulated = '/simulated';
