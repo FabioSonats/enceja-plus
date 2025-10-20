@@ -3,10 +3,11 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../domain/entities/math_game.dart';
+import '../../../../data/datasources/simple_database.dart';
 
 class AdditionGameScreen extends StatefulWidget {
   final MathGame game;
-  
+
   const AdditionGameScreen({
     super.key,
     required this.game,
@@ -97,7 +98,7 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
       duration: const Duration(seconds: 1),
       vsync: this,
     );
-    
+
     _questionController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -128,7 +129,7 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
         setState(() {
           _timeRemaining--;
         });
-        
+
         if (_timeRemaining > 0) {
           _startTimer();
         } else {
@@ -165,12 +166,12 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
         children: [
           // Header com progresso e tempo
           _buildHeader(),
-          
+
           // Pergunta atual
           Expanded(
             child: _buildQuestion(),
           ),
-          
+
           // Opções de resposta
           _buildAnswerOptions(),
         ],
@@ -180,12 +181,15 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
 
   Widget _buildHeader() {
     final progress = (_currentQuestionIndex + 1) / _questions.length;
-    
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.primaryColor, AppTheme.primaryColor.withOpacity(0.8)],
+          colors: [
+            AppTheme.primaryColor,
+            AppTheme.primaryColor.withOpacity(0.8)
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -224,16 +228,17 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
                     LinearProgressIndicator(
                       value: progress,
                       backgroundColor: Colors.white.withOpacity(0.3),
-                      valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor:
+                          const AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Timer
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -261,7 +266,7 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
 
   Widget _buildQuestion() {
     final question = _questions[_currentQuestionIndex];
-    
+
     return AnimatedBuilder(
       animation: _questionAnimation,
       builder: (context, child) {
@@ -287,9 +292,9 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Pergunta
                 Text(
                   question.question,
@@ -300,20 +305,20 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Explicação (se respondida)
                 if (_isAnswered)
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: _isCorrect 
+                      color: _isCorrect
                           ? AppTheme.secondaryColor.withOpacity(0.1)
                           : AppTheme.errorColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: _isCorrect 
+                        color: _isCorrect
                             ? AppTheme.secondaryColor
                             : AppTheme.errorColor,
                         width: 2,
@@ -323,7 +328,7 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
                       question.explanation,
                       style: TextStyle(
                         fontSize: 16,
-                        color: _isCorrect 
+                        color: _isCorrect
                             ? AppTheme.secondaryColor
                             : AppTheme.errorColor,
                         fontWeight: FontWeight.w500,
@@ -341,7 +346,7 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
 
   Widget _buildAnswerOptions() {
     final question = _questions[_currentQuestionIndex];
-    
+
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -351,11 +356,11 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
             final isSelected = _selectedAnswer == option;
             final isCorrect = option == question.correctAnswer;
             final showResult = _isAnswered;
-            
+
             Color backgroundColor = Colors.white;
             Color borderColor = Colors.grey[300]!;
             Color textColor = Colors.black87;
-            
+
             if (showResult) {
               if (isCorrect) {
                 backgroundColor = AppTheme.secondaryColor.withOpacity(0.1);
@@ -371,7 +376,7 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
               borderColor = AppTheme.primaryColor;
               textColor = AppTheme.primaryColor;
             }
-            
+
             return Container(
               margin: const EdgeInsets.only(bottom: 12),
               child: InkWell(
@@ -425,9 +430,9 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
               ),
             );
           }).toList(),
-          
+
           const SizedBox(height: 20),
-          
+
           // Botão de próxima pergunta
           if (_isAnswered)
             SizedBox(
@@ -461,7 +466,7 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
   Widget _buildGameCompleted() {
     final accuracy = (_score / (_questions.length * 10)) * 100;
     final xpEarned = _score;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Jogo Concluído!'),
@@ -488,9 +493,9 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
                 color: AppTheme.secondaryColor,
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Título
             const Text(
               'Parabéns!',
@@ -500,9 +505,9 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
                 color: Colors.black87,
               ),
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             const Text(
               'Você concluiu o jogo de Soma Básica!',
               style: TextStyle(
@@ -511,9 +516,9 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
               ),
               textAlign: TextAlign.center,
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Estatísticas
             Container(
               padding: const EdgeInsets.all(20),
@@ -528,15 +533,16 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
                 children: [
                   _buildStatRow('Pontos', '$_score', AppTheme.primaryColor),
                   const SizedBox(height: 12),
-                  _buildStatRow('Precisão', '${accuracy.toStringAsFixed(1)}%', AppTheme.secondaryColor),
+                  _buildStatRow('Precisão', '${accuracy.toStringAsFixed(1)}%',
+                      AppTheme.secondaryColor),
                   const SizedBox(height: 12),
                   _buildStatRow('XP Ganho', '+$xpEarned', AppTheme.xpColor),
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Botões de ação
             Row(
               children: [
@@ -604,12 +610,12 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
 
   void _selectAnswer(String answer) {
     if (_isAnswered) return;
-    
+
     setState(() {
       _selectedAnswer = answer;
       _isAnswered = true;
       _isCorrect = answer == _questions[_currentQuestionIndex].correctAnswer;
-      
+
       if (_isCorrect) {
         _score += _questions[_currentQuestionIndex].points;
       }
@@ -625,15 +631,40 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
         _isCorrect = false;
         _timeRemaining = widget.game.timeLimit;
       });
-      
+
       _questionController.reset();
       _questionController.forward();
       _startTimer();
     } else {
-      setState(() {
-        _gameCompleted = true;
-      });
+      _completeGame();
     }
+  }
+
+  void _completeGame() async {
+    // Calcular estatísticas finais
+    final accuracy = (_score / (_questions.length * 10)) * 100;
+    final xpEarned = _score;
+
+    // Salvar resultado no banco de dados
+    final result = {
+      'gameId': widget.game.id,
+      'correctAnswers': _score ~/ 10, // Assumindo 10 pontos por acerto
+      'totalQuestions': _questions.length,
+      'timeSpent': widget.game.timeLimit - _timeRemaining,
+      'xpEarned': xpEarned,
+      'pointsEarned': _score,
+      'accuracy': accuracy / 100,
+      'completedAt': DateTime.now().toIso8601String(),
+      'achievements': [],
+    };
+
+    await SimpleDatabase.saveGameResult(result);
+    await SimpleDatabase.updateUserXP(xpEarned);
+    await SimpleDatabase.markGameCompleted(widget.game.id);
+
+    setState(() {
+      _gameCompleted = true;
+    });
   }
 
   void _showExitDialog() {
@@ -641,7 +672,8 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Sair do Jogo'),
-        content: const Text('Tem certeza que deseja sair? Seu progresso será perdido.'),
+        content: const Text(
+            'Tem certeza que deseja sair? Seu progresso será perdido.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

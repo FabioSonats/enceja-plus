@@ -71,4 +71,37 @@ class User {
     if (level >= AppConstants.levelThresholds.length) return 0;
     return AppConstants.levelThresholds[level] - xp;
   }
+
+  // JSON serialization
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'photoUrl': photoUrl,
+      'educationLevel': educationLevel,
+      'xp': xp,
+      'level': level,
+      'createdAt': createdAt.toIso8601String(),
+      'lastLoginAt': lastLoginAt.toIso8601String(),
+      'achievements': achievements,
+      'subjectProgress': subjectProgress,
+    };
+  }
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      photoUrl: json['photoUrl'],
+      educationLevel: json['educationLevel'],
+      xp: json['xp'],
+      level: json['level'],
+      createdAt: DateTime.parse(json['createdAt']),
+      lastLoginAt: DateTime.parse(json['lastLoginAt']),
+      achievements: List<String>.from(json['achievements']),
+      subjectProgress: Map<String, int>.from(json['subjectProgress']),
+    );
+  }
 }

@@ -9,7 +9,19 @@ class AppRoutes {
   // Rotas de estudo
   static const String study = '/study';
   static const String mathGames = '/study/math-games';
+  static const String portuguese = '/study/portuguese';
+  static const String history = '/study/history';
+  static const String science = '/study/science';
+  static const String geography = '/study/geography';
+  static const String grammarBasics = '/study/portuguese/grammar-basics';
+  static const String grammarBasicsExplanation =
+      '/study/portuguese/grammar-basics/explanation';
+  static const String additionExplanation =
+      '/study/math-games/addition/explanation';
   static const String additionGame = '/study/math-games/addition';
+  static const String subtractionExplanation =
+      '/study/math-games/subtraction/explanation';
+  static const String subtractionGame = '/study/math-games/subtraction';
   static const String lesson = '/lesson';
   static const String quiz = '/quiz';
   static const String simulated = '/simulated';

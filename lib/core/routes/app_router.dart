@@ -5,8 +5,16 @@ import '../../presentation/views/onboarding/onboarding_screen.dart';
 import '../../presentation/views/auth/login_screen.dart';
 import '../../presentation/views/home/home_screen.dart';
 import '../../presentation/views/study/math_games_screen.dart';
-import '../../presentation/views/study/games/addition_game_screen.dart';
+import '../../presentation/views/study/portuguese_screen.dart';
+import '../../presentation/views/study/history_screen.dart';
+import '../../presentation/views/study/science_screen.dart';
+import '../../presentation/views/study/geography_screen.dart';
+import '../../presentation/views/study/games/grammar_basics_game_screen.dart';
+import '../../presentation/views/study/lesson_explanation_screen.dart';
+import '../../presentation/views/study/games/visual_addition_game_screen.dart';
+import '../../presentation/views/study/games/visual_subtraction_game_screen.dart';
 import '../../domain/entities/math_game.dart';
+import '../../core/theme/app_theme.dart';
 import 'app_routes.dart';
 
 class AppRouter {
@@ -47,13 +55,200 @@ class AppRouter {
         builder: (context, state) => const MathGamesScreen(),
       ),
       GoRoute(
+        path: AppRoutes.portuguese,
+        builder: (context, state) => const PortugueseScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.history,
+        builder: (context, state) => const HistoryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.science,
+        builder: (context, state) => const ScienceScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.geography,
+        builder: (context, state) => const GeographyScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.grammarBasicsExplanation,
+        builder: (context, state) {
+          return LessonExplanationScreen(
+            lessonId: 'grammar_basics',
+            lessonTitle: 'Gramática Básica',
+            lessonDescription: 'Aprenda os fundamentos da gramática portuguesa',
+            nextRoute: AppRoutes.grammarBasics,
+            lessonData: {
+              'icon': Icons.menu_book,
+              'explanations': [
+                'A gramática é o conjunto de regras que organizam uma língua.',
+                'Ela nos ajuda a falar e escrever corretamente em português.',
+                'Você vai aprender sobre substantivos, verbos, adjetivos e muito mais!',
+                'Cada conceito será explicado de forma simples e prática.',
+                'Lembre-se: a gramática é a base para uma boa comunicação.',
+              ],
+              'objectives': [
+                'Compreender o que é gramática',
+                'Identificar substantivos, verbos e adjetivos',
+                'Aplicar regras básicas de concordância',
+                'Melhorar a comunicação escrita e falada',
+              ],
+              'tips': [
+                'Leia bastante para ver a gramática em ação',
+                'Pratique escrevendo pequenos textos',
+                'Preste atenção na fala das pessoas ao seu redor',
+                'Não tenha medo de errar - é assim que aprendemos!',
+              ],
+              'examples': [
+                {
+                  'title': 'Exemplo 1: Substantivo',
+                  'description':
+                      'Palavra que nomeia pessoas, lugares, coisas ou ideias.',
+                  'solution': 'Exemplos: casa, gato, amor, Brasil',
+                },
+                {
+                  'title': 'Exemplo 2: Verbo',
+                  'description': 'Palavra que indica ação, estado ou fenômeno.',
+                  'solution': 'Exemplos: correr, ser, chover, estudar',
+                },
+                {
+                  'title': 'Exemplo 3: Adjetivo',
+                  'description':
+                      'Palavra que caracteriza ou qualifica o substantivo.',
+                  'solution': 'Exemplos: bonito, grande, inteligente, feliz',
+                },
+              ],
+            },
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.grammarBasics,
+        builder: (context, state) => const GrammarBasicsGameScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.additionExplanation,
+        builder: (context, state) {
+          return LessonExplanationScreen(
+            lessonId: 'addition_basics',
+            lessonTitle: 'Soma Básica',
+            lessonDescription: 'Aprenda a somar números de 1 a 20',
+            nextRoute: AppRoutes.additionGame,
+            lessonData: {
+              'icon': Icons.add,
+              'explanations': [
+                'A soma é uma das quatro operações básicas da matemática.',
+                'Ela representa a ideia de "juntar" ou "adicionar" quantidades.',
+                'Quando somamos, estamos combinando dois ou mais números para obter um total.',
+                'Por exemplo: se você tem 3 maçãs e ganha mais 2, você terá 3 + 2 = 5 maçãs.',
+                'A soma é comutativa, ou seja, 3 + 2 = 2 + 3 = 5.',
+              ],
+              'objectives': [
+                'Compreender o conceito de adição',
+                'Identificar números de 1 a 20',
+                'Realizar somas simples mentalmente',
+                'Aplicar a soma em situações do dia a dia',
+              ],
+              'tips': [
+                'Use objetos reais (dedos, lápis) para visualizar a soma',
+                'Pratique contando de 1 em 1',
+                'Lembre-se: soma é "juntar" quantidades',
+                'Se errar, não desista! A prática leva à perfeição',
+              ],
+              'examples': [
+                {
+                  'title': 'Exemplo 1: Contando objetos',
+                  'description':
+                      'Se você tem 4 brinquedos e ganha mais 3, quantos terá?',
+                  'solution': '4 + 3 = 7 brinquedos',
+                },
+                {
+                  'title': 'Exemplo 2: Dinheiro',
+                  'description':
+                      'Você tem R\$ 5,00 e ganha mais R\$ 2,00. Quanto terá?',
+                  'solution': 'R\$ 5,00 + R\$ 2,00 = R\$ 7,00',
+                },
+                {
+                  'title': 'Exemplo 3: Idade',
+                  'description':
+                      'João tem 8 anos. Em 3 anos, quantos anos terá?',
+                  'solution': '8 + 3 = 11 anos',
+                },
+              ],
+            },
+          );
+        },
+      ),
+      GoRoute(
         path: AppRoutes.additionGame,
         builder: (context, state) {
           // Get the addition game from predefined games
           final additionGame = PredefinedMathGames.games.firstWhere(
             (game) => game.id == 'addition_basics',
           );
-          return AdditionGameScreen(game: additionGame);
+          return VisualAdditionGameScreen(game: additionGame);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.subtractionExplanation,
+        builder: (context, state) {
+          return LessonExplanationScreen(
+            lessonId: 'subtraction_basics',
+            lessonTitle: 'Subtração Básica',
+            lessonDescription: 'Aprenda a subtrair números de 1 a 20',
+            nextRoute: AppRoutes.subtractionGame,
+            lessonData: {
+              'icon': Icons.remove,
+              'explanations': [
+                'A subtração é uma das quatro operações básicas da matemática.',
+                'Ela representa a ideia de "retirar" ou "diminuir" quantidades.',
+                'Quando subtraímos, estamos "tirando" uma quantidade de outra.',
+                'Por exemplo: se você tem 8 balas e come 3, restarão 8 - 3 = 5 balas.',
+                'A subtração NÃO é comutativa, ou seja, 8 - 3 ≠ 3 - 8.',
+              ],
+              'objectives': [
+                'Compreender o conceito de subtração',
+                'Identificar números de 1 a 20',
+                'Realizar subtrações simples mentalmente',
+                'Aplicar a subtração em situações do dia a dia',
+              ],
+              'tips': [
+                'Use objetos reais para visualizar a subtração',
+                'Pense em "quanto sobra" ou "quanto falta"',
+                'Lembre-se: subtração é "tirar" quantidades',
+                'Se errar, não desista! A prática leva à perfeição',
+              ],
+              'examples': [
+                {
+                  'title': 'Exemplo 1: Comendo doces',
+                  'description': 'Você tem 10 doces e come 4. Quantos sobram?',
+                  'solution': '10 - 4 = 6 doces',
+                },
+                {
+                  'title': 'Exemplo 2: Dinheiro gasto',
+                  'description':
+                      'Você tinha R\$ 15,00 e gastou R\$ 7,00. Quanto sobrou?',
+                  'solution': 'R\$ 15,00 - R\$ 7,00 = R\$ 8,00',
+                },
+                {
+                  'title': 'Exemplo 3: Idade',
+                  'description':
+                      'Maria tem 12 anos. Há 5 anos, quantos anos tinha?',
+                  'solution': '12 - 5 = 7 anos',
+                },
+              ],
+            },
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.subtractionGame,
+        builder: (context, state) {
+          // Get the subtraction game from predefined games
+          final subtractionGame = PredefinedMathGames.games.firstWhere(
+            (game) => game.id == 'subtraction_basics',
+          );
+          return VisualSubtractionGameScreen(game: subtractionGame);
         },
       ),
       GoRoute(
@@ -91,7 +286,7 @@ class _StudyScreen extends StatelessWidget {
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +299,7 @@ class _StudyScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            
+
             // Matemática
             _buildSubjectCard(
               context,
@@ -114,9 +309,9 @@ class _StudyScreen extends StatelessWidget {
               AppTheme.primaryColor,
               () => context.go(AppRoutes.mathGames),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Português
             _buildSubjectCard(
               context,
@@ -124,13 +319,11 @@ class _StudyScreen extends StatelessWidget {
               '📚',
               'Gramática e interpretação de texto',
               AppTheme.secondaryColor,
-              () => ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Em breve!')),
-              ),
+              () => context.go(AppRoutes.portuguese),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // História
             _buildSubjectCard(
               context,
@@ -138,13 +331,23 @@ class _StudyScreen extends StatelessWidget {
               '🏛️',
               'História do Brasil e do mundo',
               AppTheme.accentColor,
-              () => ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Em breve!')),
-              ),
+              () => context.go(AppRoutes.history),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
+            // Ciências
+            _buildSubjectCard(
+              context,
+              'Ciências',
+              '🔬',
+              'Ciências da natureza e biologia',
+              AppTheme.secondaryColor,
+              () => context.go(AppRoutes.science),
+            ),
+
+            const SizedBox(height: 16),
+
             // Geografia
             _buildSubjectCard(
               context,
@@ -152,9 +355,7 @@ class _StudyScreen extends StatelessWidget {
               '🌍',
               'Geografia física e humana',
               AppTheme.xpColor,
-              () => ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Em breve!')),
-              ),
+              () => context.go(AppRoutes.geography),
             ),
           ],
         ),
@@ -182,13 +383,10 @@ class _StudyScreen extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
-              colors: [
-                Colors.white,
-                color.withOpacity(0.05),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+            color: AppTheme.surfaceLight,
+            border: Border.all(
+              color: color.withOpacity(0.2),
+              width: 1,
             ),
           ),
           child: Row(
@@ -246,7 +444,7 @@ class _StudyScreen extends StatelessWidget {
 
 class _PlaceholderScreen extends StatelessWidget {
   final String title;
-  
+
   const _PlaceholderScreen({required this.title});
 
   @override

@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../domain/entities/math_game.dart';
+import '../../../domain/entities/user.dart';
+import '../../../data/datasources/simple_database.dart';
 
 class MathGamesScreen extends StatefulWidget {
   const MathGamesScreen({super.key});
@@ -12,8 +14,25 @@ class MathGamesScreen extends StatefulWidget {
 }
 
 class _MathGamesScreenState extends State<MathGamesScreen> {
-  final List<MathGame> _games = PredefinedMathGames.games;
+  List<MathGame> _games = [];
   String _selectedDifficulty = 'all';
+  User? _currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final games = await SimpleDatabase.getMathGames();
+    final user = await SimpleDatabase.getCurrentUser();
+
+    setState(() {
+      _games = games;
+      _currentUser = user;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +42,10 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
         centerTitle: true,
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go(AppRoutes.study),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.emoji_events),
@@ -36,10 +59,10 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
         children: [
           // Header com estatísticas
           _buildHeader(),
-          
+
           // Filtros de dificuldade
           _buildDifficultyFilter(),
-          
+
           // Lista de jogos
           Expanded(
             child: _buildGamesList(),
@@ -54,7 +77,10 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.primaryColor, AppTheme.primaryColor.withOpacity(0.8)],
+          colors: [
+            AppTheme.primaryColor,
+            AppTheme.primaryColor.withOpacity(0.8)
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -84,11 +110,14 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    _buildStatCard('Jogos', '7', AppTheme.secondaryColor),
+                    _buildStatCard(
+                        'Jogos', '${_games.length}', AppTheme.secondaryColor),
                     const SizedBox(width: 12),
-                    _buildStatCard('XP', '350', AppTheme.xpColor),
+                    _buildStatCard(
+                        'XP', '${_currentUser?.xp ?? 0}', AppTheme.xpColor),
                     const SizedBox(width: 12),
-                    _buildStatCard('Nível', '3', AppTheme.levelColor),
+                    _buildStatCard('Nível', '${_currentUser?.level ?? 1}',
+                        AppTheme.levelColor),
                   ],
                 ),
               ],
@@ -225,23 +254,13 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            gradient: game.isUnlocked
-                ? LinearGradient(
-                    colors: [
-                      Colors.white,
-                      AppTheme.primaryColor.withOpacity(0.05),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
-                : LinearGradient(
-                    colors: [
-                      Colors.grey[300]!,
-                      Colors.grey[200]!,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+            color: game.isUnlocked ? AppTheme.surfaceLight : Colors.grey[300]!,
+            border: Border.all(
+              color: game.isUnlocked
+                  ? AppTheme.primaryColor.withOpacity(0.2)
+                  : Colors.grey[400]!,
+              width: 1,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +285,7 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  
+
                   // Informações do jogo
                   Expanded(
                     child: Column(
@@ -277,7 +296,9 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: game.isUnlocked ? Colors.black87 : Colors.grey[600],
+                            color: game.isUnlocked
+                                ? Colors.black87
+                                : Colors.grey[600],
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -285,23 +306,25 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
                           game.description,
                           style: TextStyle(
                             fontSize: 14,
-                            color: game.isUnlocked ? Colors.black54 : Colors.grey[500],
+                            color: game.isUnlocked
+                                ? Colors.black54
+                                : Colors.grey[500],
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Row(
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 4,
                           children: [
                             _buildDifficultyChip(game.difficulty),
-                            const SizedBox(width: 8),
                             _buildTimeChip(game.timeLimit),
-                            const SizedBox(width: 8),
                             _buildXPChip(game.xpReward),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  
+
                   // Status do jogo
                   Column(
                     children: [
@@ -332,7 +355,9 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
                                 : 'Bloqueado',
                         style: TextStyle(
                           fontSize: 12,
-                          color: game.isUnlocked ? AppTheme.primaryColor : Colors.grey,
+                          color: game.isUnlocked
+                              ? AppTheme.primaryColor
+                              : Colors.grey,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -350,7 +375,7 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
   Widget _buildDifficultyChip(DifficultyLevel difficulty) {
     Color color;
     String label;
-    
+
     switch (difficulty) {
       case DifficultyLevel.easy:
         color = AppTheme.secondaryColor;
@@ -369,7 +394,7 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
         label = 'Expert';
         break;
     }
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -449,12 +474,17 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
   }
 
   void _startGame(MathGame game) {
-    // TODO: Navegar para o jogo específico
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Iniciando ${game.title}...'),
-        backgroundColor: AppTheme.primaryColor,
-      ),
-    );
+    if (game.id == 'addition_basics') {
+      context.go(AppRoutes.additionExplanation);
+    } else if (game.id == 'subtraction_basics') {
+      context.go(AppRoutes.subtractionExplanation);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${game.title} em breve!'),
+          backgroundColor: AppTheme.primaryColor,
+        ),
+      );
+    }
   }
 }
