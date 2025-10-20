@@ -41,7 +41,7 @@ class _PortugueseScreenState extends State<PortugueseScreen> {
         foregroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppRoutes.study),
+          onPressed: () => context.go(AppRoutes.home),
         ),
         actions: [
           IconButton(

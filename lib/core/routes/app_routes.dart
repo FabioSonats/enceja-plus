@@ -9,6 +9,7 @@ class AppRoutes {
   // Rotas de estudo
   static const String study = '/study';
   static const String mathGames = '/study/math-games';
+  static const String mathGenericGames = '/study/math-generic-games';
   static const String portuguese = '/study/portuguese';
   static const String history = '/study/history';
   static const String science = '/study/science';
@@ -31,6 +32,12 @@ class AppRoutes {
   static const String settings = '/settings';
   static const String achievements = '/achievements';
   static const String ranking = '/ranking';
+
+  // Rotas de biblioteca
+  static const String library = '/library';
+
+  // Rotas de inscrição
+  static const String enrollment = '/enrollment';
 
   // Rotas de agenda
   static const String calendar = '/calendar';

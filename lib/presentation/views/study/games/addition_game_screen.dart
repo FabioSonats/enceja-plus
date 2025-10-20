@@ -548,7 +548,7 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () => context.go(AppRoutes.study),
+                    onPressed: () => context.go(AppRoutes.home),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
@@ -682,7 +682,7 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              context.go(AppRoutes.study);
+              context.go(AppRoutes.home);
             },
             child: const Text('Sair'),
           ),
