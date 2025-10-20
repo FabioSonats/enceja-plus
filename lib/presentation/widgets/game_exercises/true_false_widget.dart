@@ -70,9 +70,9 @@ class _TrueFalseWidgetState extends State<TrueFalseWidget>
                     color: AppTheme.textLight,
                   ),
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 // Botões Verdadeiro/Falso
                 Row(
                   children: [
@@ -103,10 +103,11 @@ class _TrueFalseWidgetState extends State<TrueFalseWidget>
     );
   }
 
-  Widget _buildAnswerButton(String text, String letter, IconData icon, Color color) {
+  Widget _buildAnswerButton(
+      String text, String letter, IconData icon, Color color) {
     final isSelected = _selectedAnswer == text;
     final isCorrect = text == widget.question.correctAnswer;
-    
+
     return InkWell(
       onTap: () {
         setState(() {
@@ -166,7 +167,8 @@ class _TrueFalseWidgetState extends State<TrueFalseWidget>
                 padding: const EdgeInsets.only(top: 8),
                 child: Icon(
                   isCorrect ? Icons.check_circle : Icons.cancel,
-                  color: isCorrect ? AppTheme.successColor : AppTheme.errorColor,
+                  color:
+                      isCorrect ? AppTheme.successColor : AppTheme.errorColor,
                   size: 20,
                 ),
               ),

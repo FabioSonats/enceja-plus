@@ -72,9 +72,9 @@ class _FillBlankWidgetState extends State<FillBlankWidget>
                     color: AppTheme.textLight,
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Campo de texto
                 TextField(
                   controller: _textController,
@@ -112,9 +112,9 @@ class _FillBlankWidgetState extends State<FillBlankWidget>
                     color: AppTheme.textLight,
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Botão de verificar
                 SizedBox(
                   width: double.infinity,
@@ -141,7 +141,7 @@ class _FillBlankWidgetState extends State<FillBlankWidget>
                     ),
                   ),
                 ),
-                
+
                 // Opções de resposta (se disponíveis)
                 if (widget.question.options.isNotEmpty) ...[
                   const SizedBox(height: 20),

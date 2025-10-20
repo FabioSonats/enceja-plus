@@ -70,14 +70,14 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget>
                     color: AppTheme.textLight,
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Opções de resposta
                 ...widget.question.options.map((option) {
                   final isSelected = _selectedAnswer == option;
                   final isCorrect = option == widget.question.correctAnswer;
-                  
+
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
                     child: InkWell(
@@ -122,7 +122,8 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget>
                               child: Center(
                                 child: Text(
                                   String.fromCharCode(
-                                    65 + widget.question.options.indexOf(option),
+                                    65 +
+                                        widget.question.options.indexOf(option),
                                   ),
                                   style: const TextStyle(
                                     color: Colors.white,
@@ -143,7 +144,9 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget>
                                           ? AppTheme.successColor
                                           : AppTheme.errorColor)
                                       : AppTheme.textLight,
-                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
                                 ),
                               ),
                             ),

@@ -272,9 +272,7 @@ class _GenericGameWidgetState extends State<GenericGameWidget>
                       value: _timerAnimation.value,
                       backgroundColor: Colors.white.withOpacity(0.3),
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        _timeRemaining > 10
-                            ? Colors.white
-                            : Colors.red,
+                        _timeRemaining > 10 ? Colors.white : Colors.red,
                       ),
                     );
                   },
@@ -313,9 +311,9 @@ class _GenericGameWidgetState extends State<GenericGameWidget>
                   question,
                   _onAnswerSelected,
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Feedback
                 if (_showFeedback)
                   AnimatedBuilder(
@@ -344,9 +342,7 @@ class _GenericGameWidgetState extends State<GenericGameWidget>
             : AppTheme.errorColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: _isCorrect
-              ? AppTheme.successColor
-              : AppTheme.errorColor,
+          color: _isCorrect ? AppTheme.successColor : AppTheme.errorColor,
           width: 2,
         ),
       ),
@@ -356,9 +352,7 @@ class _GenericGameWidgetState extends State<GenericGameWidget>
             children: [
               Icon(
                 _isCorrect ? Icons.check_circle : Icons.cancel,
-                color: _isCorrect
-                    ? AppTheme.successColor
-                    : AppTheme.errorColor,
+                color: _isCorrect ? AppTheme.successColor : AppTheme.errorColor,
                 size: 24,
               ),
               const SizedBox(width: 8),
@@ -367,9 +361,8 @@ class _GenericGameWidgetState extends State<GenericGameWidget>
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: _isCorrect
-                      ? AppTheme.successColor
-                      : AppTheme.errorColor,
+                  color:
+                      _isCorrect ? AppTheme.successColor : AppTheme.errorColor,
                 ),
               ),
             ],

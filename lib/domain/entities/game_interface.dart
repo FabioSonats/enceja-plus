@@ -11,15 +11,15 @@ abstract class GameInterface {
   int get xpReward;
   bool get isUnlocked;
   bool get isCompleted;
-  
+
   List<GameQuestion> get questions;
-  
+
   /// Valida se a resposta está correta
   bool validateAnswer(String questionId, String answer);
-  
+
   /// Calcula a pontuação baseada na resposta
   int calculateScore(String questionId, String answer, int timeSpent);
-  
+
   /// Retorna a explicação da resposta
   String getExplanation(String questionId);
 }

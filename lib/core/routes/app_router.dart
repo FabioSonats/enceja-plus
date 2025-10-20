@@ -5,6 +5,7 @@ import '../../presentation/views/onboarding/onboarding_screen.dart';
 import '../../presentation/views/auth/login_screen.dart';
 import '../../presentation/views/home/home_screen.dart';
 import '../../presentation/views/study/math_games_screen.dart';
+import '../../presentation/views/study/games/math_generic_games_screen.dart';
 import '../../presentation/views/study/portuguese_screen.dart';
 import '../../presentation/views/study/history_screen.dart';
 import '../../presentation/views/study/science_screen.dart';
@@ -53,6 +54,10 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.mathGames,
         builder: (context, state) => const MathGamesScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.mathGenericGames,
+        builder: (context, state) => const MathGenericGamesScreen(),
       ),
       GoRoute(
         path: AppRoutes.portuguese,
@@ -308,6 +313,18 @@ class _StudyScreen extends StatelessWidget {
               'Jogos e exercícios de matemática',
               AppTheme.primaryColor,
               () => context.go(AppRoutes.mathGames),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Matemática Interativa
+            _buildSubjectCard(
+              context,
+              'Matemática Interativa',
+              '🎮',
+              'Exercícios variados e interativos',
+              AppTheme.secondaryColor,
+              () => context.go(AppRoutes.mathGenericGames),
             ),
 
             const SizedBox(height: 16),
