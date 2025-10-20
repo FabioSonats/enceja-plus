@@ -11,6 +11,8 @@ import '../../presentation/views/study/history_screen.dart';
 import '../../presentation/views/study/science_screen.dart';
 import '../../presentation/views/study/geography_screen.dart';
 import '../../presentation/views/study/games/grammar_basics_game_screen.dart';
+import '../../presentation/views/library/library_screen.dart';
+import '../../presentation/views/enrollment/enrollment_screen.dart';
 import '../../presentation/views/study/lesson_explanation_screen.dart';
 import '../../presentation/views/study/games/visual_addition_game_screen.dart';
 import '../../presentation/views/study/games/visual_subtraction_game_screen.dart';
@@ -46,11 +48,7 @@ class AppRouter {
         builder: (context, state) => const HomeScreen(),
       ),
 
-      // Study routes
-      GoRoute(
-        path: AppRoutes.study,
-        builder: (context, state) => const _StudyScreen(),
-      ),
+      // Study routes (removed - using direct navigation from home)
       GoRoute(
         path: AppRoutes.mathGames,
         builder: (context, state) => const MathGamesScreen(),
@@ -138,7 +136,7 @@ class AppRouter {
             lessonId: 'addition_basics',
             lessonTitle: 'Soma Básica',
             lessonDescription: 'Aprenda a somar números de 1 a 20',
-            nextRoute: AppRoutes.additionGame,
+            nextRoute: AppRoutes.mathGenericGames,
             lessonData: {
               'icon': Icons.add,
               'explanations': [
@@ -201,7 +199,7 @@ class AppRouter {
             lessonId: 'subtraction_basics',
             lessonTitle: 'Subtração Básica',
             lessonDescription: 'Aprenda a subtrair números de 1 a 20',
-            nextRoute: AppRoutes.subtractionGame,
+            nextRoute: AppRoutes.mathGenericGames,
             lessonData: {
               'icon': Icons.remove,
               'explanations': [
@@ -270,6 +268,14 @@ class AppRouter {
         builder: (context, state) => const _PlaceholderScreen(title: 'Agenda'),
       ),
       GoRoute(
+        path: AppRoutes.library,
+        builder: (context, state) => const LibraryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.enrollment,
+        builder: (context, state) => const EnrollmentScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.profile,
         builder: (context, state) => const _PlaceholderScreen(title: 'Perfil'),
       ),
@@ -290,6 +296,10 @@ class _StudyScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go(AppRoutes.home),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -313,18 +323,6 @@ class _StudyScreen extends StatelessWidget {
               'Jogos e exercícios de matemática',
               AppTheme.primaryColor,
               () => context.go(AppRoutes.mathGames),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Matemática Interativa
-            _buildSubjectCard(
-              context,
-              'Matemática Interativa',
-              '🎮',
-              'Exercícios variados e interativos',
-              AppTheme.secondaryColor,
-              () => context.go(AppRoutes.mathGenericGames),
             ),
 
             const SizedBox(height: 16),

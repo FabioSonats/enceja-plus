@@ -3,8 +3,10 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../domain/entities/math_game.dart';
+import '../../../domain/entities/math_generic_game.dart';
 import '../../../domain/entities/user.dart';
 import '../../../data/datasources/simple_database.dart';
+import '../../widgets/game_exercises/generic_game_widget.dart';
 
 class MathGamesScreen extends StatefulWidget {
   const MathGamesScreen({super.key});
@@ -15,6 +17,7 @@ class MathGamesScreen extends StatefulWidget {
 
 class _MathGamesScreenState extends State<MathGamesScreen> {
   List<MathGame> _games = [];
+  List<MathGenericGame> _genericGames = [];
   String _selectedDifficulty = 'all';
   User? _currentUser;
 
@@ -28,8 +31,17 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
     final games = await SimpleDatabase.getMathGames();
     final user = await SimpleDatabase.getCurrentUser();
 
+    // Carregar jogos genéricos
+    final genericGames = [
+      MathGameBuilder.createAdditionGame(),
+      MathGameBuilder.createSubtractionGame(),
+      MathGameBuilder.createMultiplicationGame(),
+      MathGameBuilder.createFractionsGame(),
+    ];
+
     setState(() {
       _games = games;
+      _genericGames = genericGames;
       _currentUser = user;
     });
   }
@@ -44,7 +56,7 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
         foregroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppRoutes.study),
+          onPressed: () => context.go(AppRoutes.home),
         ),
         actions: [
           IconButton(
@@ -232,10 +244,16 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: filteredGames.length,
+      itemCount: filteredGames.length + _genericGames.length,
       itemBuilder: (context, index) {
-        final game = filteredGames[index];
-        return _buildGameCard(game);
+        if (index < filteredGames.length) {
+          final game = filteredGames[index];
+          return _buildGameCard(game);
+        } else {
+          final genericIndex = index - filteredGames.length;
+          final genericGame = _genericGames[genericIndex];
+          return _buildGenericGameCard(genericGame);
+        }
       },
     );
   }
@@ -413,6 +431,25 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
     );
   }
 
+  Widget _buildDifficultyChipWithColor(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 12,
+          color: color,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
   Widget _buildTimeChip(int timeLimit) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -486,5 +523,187 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
         ),
       );
     }
+  }
+
+  Widget _buildGenericGameCard(MathGenericGame game) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: InkWell(
+        onTap: game.isUnlocked ? () => _startGenericGame(game) : null,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: game.isUnlocked ? AppTheme.surfaceLight : Colors.grey[300]!,
+            border: Border.all(
+              color: game.isUnlocked
+                  ? AppTheme.secondaryColor.withOpacity(0.2)
+                  : Colors.grey[400]!,
+              width: 1,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  // Ícone do jogo
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: game.isUnlocked
+                          ? AppTheme.secondaryColor.withOpacity(0.1)
+                          : Colors.grey[400],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Text(
+                        game.icon,
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+
+                  // Informações do jogo
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          game.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: game.isUnlocked
+                                ? AppTheme.textLight
+                                : Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          game.description,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: game.isUnlocked
+                                ? AppTheme.textLight
+                                : Colors.grey[500],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 4,
+                          children: [
+                            _buildDifficultyChipWithColor(
+                                'Interativo', AppTheme.secondaryColor),
+                            _buildTimeChip(game.timeLimit),
+                            _buildXPChip(game.xpReward),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Status do jogo
+                  Column(
+                    children: [
+                      if (game.isCompleted)
+                        const Icon(
+                          Icons.check_circle,
+                          color: AppTheme.secondaryColor,
+                          size: 24,
+                        )
+                      else if (!game.isUnlocked)
+                        const Icon(
+                          Icons.lock,
+                          color: Colors.grey,
+                          size: 24,
+                        )
+                      else
+                        const Icon(
+                          Icons.play_arrow,
+                          color: AppTheme.secondaryColor,
+                          size: 24,
+                        ),
+                      const SizedBox(height: 4),
+                      Text(
+                        game.isCompleted
+                            ? 'Concluído'
+                            : game.isUnlocked
+                                ? 'Jogar'
+                                : 'Bloqueado',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: game.isUnlocked
+                              ? AppTheme.secondaryColor
+                              : Colors.grey,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _startGenericGame(MathGenericGame game) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GenericGameWidget(
+          game: game,
+          onGameComplete: (result) async {
+            // Salvar resultado no banco de dados
+            await SimpleDatabase.saveGameResult({
+              'gameId': game.id,
+              'score': result.correctAnswers,
+              'totalQuestions': result.totalQuestions,
+              'timeSpent': result.timeSpent,
+              'xpEarned': result.xpEarned,
+              'accuracy': result.accuracy,
+            });
+
+            // Atualizar XP do usuário
+            if (_currentUser != null) {
+              final newXp = _currentUser!.xp + result.xpEarned;
+              final newLevel = _currentUser!.calculateLevel(newXp);
+              _currentUser = _currentUser!.copyWith(
+                xp: newXp,
+                level: newLevel,
+              );
+              await SimpleDatabase.saveUser(_currentUser!);
+            }
+
+            // Mostrar resultado
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Parabéns! Você ganhou ${result.xpEarned} XP!'),
+                backgroundColor: AppTheme.successColor,
+              ),
+            );
+
+            // Voltar para a tela anterior
+            Navigator.pop(context);
+
+            // Recarregar dados
+            _loadData();
+          },
+          onAnswerGiven: (questionId, answer, isCorrect) {
+            // Salvar resposta individual (opcional)
+            print('Resposta: $answer, Correta: $isCorrect');
+          },
+        ),
+      ),
+    );
   }
 }

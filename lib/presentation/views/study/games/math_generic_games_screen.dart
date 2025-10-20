@@ -44,7 +44,7 @@ class _MathGenericGamesScreenState extends State<MathGenericGamesScreen> {
         foregroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppRoutes.study),
+          onPressed: () => context.go(AppRoutes.home),
         ),
         actions: [
           IconButton(
@@ -201,9 +201,7 @@ class _MathGenericGamesScreenState extends State<MathGenericGamesScreen> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: game.isUnlocked
-                ? AppTheme.surfaceLight
-                : Colors.grey[300]!,
+            color: game.isUnlocked ? AppTheme.surfaceLight : Colors.grey[300]!,
             border: Border.all(
               color: game.isUnlocked
                   ? AppTheme.primaryColor.withOpacity(0.2)
@@ -366,7 +364,7 @@ class _MathGenericGamesScreenState extends State<MathGenericGamesScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(AppTheme.infoColor, size: 12),
+          Icon(Icons.timer, color: AppTheme.infoColor, size: 12),
           const SizedBox(width: 4),
           Text(
             '${timeLimit}s',
@@ -392,7 +390,7 @@ class _MathGenericGamesScreenState extends State<MathGenericGamesScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(AppTheme.xpColor, size: 12),
+          Icon(Icons.star, color: AppTheme.xpColor, size: 12),
           const SizedBox(width: 4),
           Text(
             '+$xpReward XP',

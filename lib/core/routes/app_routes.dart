@@ -33,6 +33,12 @@ class AppRoutes {
   static const String achievements = '/achievements';
   static const String ranking = '/ranking';
 
+  // Rotas de biblioteca
+  static const String library = '/library';
+
+  // Rotas de inscrição
+  static const String enrollment = '/enrollment';
+
   // Rotas de agenda
   static const String calendar = '/calendar';
   static const String notifications = '/notifications';

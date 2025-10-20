@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../domain/entities/game_interface.dart';
+import 'multiple_choice_widget.dart';
+import 'true_false_widget.dart';
+import 'fill_blank_widget.dart';
+import 'puzzle_widget.dart';
+import 'drag_drop_widget.dart';
+import 'matching_widget.dart';
+import 'ordering_widget.dart';
+import 'typing_widget.dart';
 
 /// Exercício de Múltipla Escolha
 class MultipleChoiceExercise implements ExerciseType {

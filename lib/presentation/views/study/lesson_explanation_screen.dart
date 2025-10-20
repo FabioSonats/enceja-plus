@@ -20,7 +20,8 @@ class LessonExplanationScreen extends StatefulWidget {
   });
 
   @override
-  State<LessonExplanationScreen> createState() => _LessonExplanationScreenState();
+  State<LessonExplanationScreen> createState() =>
+      _LessonExplanationScreenState();
 }
 
 class _LessonExplanationScreenState extends State<LessonExplanationScreen>
@@ -78,7 +79,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppRoutes.study),
+          onPressed: () => context.go(AppRoutes.home),
         ),
         actions: [
           TextButton(
@@ -87,7 +88,8 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text('Cancelar Lição'),
-                  content: const Text('Tem certeza que deseja cancelar esta lição? Seu progresso será salvo.'),
+                  content: const Text(
+                      'Tem certeza que deseja cancelar esta lição? Seu progresso será salvo.'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
@@ -96,7 +98,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        context.go(AppRoutes.study);
+                        context.go(AppRoutes.home);
                       },
                       child: const Text('Cancelar'),
                     ),
@@ -125,29 +127,29 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
                   children: [
                     // Header da lição
                     _buildLessonHeader(),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // Conteúdo da explicação
                     _buildExplanationContent(),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // Objetivos da lição
                     _buildLessonObjectives(),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // Dicas importantes
                     _buildImportantTips(),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Exemplos práticos
                     _buildExamples(),
-                    
+
                     const SizedBox(height: 40),
-                    
+
                     // Botão para começar
                     _buildStartButton(),
                   ],
@@ -188,9 +190,9 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
               color: Colors.white,
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Título
           Text(
             widget.lessonTitle,
@@ -201,9 +203,9 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
             ),
             textAlign: TextAlign.center,
           ),
-          
+
           const SizedBox(height: 8),
-          
+
           // Descrição
           Text(
             widget.lessonDescription,
@@ -250,9 +252,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
               ),
             ],
           ),
-          
           const SizedBox(height: 16),
-          
           ...widget.lessonData['explanations'].map<Widget>((explanation) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -319,9 +319,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
               ),
             ],
           ),
-          
           const SizedBox(height: 16),
-          
           ...widget.lessonData['objectives'].map<Widget>((objective) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
@@ -383,9 +381,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
               ),
             ],
           ),
-          
           const SizedBox(height: 16),
-          
           ...widget.lessonData['tips'].map<Widget>((tip) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
@@ -419,9 +415,9 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
 
   Widget _buildExamples() {
     final examples = widget.lessonData['examples'] as List<dynamic>? ?? [];
-    
+
     if (examples.isEmpty) return const SizedBox.shrink();
-    
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -453,9 +449,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
               ),
             ],
           ),
-          
           const SizedBox(height: 16),
-          
           ...examples.map<Widget>((example) {
             return Container(
               margin: const EdgeInsets.only(bottom: 16),

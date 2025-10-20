@@ -693,7 +693,7 @@ class _VisualAdditionGameScreenState extends State<VisualAdditionGameScreen>
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () => context.go(AppRoutes.study),
+                      onPressed: () => context.go(AppRoutes.home),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(

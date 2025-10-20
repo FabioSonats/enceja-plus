@@ -45,9 +45,9 @@ class MathGenericGame implements GameInterface {
   int calculateScore(String questionId, String answer, int timeSpent) {
     final question = questions.firstWhere((q) => q.id == questionId);
     final isCorrect = validateAnswer(questionId, answer);
-    
+
     if (!isCorrect) return 0;
-    
+
     // Pontuação baseada no tempo restante
     final timeBonus = (question.timeLimit - timeSpent) ~/ 5;
     return question.points + timeBonus;
@@ -70,21 +70,23 @@ class MathGenericGame implements GameInterface {
       xpReward: mathGame.xpReward,
       isUnlocked: mathGame.isUnlocked,
       isCompleted: mathGame.isCompleted,
-      questions: mathGame.questions.map((q) => GameQuestion(
-        id: q.id,
-        question: q.question,
-        imageUrl: null,
-        options: q.options,
-        correctAnswer: q.correctAnswer,
-        explanation: q.explanation,
-        timeLimit: q.timeLimit,
-        points: q.points,
-        exerciseType: _getExerciseTypeFromMathType(q.type),
-        metadata: {
-          'mathType': q.type.name,
-          'difficulty': mathGame.difficulty.name,
-        },
-      )).toList(),
+      questions: mathGame.questions
+          .map((q) => GameQuestion(
+                id: q.id,
+                question: q.question,
+                imageUrl: null,
+                options: q.options,
+                correctAnswer: q.correctAnswer,
+                explanation: q.explanation,
+                timeLimit: q.timeLimit,
+                points: q.points,
+                exerciseType: _getExerciseTypeFromMathType(q.type),
+                metadata: {
+                  'mathType': q.type.name,
+                  'difficulty': mathGame.difficulty.name,
+                },
+              ))
+          .toList(),
     );
   }
 
@@ -100,6 +102,8 @@ class MathGenericGame implements GameInterface {
       case MathGameType.geometry:
         return 'puzzle';
       case MathGameType.wordProblems:
+        return 'multipleChoice';
+      case MathGameType.algebra:
         return 'multipleChoice';
     }
   }
@@ -135,7 +139,8 @@ class MathGameBuilder {
           question: 'Complete: 12 + ___ = 19',
           options: ['5', '6', '7', '8'],
           correctAnswer: '7',
-          explanation: '12 + 7 = 19. Para encontrar o número, faça 19 - 12 = 7.',
+          explanation:
+              '12 + 7 = 19. Para encontrar o número, faça 19 - 12 = 7.',
           timeLimit: 30,
           points: 10,
           exerciseType: 'multipleChoice',
@@ -143,7 +148,8 @@ class MathGameBuilder {
         ),
         GameQuestion(
           id: 'add_gen_3',
-          question: 'Maria tem 15 reais e ganha mais 8 reais. Quanto ela tem agora?',
+          question:
+              'Maria tem 15 reais e ganha mais 8 reais. Quanto ela tem agora?',
           options: ['21', '22', '23', '24'],
           correctAnswer: '23',
           explanation: '15 + 8 = 23 reais.',
@@ -195,7 +201,8 @@ class MathGameBuilder {
           question: 'Complete: 20 - ___ = 12',
           options: ['6', '7', '8', '9'],
           correctAnswer: '8',
-          explanation: '20 - 8 = 12. Para encontrar o número, faça 20 - 12 = 8.',
+          explanation:
+              '20 - 8 = 12. Para encontrar o número, faça 20 - 12 = 8.',
           timeLimit: 30,
           points: 10,
           exerciseType: 'multipleChoice',
@@ -241,7 +248,8 @@ class MathGameBuilder {
         ),
         GameQuestion(
           id: 'mult_gen_3',
-          question: 'João tem 4 caixas com 8 lápis cada. Quantos lápis ele tem?',
+          question:
+              'João tem 4 caixas com 8 lápis cada. Quantos lápis ele tem?',
           options: ['28', '30', '32', '34'],
           correctAnswer: '32',
           explanation: '4 × 8 = 32 lápis.',
@@ -293,7 +301,8 @@ class MathGameBuilder {
           question: 'Qual é maior: 1/3 ou 1/4?',
           options: ['1/3', '1/4', 'São iguais', 'Não sei'],
           correctAnswer: '1/3',
-          explanation: '1/3 é maior que 1/4. Quanto menor o denominador, maior a fração.',
+          explanation:
+              '1/3 é maior que 1/4. Quanto menor o denominador, maior a fração.',
           timeLimit: 60,
           points: 20,
           exerciseType: 'multipleChoice',

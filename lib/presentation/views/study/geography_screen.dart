@@ -123,7 +123,7 @@ class _GeographyScreenState extends State<GeographyScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppRoutes.study),
+          onPressed: () => context.go(AppRoutes.home),
         ),
       ),
       body: _isLoading

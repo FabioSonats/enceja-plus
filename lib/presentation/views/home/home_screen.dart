@@ -20,19 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
       route: AppRoutes.home,
     ),
     NavigationItem(
-      icon: Icons.school,
-      label: 'Estudos',
-      route: AppRoutes.study,
-    ),
-    NavigationItem(
-      icon: Icons.quiz,
-      label: 'Simulados',
-      route: AppRoutes.simulated,
-    ),
-    NavigationItem(
-      icon: Icons.calendar_today,
-      label: 'Agenda',
-      route: AppRoutes.calendar,
+      icon: Icons.library_books,
+      label: 'Biblioteca',
+      route: AppRoutes.library,
     ),
     NavigationItem(
       icon: Icons.person,
@@ -80,21 +70,135 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header com saudação
-          _buildHeader(),
-          const SizedBox(height: 24),
+          // Header simples
+          _buildSimpleHeader(),
+          const SizedBox(height: 32),
 
-          // Progress card
-          _buildProgressCard(),
-          const SizedBox(height: 24),
-
-          // Quick actions
-          _buildQuickActions(),
-          const SizedBox(height: 24),
-
-          // Recent activities
-          _buildRecentActivities(),
+          // Matérias principais
+          _buildSubjectsGrid(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSimpleHeader() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.primaryColor,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Olá, Estudante! 👋',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Escolha uma matéria para estudar',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white70,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Icon(
+            Icons.school,
+            size: 60,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSubjectsGrid() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Matérias',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppTheme.textLight,
+          ),
+        ),
+        const SizedBox(height: 16),
+        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 1.2,
+          children: [
+            _buildSubjectCard('Matemática', '🧮', AppTheme.primaryColor,
+                () => context.go(AppRoutes.mathGames)),
+            _buildSubjectCard('Português', '📚', AppTheme.secondaryColor,
+                () => context.go(AppRoutes.portuguese)),
+            _buildSubjectCard('História', '🏛️', AppTheme.accentColor,
+                () => context.go(AppRoutes.history)),
+            _buildSubjectCard('Ciências', '🔬', AppTheme.infoColor,
+                () => context.go(AppRoutes.science)),
+            _buildSubjectCard('Geografia', '🌍', AppTheme.xpColor,
+                () => context.go(AppRoutes.geography)),
+            _buildSubjectCard('Biblioteca', '📖', AppTheme.levelColor,
+                () => context.go(AppRoutes.library)),
+            _buildSubjectCard('Inscrição ENCCEJA', '📝', AppTheme.accentColor,
+                () => context.go(AppRoutes.enrollment)),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSubjectCard(
+      String title, String icon, Color color, VoidCallback onTap) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: color.withOpacity(0.1),
+            border: Border.all(color: color.withOpacity(0.3), width: 1),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                icon,
+                style: const TextStyle(fontSize: 40),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -280,7 +384,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Continuar Estudo',
                 Icons.play_arrow,
                 AppTheme.primaryColor,
-                () => context.go(AppRoutes.study),
+                () => context.go(AppRoutes.home),
               ),
             ),
             const SizedBox(width: 12),
