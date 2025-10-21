@@ -6,6 +6,7 @@ import '../../presentation/views/auth/login_screen.dart';
 import '../../presentation/views/home/home_screen.dart';
 import '../../presentation/views/study/math_games_screen.dart';
 import '../../presentation/views/study/games/math_generic_games_screen.dart';
+import '../../presentation/views/study/interactive_math_lessons_screen.dart';
 import '../../presentation/views/study/portuguese_screen.dart';
 import '../../presentation/views/study/history_screen.dart';
 import '../../presentation/views/study/science_screen.dart';
@@ -56,6 +57,10 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.mathGenericGames,
         builder: (context, state) => const MathGenericGamesScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.interactiveMathLessons,
+        builder: (context, state) => const InteractiveMathLessonsScreen(),
       ),
       GoRoute(
         path: AppRoutes.portuguese,

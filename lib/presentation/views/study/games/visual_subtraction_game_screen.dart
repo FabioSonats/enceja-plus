@@ -227,7 +227,9 @@ class _VisualSubtractionGameScreenState
             ),
 
             // Opções de resposta
-            _buildAnswerOptions(),
+            Flexible(
+              child: _buildAnswerOptions(),
+            ),
           ],
         ),
       ),

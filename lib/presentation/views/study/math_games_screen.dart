@@ -81,27 +81,35 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
                 color: AppTheme.primaryColor,
               ),
             )
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header com estatísticas
-                  _buildHeader(),
+          : Column(
+              children: [
+                // Header fixo
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header com estatísticas
+                      _buildHeader(),
 
-                  const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-                  // Filtros de dificuldade
-                  _buildDifficultyFilter(),
+                      // Botão para lições interativas
+                      _buildInteractiveLessonsButton(),
 
-                  const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-                  // Lista de jogos
-                  Expanded(
-                    child: _buildGamesList(),
+                      // Filtros de dificuldade
+                      _buildDifficultyFilter(),
+                    ],
                   ),
-                ],
-              ),
+                ),
+
+                // Lista de jogos rolável
+                Expanded(
+                  child: _buildGamesList(),
+                ),
+              ],
             ),
     );
   }
@@ -190,6 +198,32 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildInteractiveLessonsButton() {
+    return Container(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: () => context.go(AppRoutes.interactiveMathLessons),
+        icon: const Icon(Icons.extension, size: 24),
+        label: const Text(
+          'Lições Interativas',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppTheme.accentColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 4,
+        ),
       ),
     );
   }
