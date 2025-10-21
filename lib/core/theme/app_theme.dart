@@ -21,7 +21,8 @@ class AppTheme {
   static const Color surfaceLight = Color(0xFFFFFFFF);
   static const Color surfaceDark = Color(0xFF3A3A3C);
   static const Color textLight = Color(0xFF2C2C2E);
-  static const Color textDark = Color(0xFFF2F2F7);
+  static const Color textDark =
+      Color(0xFFFFFFFF); // Mais claro para melhor visibilidade
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -90,6 +91,18 @@ class AppTheme {
         backgroundColor: surfaceDark,
         foregroundColor: textDark,
         surfaceTintColor: Colors.transparent,
+      ),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white),
+        bodySmall: TextStyle(color: Colors.white70),
+        titleLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        titleMedium:
+            TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        titleSmall: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+        labelLarge: TextStyle(color: Colors.white),
+        labelMedium: TextStyle(color: Colors.white70),
+        labelSmall: TextStyle(color: Colors.white60),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

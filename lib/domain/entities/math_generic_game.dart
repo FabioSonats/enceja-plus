@@ -105,6 +105,10 @@ class MathGenericGame implements GameInterface {
         return 'multipleChoice';
       case MathGameType.algebra:
         return 'multipleChoice';
+      case MathGameType.puzzle:
+        return 'puzzle';
+      case MathGameType.crossword:
+        return 'crossword';
     }
   }
 }

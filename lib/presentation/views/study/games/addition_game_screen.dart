@@ -21,7 +21,6 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
     with TickerProviderStateMixin {
   late AnimationController _progressController;
   late AnimationController _questionController;
-  late Animation<double> _progressAnimation;
   late Animation<double> _questionAnimation;
 
   int _currentQuestionIndex = 0;
@@ -103,14 +102,6 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-
-    _progressAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _progressController,
-      curve: Curves.easeInOut,
-    ));
 
     _questionAnimation = Tween<double>(
       begin: 0.0,

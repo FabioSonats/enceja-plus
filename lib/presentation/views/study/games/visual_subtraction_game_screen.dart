@@ -173,7 +173,6 @@ class _VisualSubtractionGameScreenState
     }
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
       appBar: AppBar(
         title: const Text('Subtração Básica'),
         centerTitle: true,

@@ -20,6 +20,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
         centerTitle: true,
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go(AppRoutes.home),
@@ -201,7 +207,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   void _showSubjectFiles(String subject) async {
+    print('Buscando PDFs para: $subject');
     final pdfs = await PDFService.getPDFsBySubject(subject);
+    print('PDFs encontrados: ${pdfs.length}');
 
     if (pdfs.isEmpty) {
       showDialog(
@@ -221,7 +229,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 'Pasta: assets/library/${subject.toLowerCase()}/',
                 style: const TextStyle(
                   fontSize: 14,
-                  color: AppTheme.textLight,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 8),
@@ -229,7 +238,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 'Adicione seus PDFs nesta pasta para vê-los aqui.',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey,
+                  color: Colors.white70,
                 ),
               ),
             ],
@@ -339,6 +348,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   void _downloadPDF(PDFFile pdf) async {
     try {
+      print('Iniciando download do PDF: ${pdf.name}');
+      print('Caminho do PDF: ${pdf.path}');
+
       // Mostrar loading
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -348,8 +360,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
       );
 
       // Verificar se o PDF existe
+      print('Verificando se PDF existe: ${pdf.path}');
       final exists = await PDFService.pdfExists(pdf.path);
+      print('PDF existe: $exists');
+
       if (!exists) {
+        print('PDF não encontrado: ${pdf.path}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('PDF não encontrado: ${pdf.path}'),
