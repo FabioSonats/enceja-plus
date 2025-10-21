@@ -227,7 +227,9 @@ class _VisualAdditionGameScreenState extends State<VisualAdditionGameScreen>
             ),
 
             // Opções de resposta
-            _buildAnswerOptions(),
+            Flexible(
+              child: _buildAnswerOptions(),
+            ),
           ],
         ),
       ),
