@@ -136,7 +136,7 @@ class AppRouter {
             lessonId: 'addition_basics',
             lessonTitle: 'Soma Básica',
             lessonDescription: 'Aprenda a somar números de 1 a 20',
-            nextRoute: AppRoutes.mathGenericGames,
+            nextRoute: AppRoutes.additionGame,
             lessonData: {
               'icon': Icons.add,
               'explanations': [
@@ -199,7 +199,7 @@ class AppRouter {
             lessonId: 'subtraction_basics',
             lessonTitle: 'Subtração Básica',
             lessonDescription: 'Aprenda a subtrair números de 1 a 20',
-            nextRoute: AppRoutes.mathGenericGames,
+            nextRoute: AppRoutes.subtractionGame,
             lessonData: {
               'icon': Icons.remove,
               'explanations': [

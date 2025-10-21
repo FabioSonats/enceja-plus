@@ -23,6 +23,12 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
         centerTitle: true,
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go(AppRoutes.home),
@@ -35,6 +41,10 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
           children: [
             // Header
             _buildHeader(),
+            const SizedBox(height: 24),
+
+            // Status do ENCCEJA 2025
+            _buildStatusSection(),
             const SizedBox(height: 24),
 
             // Informações sobre o ENCCEJA
@@ -117,6 +127,59 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
             color: Colors.white,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStatusSection() {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  Icons.update,
+                  color: AppTheme.warningColor,
+                  size: 24,
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  'Status ENCCEJA 2025',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.warningColor,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.warningColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppTheme.warningColor.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+              child: const Text(
+                '✅ As provas do ENCCEJA 2025 já foram realizadas em 3 de agosto de 2025.\n\n🔄 A reaplicação ocorreu nos dias 23 e 24 de setembro de 2025.\n\n📅 O próximo ENCCEJA será em 2026.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppTheme.textLight,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -281,8 +344,13 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
             ),
             const SizedBox(height: 12),
             _buildImportantItem(
-              'Período de inscrição',
-              'Verifique as datas no site oficial do INEP',
+              'ENCCEJA 2025',
+              'Provas realizadas em 3 de agosto de 2025. Reaplicação em 23 e 24 de setembro de 2025.',
+            ),
+            const SizedBox(height: 12),
+            _buildImportantItem(
+              'ENCCEJA 2026',
+              'Inscrições abertas em abril de 2026. Aplicação das provas em agosto de 2026.',
             ),
             const SizedBox(height: 12),
             _buildImportantItem(
@@ -370,19 +438,19 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
             ),
             const SizedBox(height: 16),
             _buildScheduleItem(
-              'Inscrições',
-              'Abril/Maio 2026',
+              'Inscrições ENCCEJA 2026',
+              'Abril 2026',
               Icons.edit,
             ),
             const SizedBox(height: 12),
             _buildScheduleItem(
-              'Aplicação da prova',
+              'Aplicação das provas',
               'Agosto 2026',
               Icons.quiz,
             ),
             const SizedBox(height: 12),
             _buildScheduleItem(
-              'Resultado',
+              'Divulgação dos resultados',
               'Dezembro 2026',
               Icons.emoji_events,
             ),
@@ -398,7 +466,7 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
                 ),
               ),
               child: const Text(
-                '⚠️ As datas podem sofrer alterações. Sempre consulte o site oficial do INEP para informações atualizadas.',
+                '⚠️ As datas do ENCCEJA 2026 podem sofrer alterações. Sempre consulte o site oficial do INEP para informações atualizadas e confirmação das datas exatas.',
                 style: TextStyle(
                   fontSize: 12,
                   color: AppTheme.textLight,

@@ -40,6 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
         elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
+        ),
       ),
       body: IndexedStack(
         index: _selectedIndex,
@@ -51,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildProfileContent(),
         ],
       ),
+      floatingActionButton: _selectedIndex == 0 ? _buildEnrollmentFAB() : null,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
@@ -163,8 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 () => context.go(AppRoutes.geography)),
             _buildSubjectCard('Biblioteca', '📖', AppTheme.levelColor,
                 () => context.go(AppRoutes.library)),
-            _buildSubjectCard('Inscrição ENCCEJA', '📝', AppTheme.accentColor,
-                () => context.go(AppRoutes.enrollment)),
           ],
         ),
       ],
@@ -183,8 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: color.withOpacity(0.1),
-            border: Border.all(color: color.withOpacity(0.3), width: 1),
+            color: color,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -196,10 +200,10 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 8),
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: color,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -535,6 +539,31 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildProfileContent() {
     return const Center(
       child: Text('Tela de Perfil - Em desenvolvimento'),
+    );
+  }
+
+  Widget _buildEnrollmentFAB() {
+    return Container(
+      width: 180,
+      height: 56,
+      child: FloatingActionButton.extended(
+        onPressed: () => context.go(AppRoutes.enrollment),
+        backgroundColor: AppTheme.accentColor,
+        foregroundColor: Colors.white,
+        elevation: 8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(28),
+        ),
+        icon: const Icon(Icons.school, size: 20),
+        label: const Text(
+          'Inscrição ENCCEJA',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
     );
   }
 }

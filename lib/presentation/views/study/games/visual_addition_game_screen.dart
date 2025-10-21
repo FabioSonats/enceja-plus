@@ -173,7 +173,6 @@ class _VisualAdditionGameScreenState extends State<VisualAdditionGameScreen>
     }
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
       appBar: AppBar(
         title: const Text('Soma Básica'),
         centerTitle: true,

@@ -103,7 +103,6 @@ class _AdditionGameScreenState extends State<AdditionGameScreen>
       vsync: this,
     );
 
-
     _questionAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,

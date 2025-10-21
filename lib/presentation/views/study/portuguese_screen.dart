@@ -39,6 +39,12 @@ class _PortugueseScreenState extends State<PortugueseScreen> {
         centerTitle: true,
         backgroundColor: AppTheme.secondaryColor,
         foregroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go(AppRoutes.home),
@@ -58,17 +64,27 @@ class _PortugueseScreenState extends State<PortugueseScreen> {
                 color: AppTheme.secondaryColor,
               ),
             )
-          : Column(
-              children: [
-                // Header com estatísticas
-                _buildHeader(),
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header com estatísticas
+                  _buildHeader(),
 
-                // Filtro de dificuldade
-                _buildDifficultyFilter(),
+                  const SizedBox(height: 20),
 
-                // Lista de exercícios
-                _buildExerciseList(),
-              ],
+                  // Filtro de dificuldade
+                  _buildDifficultyFilter(),
+
+                  const SizedBox(height: 20),
+
+                  // Lista de exercícios
+                  Expanded(
+                    child: _buildExerciseList(),
+                  ),
+                ],
+              ),
             ),
     );
   }
@@ -77,82 +93,96 @@ class _PortugueseScreenState extends State<PortugueseScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.secondaryColor,
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        color: AppTheme.secondaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppTheme.secondaryColor.withOpacity(0.2),
+          width: 1,
+        ),
       ),
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Bem-vindo ao Português!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Pratique gramática, interpretação e redação:',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildStatCard('Exercícios', '12', Colors.white),
-                const SizedBox(width: 12),
-                _buildStatCard('XP', '0', AppTheme.xpColor),
-                const SizedBox(width: 12),
-                _buildStatCard('Nível', '1', AppTheme.levelColor),
+                const Text(
+                  'Português',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.secondaryColor,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Pratique gramática, interpretação e redação',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppTheme.textLight,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    _buildStatCard('Exercícios', '12'),
+                    const SizedBox(width: 16),
+                    _buildStatCard('XP Total', '600'),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: AppTheme.secondaryColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Center(
+              child: Text(
+                '📚',
+                style: TextStyle(fontSize: 40),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildStatCard(String title, String value, Color color) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color, width: 1),
+  Widget _buildStatCard(String title, String value) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceLight,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: AppTheme.secondaryColor.withOpacity(0.2),
+          width: 1,
         ),
-        child: Column(
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14,
-                color: color,
-                fontWeight: FontWeight.w500,
-              ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppTheme.textLight,
+              fontWeight: FontWeight.w500,
             ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 18,
-                color: color,
-                fontWeight: FontWeight.bold,
-              ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 16,
+              color: AppTheme.secondaryColor,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

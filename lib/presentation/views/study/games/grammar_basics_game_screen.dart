@@ -164,7 +164,6 @@ class _GrammarBasicsGameScreenState extends State<GrammarBasicsGameScreen>
     }
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
       appBar: AppBar(
         title: const Text('Gramática Básica'),
         centerTitle: true,

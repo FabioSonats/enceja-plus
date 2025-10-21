@@ -20,6 +20,7 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
   List<MathGenericGame> _genericGames = [];
   String _selectedDifficulty = 'all';
   User? _currentUser;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
       _games = games;
       _genericGames = genericGames;
       _currentUser = user;
+      _isLoading = false;
     });
   }
 
@@ -54,6 +56,12 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
         centerTitle: true,
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go(AppRoutes.home),
@@ -67,20 +75,34 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Header com estatísticas
-          _buildHeader(),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: AppTheme.primaryColor,
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header com estatísticas
+                  _buildHeader(),
 
-          // Filtros de dificuldade
-          _buildDifficultyFilter(),
+                  const SizedBox(height: 20),
 
-          // Lista de jogos
-          Expanded(
-            child: _buildGamesList(),
-          ),
-        ],
-      ),
+                  // Filtros de dificuldade
+                  _buildDifficultyFilter(),
+
+                  const SizedBox(height: 20),
+
+                  // Lista de jogos
+                  Expanded(
+                    child: _buildGamesList(),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -88,13 +110,11 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppTheme.primaryColor,
-            AppTheme.primaryColor.withOpacity(0.8)
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+        color: AppTheme.primaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppTheme.primaryColor.withOpacity(0.2),
+          width: 1,
         ),
       ),
       child: Row(
@@ -104,11 +124,11 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  '🧮 Jogos de Matemática',
+                  'Jogos de Matemática',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: AppTheme.primaryColor,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -116,7 +136,7 @@ class _MathGamesScreenState extends State<MathGamesScreen> {
                   'Aprenda matemática de forma divertida!',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white70,
+                    color: AppTheme.textLight,
                   ),
                 ),
                 const SizedBox(height: 16),
