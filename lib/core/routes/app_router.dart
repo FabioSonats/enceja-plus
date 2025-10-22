@@ -17,6 +17,7 @@ import '../../presentation/views/enrollment/enrollment_screen.dart';
 import '../../presentation/views/study/lesson_explanation_screen.dart';
 import '../../presentation/views/study/games/visual_addition_game_screen.dart';
 import '../../presentation/views/study/games/visual_subtraction_game_screen.dart';
+import '../../presentation/views/profile/profile_screen.dart';
 import '../../domain/entities/math_game.dart';
 import '../../core/theme/app_theme.dart';
 import 'app_routes.dart';
@@ -302,7 +303,7 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.profile,
-        builder: (context, state) => const _PlaceholderScreen(title: 'Perfil'),
+        builder: (context, state) => const ProfileScreen(),
       ),
     ],
   );

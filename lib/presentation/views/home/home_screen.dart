@@ -77,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildStudyContent(),
           _buildQuizContent(),
           _buildCalendarContent(),
-          _buildProfileContent(),
         ],
       ),
       floatingActionButton: _selectedIndex == 0 ? _buildEnrollmentFAB() : null,
@@ -85,9 +84,14 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+          if (index == 2) {
+            // Perfil
+            context.go(AppRoutes.profile);
+          } else {
+            setState(() {
+              _selectedIndex = index;
+            });
+          }
         },
         selectedItemColor: AppTheme.primaryColor,
         unselectedItemColor: Colors.grey,
@@ -676,12 +680,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCalendarContent() {
     return const Center(
       child: Text('Tela de Agenda - Em desenvolvimento'),
-    );
-  }
-
-  Widget _buildProfileContent() {
-    return const Center(
-      child: Text('Tela de Perfil - Em desenvolvimento'),
     );
   }
 
