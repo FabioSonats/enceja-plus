@@ -67,7 +67,15 @@ class AppRouter {
         builder: (context, state) => const PortugueseScreen(),
       ),
       GoRoute(
+        path: AppRoutes.portugueseGames,
+        builder: (context, state) => const PortugueseScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.history,
+        builder: (context, state) => const HistoryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.historyGames,
         builder: (context, state) => const HistoryScreen(),
       ),
       GoRoute(
@@ -75,8 +83,20 @@ class AppRouter {
         builder: (context, state) => const ScienceScreen(),
       ),
       GoRoute(
+        path: AppRoutes.scienceGames,
+        builder: (context, state) => const ScienceScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.geography,
         builder: (context, state) => const GeographyScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.geographyGames,
+        builder: (context, state) => const GeographyScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.essayGames,
+        builder: (context, state) => const PortugueseScreen(),
       ),
       GoRoute(
         path: AppRoutes.grammarBasicsExplanation,

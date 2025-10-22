@@ -176,60 +176,105 @@ class PredefinedInteractiveLessons {
           estimatedTime: 8,
           icon: '🧩',
           exercises: [
+            // Exercício 1: 2 + 4 = ?
             InteractiveExercise(
-              id: 'counting_puzzle_1',
+              id: 'addition_puzzle_1',
               question: 'Resolva a operação matemática:',
               type: InteractiveLessonType.puzzle,
               data: {
                 'pieces': [
                   {'text': '2', 'position': 1},
                   {'text': '+', 'position': 2},
-                  {'text': '3', 'position': 3},
+                  {'text': '4', 'position': 3},
                   {'text': '=', 'position': 4},
                   {'text': '?', 'position': 5},
                 ],
-                'correctAnswer': '5',
+                'correctAnswer': '6',
                 'hint': 'Some os dois números'
               },
-              explanation: '2 + 3 = 5. Simples adição!',
+              explanation: '2 + 4 = 6. Simples adição!',
               points: 20,
               timeLimit: 60,
             ),
+            // Exercício 2: 5 + 6 = ?
             InteractiveExercise(
-              id: 'counting_puzzle_2',
-              question: 'Ordene os números romanos:',
-              type: InteractiveLessonType.dragDrop,
-              data: {
-                'items': ['V', 'I', 'X', 'III', 'VII'],
-                'correctOrder': ['I', 'III', 'V', 'VII', 'X'],
-                'hint': 'I=1, III=3, V=5, VII=7, X=10'
-              },
-              explanation:
-                  'A ordem correta é: I (1), III (3), V (5), VII (7), X (10).',
-              points: 35,
-              timeLimit: 120,
-            ),
-            InteractiveExercise(
-              id: 'counting_puzzle_3',
-              question: 'Complete a sequência de Fibonacci:',
+              id: 'addition_puzzle_2',
+              question: 'Resolva a operação matemática:',
               type: InteractiveLessonType.puzzle,
               data: {
                 'pieces': [
-                  {'text': '0', 'position': 1},
-                  {'text': '1', 'position': 2},
-                  {'text': '1', 'position': 3},
-                  {'text': '?', 'position': 4},
-                  {'text': '3', 'position': 5},
-                  {'text': '?', 'position': 6},
-                  {'text': '8', 'position': 7},
+                  {'text': '5', 'position': 1},
+                  {'text': '+', 'position': 2},
+                  {'text': '6', 'position': 3},
+                  {'text': '=', 'position': 4},
+                  {'text': '?', 'position': 5},
                 ],
-                'correctAnswer': '2',
-                'hint': 'Cada número é a soma dos dois anteriores'
+                'correctAnswer': '11',
+                'hint': 'Some os dois números'
               },
-              explanation:
-                  'Fibonacci: 0, 1, 1, 2, 3, 5, 8... Cada número é a soma dos dois anteriores.',
-              points: 40,
-              timeLimit: 150,
+              explanation: '5 + 6 = 11. Simples adição!',
+              points: 20,
+              timeLimit: 60,
+            ),
+            // Exercício 3: 7 + 8 = ?
+            InteractiveExercise(
+              id: 'addition_puzzle_3',
+              question: 'Resolva a operação matemática:',
+              type: InteractiveLessonType.puzzle,
+              data: {
+                'pieces': [
+                  {'text': '7', 'position': 1},
+                  {'text': '+', 'position': 2},
+                  {'text': '8', 'position': 3},
+                  {'text': '=', 'position': 4},
+                  {'text': '?', 'position': 5},
+                ],
+                'correctAnswer': '15',
+                'hint': 'Some os dois números'
+              },
+              explanation: '7 + 8 = 15. Simples adição!',
+              points: 20,
+              timeLimit: 60,
+            ),
+            // Exercício 4: 3 + 9 = ?
+            InteractiveExercise(
+              id: 'addition_puzzle_4',
+              question: 'Resolva a operação matemática:',
+              type: InteractiveLessonType.puzzle,
+              data: {
+                'pieces': [
+                  {'text': '3', 'position': 1},
+                  {'text': '+', 'position': 2},
+                  {'text': '9', 'position': 3},
+                  {'text': '=', 'position': 4},
+                  {'text': '?', 'position': 5},
+                ],
+                'correctAnswer': '12',
+                'hint': 'Some os dois números'
+              },
+              explanation: '3 + 9 = 12. Simples adição!',
+              points: 20,
+              timeLimit: 60,
+            ),
+            // Exercício 5: 6 + 7 = ?
+            InteractiveExercise(
+              id: 'addition_puzzle_5',
+              question: 'Resolva a operação matemática:',
+              type: InteractiveLessonType.puzzle,
+              data: {
+                'pieces': [
+                  {'text': '6', 'position': 1},
+                  {'text': '+', 'position': 2},
+                  {'text': '7', 'position': 3},
+                  {'text': '=', 'position': 4},
+                  {'text': '?', 'position': 5},
+                ],
+                'correctAnswer': '13',
+                'hint': 'Some os dois números'
+              },
+              explanation: '6 + 7 = 13. Simples adição!',
+              points: 20,
+              timeLimit: 60,
             ),
           ],
           isUnlocked: true,

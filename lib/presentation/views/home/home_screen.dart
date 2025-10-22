@@ -12,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  Map<String, double> _progressData = {};
 
   final List<NavigationItem> _navigationItems = [
     NavigationItem(
@@ -30,6 +31,28 @@ class _HomeScreenState extends State<HomeScreen> {
       route: AppRoutes.profile,
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProgressData();
+  }
+
+  Future<void> _loadProgressData() async {
+    // Simular carregamento do Firebase
+    await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      _progressData = {
+        'matematica': 0.75,
+        'portugues': 0.60,
+        'ciencias': 0.30,
+        'historia': 0.45,
+        'geografia': 0.20,
+        'redacao': 0.10,
+      };
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,46 +161,101 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSubjectsGrid() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Matérias',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textLight,
-          ),
-        ),
-        const SizedBox(height: 16),
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          childAspectRatio: 1.2,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isDesktop = constraints.maxWidth > 600;
+        final maxWidth = isDesktop ? 800.0 : double.infinity;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSubjectCard('Matemática', '🧮', AppTheme.primaryColor,
-                () => context.go(AppRoutes.mathGames)),
-            _buildSubjectCard('Português', '📚', AppTheme.secondaryColor,
-                () => context.go(AppRoutes.portuguese)),
-            _buildSubjectCard('História', '🏛️', AppTheme.accentColor,
-                () => context.go(AppRoutes.history)),
-            _buildSubjectCard('Ciências', '🔬', AppTheme.infoColor,
-                () => context.go(AppRoutes.science)),
-            _buildSubjectCard('Geografia', '🌍', AppTheme.xpColor,
-                () => context.go(AppRoutes.geography)),
-            _buildSubjectCard('Biblioteca', '📖', AppTheme.levelColor,
-                () => context.go(AppRoutes.library)),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                'Matérias',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textLight,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxWidth),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      final subjects = [
+                        {
+                          'title': 'Matemática',
+                          'icon': '🧮',
+                          'color': AppTheme.primaryColor,
+                          'route': AppRoutes.mathGames
+                        },
+                        {
+                          'title': 'Português',
+                          'icon': '📚',
+                          'color': AppTheme.secondaryColor,
+                          'route': AppRoutes.portuguese
+                        },
+                        {
+                          'title': 'História',
+                          'icon': '🏛️',
+                          'color': AppTheme.accentColor,
+                          'route': AppRoutes.history
+                        },
+                        {
+                          'title': 'Ciências',
+                          'icon': '🔬',
+                          'color': AppTheme.infoColor,
+                          'route': AppRoutes.science
+                        },
+                        {
+                          'title': 'Geografia',
+                          'icon': '🌍',
+                          'color': AppTheme.xpColor,
+                          'route': AppRoutes.geography
+                        },
+                        {
+                          'title': 'Biblioteca',
+                          'icon': '📖',
+                          'color': AppTheme.levelColor,
+                          'route': AppRoutes.library
+                        },
+                      ];
+
+                      final subject = subjects[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: _buildSubjectCard(
+                          subject['title'] as String,
+                          subject['icon'] as String,
+                          subject['color'] as Color,
+                          () => context.go(subject['route'] as String),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 
   Widget _buildSubjectCard(
       String title, String icon, Color color, VoidCallback onTap) {
+    final progress =
+        _progressData[title.toLowerCase().replaceAll('ç', 'c')] ?? 0.0;
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -185,27 +263,80 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Container(
+          height: 120,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: color,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                icon,
-                style: const TextStyle(fontSize: 40),
+            color: AppTheme.surfaceDark,
+            border: Border.all(
+              color: color.withOpacity(0.3),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: color.withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+            ],
+          ),
+          child: Row(
+            children: [
+              // Ícone
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Text(
+                    icon,
+                    style: const TextStyle(fontSize: 32),
+                  ),
                 ),
-                textAlign: TextAlign.center,
+              ),
+              // Conteúdo
+              Expanded(
+                flex: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.textLight,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Progresso',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.textLight,
+                          ),
+                        ),
+                        Text(
+                          '${(progress * 100).round()}%',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: color,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    LinearProgressIndicator(
+                      value: progress,
+                      backgroundColor: AppTheme.surfaceDark,
+                      valueColor: AlwaysStoppedAnimation<Color>(color),
+                      minHeight: 6,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -215,59 +346,71 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppTheme.primaryColor,
-            AppTheme.primaryColor.withOpacity(0.8)
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Olá, Estudante! 👋',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isDesktop = constraints.maxWidth > 600;
+        final maxWidth = isDesktop ? 800.0 : double.infinity;
+
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            child: Container(
+              padding: EdgeInsets.all(isDesktop ? 24 : 20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppTheme.primaryColor,
+                    AppTheme.primaryColor.withOpacity(0.8)
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Olá, Estudante! 👋',
+                          style: TextStyle(
+                            fontSize: isDesktop ? 28 : 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Pronto para mais uma jornada de aprendizado?',
+                          style: TextStyle(
+                            fontSize: isDesktop ? 18 : 16,
+                            color: Colors.white70,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            _buildStatCard('Nível', '5', AppTheme.levelColor),
+                            const SizedBox(width: 12),
+                            _buildStatCard('XP', '1,250', AppTheme.xpColor),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.emoji_events,
+                    size: isDesktop ? 70 : 60,
                     color: Colors.white,
                   ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Pronto para mais uma jornada de aprendizado?',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white70,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    _buildStatCard('Nível', '5', AppTheme.levelColor),
-                    const SizedBox(width: 12),
-                    _buildStatCard('XP', '1,250', AppTheme.xpColor),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-          const Icon(
-            Icons.emoji_events,
-            size: 60,
-            color: Colors.white,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

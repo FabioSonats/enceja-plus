@@ -7,6 +7,7 @@ import 'interactive_lesson_screen.dart';
 import '../../widgets/interactive_exercises/puzzle_widget.dart';
 import '../../widgets/interactive_exercises/crossword_widget.dart';
 import '../../widgets/interactive_exercises/fill_blank_widget.dart';
+import '../../widgets/celebration_widget.dart';
 
 class InteractiveMathLessonsScreen extends StatefulWidget {
   const InteractiveMathLessonsScreen({super.key});
@@ -52,7 +53,13 @@ class _InteractiveMathLessonsScreenState
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppRoutes.home),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go(AppRoutes.home);
+            }
+          },
         ),
         actions: [
           IconButton(
@@ -570,29 +577,34 @@ class _InteractiveMathLessonsScreenState
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => InteractiveLessonScreen(
+        builder: (context) => _PuzzleLessonFlow(
           lesson: lesson,
-          exerciseWidget: PuzzleWidget(
-            data: lesson.exercises.first.data,
-            onAnswer: (answer) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(answer),
-                  backgroundColor: AppTheme.primaryColor,
-                ),
-              );
-            },
-            onComplete: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Parabéns! ${lesson.title} concluída!'),
-                  backgroundColor: AppTheme.xpColor,
-                ),
-              );
-            },
-          ),
+          onComplete: () {
+            Navigator.pop(context);
+            // Mostrar celebração final aqui
+            _showFinalCelebration(lesson);
+          },
         ),
+      ),
+    );
+  }
+
+  void _showFinalCelebration(InteractiveMathLesson lesson) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => CelebrationWidget(
+        xpGained: lesson.xpReward,
+        achievement: '${lesson.title} Completa!',
+        onComplete: () {
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Parabéns! ${lesson.title} concluída!'),
+              backgroundColor: AppTheme.xpColor,
+            ),
+          );
+        },
       ),
     );
   }
@@ -700,6 +712,123 @@ class _InteractiveMathLessonsScreenState
       const SnackBar(
         content: Text('Lição de verdadeiro/falso em desenvolvimento!'),
         backgroundColor: AppTheme.secondaryColor,
+      ),
+    );
+  }
+}
+
+// Widget para gerenciar o fluxo de todas as questões do puzzle
+class _PuzzleLessonFlow extends StatefulWidget {
+  final InteractiveMathLesson lesson;
+  final VoidCallback onComplete;
+
+  const _PuzzleLessonFlow({
+    required this.lesson,
+    required this.onComplete,
+  });
+
+  @override
+  State<_PuzzleLessonFlow> createState() => _PuzzleLessonFlowState();
+}
+
+class _PuzzleLessonFlowState extends State<_PuzzleLessonFlow> {
+  int _currentExerciseIndex = 0;
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (_currentExerciseIndex >= widget.lesson.exercises.length) {
+      // Todas as questões foram respondidas
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onComplete();
+      });
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+              '${widget.lesson.title} (${_currentExerciseIndex + 1}/${widget.lesson.exercises.length})'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.pop(context),
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ),
+          ),
+        ),
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: AppTheme.primaryColor,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Carregando próxima questão...',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppTheme.textDark,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final currentExercise = widget.lesson.exercises[_currentExerciseIndex];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+            '${widget.lesson.title} (${_currentExerciseIndex + 1}/${widget.lesson.exercises.length})'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
+      ),
+      body: PuzzleWidget(
+        data: currentExercise.data,
+        onAnswer: (answer) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(answer),
+              backgroundColor: AppTheme.primaryColor,
+              duration: const Duration(seconds: 1),
+            ),
+          );
+        },
+        onComplete: () {
+          print('Questão ${_currentExerciseIndex + 1} completada!');
+          setState(() {
+            _currentExerciseIndex++;
+            _isLoading = true;
+          });
+          print('Próxima questão: $_currentExerciseIndex');
+
+          // Mostrar loading por 1 segundo antes da próxima questão
+          Future.delayed(const Duration(seconds: 1), () {
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+              });
+            }
+          });
+        },
       ),
     );
   }

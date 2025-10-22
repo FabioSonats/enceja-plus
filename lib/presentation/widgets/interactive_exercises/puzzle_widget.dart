@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../core/theme/app_theme.dart';
-import '../celebration_widget.dart';
 
 class PuzzleWidget extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -20,10 +19,10 @@ class PuzzleWidget extends StatefulWidget {
 }
 
 class _PuzzleWidgetState extends State<PuzzleWidget> {
-  List<Map<String, dynamic>> _pieces = [];
   String? _selectedAnswer;
   bool _isCompleted = false;
-  bool _showCelebration = false;
+  String _correctAnswer = '';
+  List<Map<String, dynamic>> _pieces = [];
 
   @override
   void initState() {
@@ -33,112 +32,72 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
 
   void _initializePuzzle() {
     _pieces = List<Map<String, dynamic>>.from(widget.data['pieces']);
+    _calculateCorrectAnswer();
   }
 
-  void _selectAnswer(String answer) {
-    setState(() {
-      _selectedAnswer = answer;
-    });
-    // Som de seleção
-    HapticFeedback.lightImpact();
-  }
-
-  void _playSuccessSound() {
-    // Simular som de sucesso com vibração
-    HapticFeedback.heavyImpact();
-  }
-
-  void _playErrorSound() {
-    // Simular som de erro com vibração
-    HapticFeedback.vibrate();
-  }
-
-  void _checkAnswer() {
-    // Lógica mais interessante: soma dos números anteriores
-    final correctAnswer = _calculateCorrectAnswer();
-
-    if (_selectedAnswer == correctAnswer.toString()) {
-      _playSuccessSound();
-      setState(() {
-        _isCompleted = true;
-        _showCelebration = true;
-      });
-
-      // Revelar o número correto
-      for (int i = 0; i < _pieces.length; i++) {
-        if (_pieces[i]['text'] == '?') {
-          _pieces[i]['text'] = correctAnswer.toString();
-          _pieces[i]['isRevealed'] = true;
-          break;
-        }
-      }
-
-      widget.onAnswer('Parabéns! Resposta correta!');
-
-      // Mostrar celebração e completar
-      Future.delayed(const Duration(seconds: 2), () {
-        widget.onComplete();
-      });
-    } else {
-      _playErrorSound();
-      widget.onAnswer('Resposta incorreta. Tente novamente!');
-    }
-  }
-
-  int _calculateCorrectAnswer() {
-    // Lógica: soma dos dois números da operação (2 + 3 = 5)
+  void _calculateCorrectAnswer() {
     final numbers = _pieces
         .where((p) => p['text'] != '?' && p['text'] != '+' && p['text'] != '=')
         .map((p) => int.tryParse(p['text']) ?? 0)
         .toList();
+
     if (numbers.length >= 2) {
-      return numbers[0] + numbers[1]; // Primeiro número + segundo número
+      _correctAnswer = (numbers[0] + numbers[1]).toString();
     }
-    return 0;
+  }
+
+  void _selectAnswer(String answer) {
+    if (_isCompleted) return;
+
+    setState(() {
+      _selectedAnswer = answer;
+    });
+    HapticFeedback.lightImpact();
+  }
+
+  void _checkAnswer() {
+    if (_isCompleted || _selectedAnswer == null) return;
+
+    setState(() {
+      _isCompleted = true;
+    });
+
+    if (_selectedAnswer == _correctAnswer) {
+      HapticFeedback.heavyImpact();
+      widget.onAnswer('Correto! ✅');
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        if (mounted) {
+          widget.onComplete();
+        }
+      });
+    } else {
+      HapticFeedback.vibrate();
+      widget.onAnswer('Incorreto. Tente novamente! ❌');
+    }
   }
 
   List<String> _generateAnswerOptions() {
-    final correctAnswer = _calculateCorrectAnswer();
     final options = <String>[];
+    options.add(_correctAnswer);
 
-    // Adicionar a resposta correta
-    options.add(correctAnswer.toString());
-
-    // Adicionar opções incorretas (números próximos)
     final wrongOptions = [
-      correctAnswer + 1,
-      correctAnswer - 1,
-      correctAnswer + 2,
-      correctAnswer - 2,
-      correctAnswer * 2,
-      correctAnswer ~/ 2,
-    ].where((n) => n > 0 && n != correctAnswer).take(3).toList();
+      int.parse(_correctAnswer) + 1,
+      int.parse(_correctAnswer) - 1,
+      int.parse(_correctAnswer) + 2,
+      int.parse(_correctAnswer) - 2,
+    ].where((n) => n > 0 && n.toString() != _correctAnswer).take(3).toList();
 
     options.addAll(wrongOptions.map((n) => n.toString()));
-
-    // Embaralhar as opções
     options.shuffle();
     return options;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_showCelebration) {
-      return CelebrationWidget(
-        xpGained: 30,
-        achievement: 'Quebra-cabeça Completo!',
-        onComplete: () {
-          setState(() {
-            _showCelebration = false;
-          });
-          widget.onComplete();
-        },
-      );
-    }
-
     return Column(
       children: [
-        // Título
+        const SizedBox(height: 20),
+
         Text(
           widget.data['question'] ?? 'Complete a sequência:',
           style: const TextStyle(
@@ -150,20 +109,13 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
         ),
         const SizedBox(height: 20),
 
-        // Sequência simples: [1] [2] [3] [4] [?]
+        // Sequência dinâmica baseada nos dados
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppTheme.surfaceDark,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppTheme.primaryColor.withOpacity(0.3)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -171,41 +123,12 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
               final isQuestionMark = piece['text'] == '?';
               final isRevealed = piece['isRevealed'] == true;
 
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: isRevealed
-                      ? AppTheme.xpColor.withOpacity(0.2)
-                      : isQuestionMark
-                          ? Colors.grey.withOpacity(0.1)
-                          : AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: isRevealed
-                        ? AppTheme.xpColor
-                        : isQuestionMark
-                            ? Colors.grey
-                            : AppTheme.primaryColor,
-                    width: 2,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    isRevealed
-                        ? piece['text']
-                        : (isQuestionMark ? '?' : piece['text']),
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: isRevealed
-                          ? AppTheme.xpColor
-                          : isQuestionMark
-                              ? Colors.white
-                              : Colors.white,
-                    ),
-                  ),
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: _buildNumberBox(
+                  isRevealed
+                      ? _correctAnswer
+                      : (isQuestionMark ? '?' : piece['text']),
                 ),
               );
             }).toList(),
@@ -214,7 +137,6 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
 
         const SizedBox(height: 30),
 
-        // Opções de resposta simples
         Text(
           'Qual número completa a sequência?',
           style: const TextStyle(
@@ -225,15 +147,13 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
         ),
         const SizedBox(height: 16),
 
-        // Opções em linha simples
         Wrap(
           spacing: 12,
           runSpacing: 12,
-          alignment: WrapAlignment.center,
           children: _generateAnswerOptions().map((option) {
             final isSelected = _selectedAnswer == option;
             return GestureDetector(
-              onTap: () => _selectAnswer(option),
+              onTap: _isCompleted ? null : () => _selectAnswer(option),
               child: Container(
                 width: 60,
                 height: 60,
@@ -252,7 +172,7 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
                   child: Text(
                     option,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: isSelected ? Colors.white : AppTheme.textDark,
                     ),
@@ -265,18 +185,18 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
 
         const SizedBox(height: 30),
 
-        // Botões simples
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Wrap(
+          spacing: 16,
+          runSpacing: 16,
+          alignment: WrapAlignment.center,
           children: [
             ElevatedButton.icon(
               onPressed: () {
                 setState(() {
                   _selectedAnswer = null;
                   _isCompleted = false;
-                  _showCelebration = false;
-                  _initializePuzzle();
                 });
+                widget.onAnswer('Quebra-cabeça reiniciado.');
               },
               icon: const Icon(Icons.refresh),
               label: const Text('Reiniciar'),
@@ -286,7 +206,8 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
               ),
             ),
             ElevatedButton.icon(
-              onPressed: _selectedAnswer == null ? null : _checkAnswer,
+              onPressed:
+                  _selectedAnswer == null || _isCompleted ? null : _checkAnswer,
               icon: const Icon(Icons.check),
               label: const Text('Verificar'),
               style: ElevatedButton.styleFrom(
@@ -297,6 +218,33 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildNumberBox(String text) {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        color: text == '?'
+            ? Colors.grey.withOpacity(0.1)
+            : AppTheme.primaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: text == '?' ? Colors.grey : AppTheme.primaryColor,
+          width: 2,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: text == '?' ? Colors.white : Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }
