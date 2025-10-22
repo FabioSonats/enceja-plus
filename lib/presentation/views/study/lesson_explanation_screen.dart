@@ -84,7 +84,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppRoutes.home),
+          onPressed: () => context.pop(),
         ),
         actions: [
           TextButton(

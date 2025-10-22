@@ -14,9 +14,14 @@ class AppRoutes {
       '/study/interactive-math-lessons';
   static const String interactiveMathLesson = '/study/interactive-math-lesson';
   static const String portuguese = '/study/portuguese';
+  static const String portugueseGames = '/study/portuguese-games';
   static const String history = '/study/history';
+  static const String historyGames = '/study/history-games';
   static const String science = '/study/science';
+  static const String scienceGames = '/study/science-games';
   static const String geography = '/study/geography';
+  static const String geographyGames = '/study/geography-games';
+  static const String essayGames = '/study/essay-games';
   static const String grammarBasics = '/study/portuguese/grammar-basics';
   static const String grammarBasicsExplanation =
       '/study/portuguese/grammar-basics/explanation';
