@@ -209,7 +209,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   void _showSubjectFiles(String subject) async {
     print('Buscando PDFs para: $subject');
     // final pdfs = await PDFService.getPDFsBySubject(subject); // Temporariamente desabilitado
-    final pdfs = <PDFFile>[]; // Lista vazia temporária
+    final pdfs = <dynamic>[]; // Lista vazia temporária
     print('PDFs encontrados: ${pdfs.length}');
 
     if (pdfs.isEmpty) {
@@ -279,7 +279,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
     }
   }
 
-  Widget _buildPDFCard(PDFFile pdf) {
+  Widget _buildPDFCard(dynamic pdf) {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       elevation: 2,
@@ -347,7 +347,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
     );
   }
 
-  void _downloadPDF(PDFFile pdf) async {
+  void _downloadPDF(dynamic pdf) async {
     try {
       print('Iniciando download do PDF: ${pdf.name}');
       print('Caminho do PDF: ${pdf.path}');
@@ -403,7 +403,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
     }
   }
 
-  void _openPDF(PDFFile pdf) async {
+  void _openPDF(dynamic pdf) async {
     try {
       // Em produção, isso abriria o PDF em um visualizador
       ScaffoldMessenger.of(context).showSnackBar(
