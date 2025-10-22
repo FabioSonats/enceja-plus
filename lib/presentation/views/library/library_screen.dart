@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
-import '../../../data/services/pdf_service.dart';
+// import '../../../data/services/pdf_service.dart'; // Temporariamente desabilitado para build Android
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -208,7 +208,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   void _showSubjectFiles(String subject) async {
     print('Buscando PDFs para: $subject');
-    final pdfs = await PDFService.getPDFsBySubject(subject);
+    // final pdfs = await PDFService.getPDFsBySubject(subject); // Temporariamente desabilitado
+    final pdfs = <PDFFile>[]; // Lista vazia temporária
     print('PDFs encontrados: ${pdfs.length}');
 
     if (pdfs.isEmpty) {
@@ -361,7 +362,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
       // Verificar se o PDF existe
       print('Verificando se PDF existe: ${pdf.path}');
-      final exists = await PDFService.pdfExists(pdf.path);
+      // final exists = await PDFService.pdfExists(pdf.path); // Temporariamente desabilitado
+      final exists = true; // Sempre true temporariamente
       print('PDF existe: $exists');
 
       if (!exists) {
@@ -376,7 +378,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
       }
 
       // Copiar PDF para documentos
-      final downloadedPath = await PDFService.copyPDFToDocuments(pdf.path);
+      // final downloadedPath = await PDFService.copyPDFToDocuments(pdf.path); // Temporariamente desabilitado
+      final downloadedPath = null; // Sempre null temporariamente
 
       if (downloadedPath != null) {
         ScaffoldMessenger.of(context).showSnackBar(
