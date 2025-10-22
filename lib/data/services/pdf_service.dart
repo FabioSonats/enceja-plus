@@ -4,7 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:html' as html;
+
+// Import condicional para web
+import 'dart:html' as html show Blob, Url, AnchorElement, document, window
+    if (dart.library.io) 'dart:io';
 
 class PDFService {
   static const String _libraryPath = 'library';
@@ -131,6 +134,10 @@ class PDFService {
   /// Download direto para web
   static Future<String?> _downloadPDFForWeb(
       ByteData bytes, String assetPath) async {
+    if (!kIsWeb) {
+      return null; // Não funciona em mobile
+    }
+    
     try {
       print('Iniciando download real para web...');
 
@@ -169,6 +176,10 @@ class PDFService {
   /// Abrir PDF em nova aba como fallback
   static Future<String?> _openPDFInNewTab(
       ByteData bytes, String assetPath) async {
+    if (!kIsWeb) {
+      return null; // Não funciona em mobile
+    }
+    
     try {
       print('Abrindo PDF em nova aba...');
 
