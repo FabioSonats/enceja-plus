@@ -17,6 +17,9 @@ class AppRoutes {
   static const String portugueseGames = '/study/portuguese-games';
   static const String history = '/study/history';
   static const String historyGames = '/study/history-games';
+  static const String brazilColonialExplanation =
+      '/study/history/brazil-colonial/explanation';
+  static const String brazilColonial = '/study/history/brazil-colonial';
   static const String science = '/study/science';
   static const String scienceGames = '/study/science-games';
   static const String geography = '/study/geography';

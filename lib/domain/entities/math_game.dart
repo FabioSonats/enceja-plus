@@ -381,7 +381,7 @@ class PredefinedMathGames {
           type: MathGameType.multiplication,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
     MathGame(
@@ -445,7 +445,7 @@ class PredefinedMathGames {
           type: MathGameType.division,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
 
@@ -511,7 +511,7 @@ class PredefinedMathGames {
           type: MathGameType.fractions,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
     MathGame(
@@ -575,7 +575,7 @@ class PredefinedMathGames {
           type: MathGameType.geometry,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
 
@@ -644,7 +644,7 @@ class PredefinedMathGames {
           type: MathGameType.wordProblems,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
 
@@ -711,7 +711,7 @@ class PredefinedMathGames {
           type: MathGameType.wordProblems,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
 
@@ -777,7 +777,7 @@ class PredefinedMathGames {
           type: MathGameType.puzzle,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
 
@@ -843,7 +843,7 @@ class PredefinedMathGames {
           type: MathGameType.crossword,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
   ];

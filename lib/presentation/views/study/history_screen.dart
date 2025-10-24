@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../../domain/entities/history_lesson.dart';
+import '../../../data/datasources/simple_database.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -11,106 +13,20 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  List<Map<String, dynamic>> _exercises = [];
+  String _selectedDifficulty = 'all';
+  List<HistoryLesson> _lessons = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _loadLessons();
   }
 
-  Future<void> _loadData() async {
-    // Simular carregamento de dados
-    await Future.delayed(const Duration(milliseconds: 500));
-
+  Future<void> _loadLessons() async {
+    final lessons = await SimpleDatabase.getHistoryLessons();
     setState(() {
-      _exercises = [
-        {
-          'id': 'brazil_independence',
-          'title': 'Independência do Brasil',
-          'description': 'Aprenda sobre o processo de independência do Brasil',
-          'icon': '🇧🇷',
-          'difficulty': 'Fácil',
-          'timeLimit': '15 min',
-          'xpReward': 50,
-          'isLocked': false,
-        },
-        {
-          'id': 'republic_proclamation',
-          'title': 'Proclamação da República',
-          'description': 'Entenda como o Brasil se tornou uma república',
-          'icon': '🏛️',
-          'difficulty': 'Médio',
-          'timeLimit': '20 min',
-          'xpReward': 75,
-          'isLocked': false,
-        },
-        {
-          'id': 'slavery_abolition',
-          'title': 'Abolição da Escravidão',
-          'description':
-              'Conheça a história da abolição da escravidão no Brasil',
-          'icon': '⛓️',
-          'difficulty': 'Médio',
-          'timeLimit': '25 min',
-          'xpReward': 75,
-          'isLocked': false,
-        },
-        {
-          'id': 'getulio_vargas',
-          'title': 'Era Vargas',
-          'description': 'Estude o período de Getúlio Vargas no poder',
-          'icon': '👔',
-          'difficulty': 'Difícil',
-          'timeLimit': '30 min',
-          'xpReward': 100,
-          'isLocked': true,
-        },
-        {
-          'id': 'military_dictatorship',
-          'title': 'Ditadura Militar',
-          'description': 'Compreenda o período da ditadura militar no Brasil',
-          'icon': '🪖',
-          'difficulty': 'Difícil',
-          'timeLimit': '35 min',
-          'xpReward': 100,
-          'isLocked': true,
-        },
-        {
-          'id': 'redemocratization',
-          'title': 'Redemocratização',
-          'description':
-              'Aprenda sobre o processo de redemocratização do Brasil',
-          'icon': '🗳️',
-          'difficulty': 'Difícil',
-          'timeLimit': '30 min',
-          'xpReward': 100,
-          'isLocked': true,
-        },
-        {
-          'id': 'indigenous_history',
-          'title': 'História dos Povos Indígenas',
-          'description':
-              'Conheça a história e cultura dos povos indígenas brasileiros',
-          'icon': '🏹',
-          'difficulty': 'Médio',
-          'timeLimit': '25 min',
-          'xpReward': 75,
-          'isLocked': true,
-        },
-        {
-          'id': 'african_heritage',
-          'title': 'Herança Africana',
-          'description':
-              'Estude a contribuição africana para a cultura brasileira',
-          'icon': '🌍',
-          'difficulty': 'Médio',
-          'timeLimit': '25 min',
-          'xpReward': 75,
-          'isLocked': true,
-        },
-      ];
+      _lessons = lessons;
       _isLoading = false;
     });
   }
@@ -123,7 +39,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         centerTitle: true,
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
-        elevation: 0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(16),
@@ -140,6 +55,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
             }
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.emoji_events),
+            onPressed: () {
+              // TODO: Navegar para conquistas
+            },
+          ),
+        ],
       ),
       body: _isLoading
           ? const Center(
@@ -147,128 +70,54 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 color: AppTheme.primaryColor,
               ),
             )
-          : Padding(
+          : SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header com estatísticas
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppTheme.primaryColor.withOpacity(0.2),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'História do Brasil',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppTheme.primaryColor,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                'Aprenda sobre a história do nosso país',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: AppTheme.textLight,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Row(
-                                children: [
-                                  _buildStatCard('Exercícios', '8'),
-                                  const SizedBox(width: 16),
-                                  _buildStatCard('XP Total', '600'),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: AppTheme.primaryColor,
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              '📚',
-                              style: TextStyle(fontSize: 40),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Filtros de dificuldade
+                  _buildDifficultyFilter(),
+                  const SizedBox(height: 20),
 
-                  const SizedBox(height: 24),
-
-                  // Lista de exercícios
-                  const Text(
-                    'Exercícios de História:',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.textLight,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: _exercises.length,
-                      itemBuilder: (context, index) {
-                        final exercise = _exercises[index];
-                        return _buildExerciseCard(context, exercise);
-                      },
-                    ),
-                  ),
+                  // Lista de lições
+                  _buildLessonsList(),
                 ],
               ),
             ),
     );
   }
 
-  Widget _buildStatCard(String label, String value) {
+  Widget _buildDifficultyFilter() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceLight,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: AppTheme.primaryColor.withOpacity(0.2),
-          width: 1,
-        ),
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          const Icon(Icons.filter_list, color: AppTheme.primaryColor),
+          const SizedBox(width: 8),
+          const Text(
+            'Filtrar por dificuldade:',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
               color: AppTheme.primaryColor,
             ),
           ),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppTheme.textLight,
+          const SizedBox(width: 16),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _buildDifficultyChip('all', 'Todas'),
+                  _buildDifficultyChip('easy', 'Fácil'),
+                  _buildDifficultyChip('medium', 'Médio'),
+                  _buildDifficultyChip('hard', 'Difícil'),
+                  _buildDifficultyChip('expert', 'Expert'),
+                ],
+              ),
             ),
           ),
         ],
@@ -276,210 +125,299 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  Widget _buildExerciseCard(
-      BuildContext context, Map<String, dynamic> exercise) {
-    final isLocked = exercise['isLocked'] as bool;
-    final iconColor = isLocked ? Colors.grey : AppTheme.primaryColor;
-    final textColor = isLocked ? Colors.grey[600] : AppTheme.textLight;
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: InkWell(
-        onTap: () => _startExercise(exercise),
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: AppTheme.surfaceLight,
-            border: Border.all(
-              color: AppTheme.primaryColor.withOpacity(0.2),
-              width: 1,
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Center(
-                  child: Text(
-                    exercise['icon'],
-                    style: TextStyle(fontSize: 24, color: iconColor),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      exercise['title'],
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      exercise['description'],
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: textColor,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 4,
-                      children: [
-                        _buildDifficultyChip(exercise['difficulty']),
-                        _buildTimeChip(exercise['timeLimit']),
-                        _buildXPChip(exercise['xpReward']),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  if (isLocked)
-                    const Icon(
-                      Icons.lock,
-                      color: Colors.grey,
-                      size: 24,
-                    )
-                  else
-                    const Icon(
-                      Icons.play_arrow,
-                      color: AppTheme.primaryColor,
-                      size: 24,
-                    ),
-                  const SizedBox(height: 4),
-                  Text(
-                    isLocked ? 'Bloqueado' : 'Jogar',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: isLocked ? Colors.grey : AppTheme.primaryColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+  Widget _buildDifficultyChip(String difficulty, String label) {
+    final isSelected = _selectedDifficulty == difficulty;
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: FilterChip(
+        label: Text(label),
+        selected: isSelected,
+        onSelected: (selected) {
+          setState(() {
+            _selectedDifficulty = difficulty;
+          });
+        },
+        selectedColor: AppTheme.primaryColor.withOpacity(0.2),
+        checkmarkColor: AppTheme.primaryColor,
+        labelStyle: TextStyle(
+          color: isSelected ? AppTheme.primaryColor : Colors.grey[600],
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
     );
   }
 
-  Widget _buildDifficultyChip(String difficulty) {
-    Color color;
-    switch (difficulty) {
-      case 'Fácil':
-        color = AppTheme.successColor;
-        break;
-      case 'Médio':
-        color = AppTheme.warningColor;
-        break;
-      case 'Difícil':
-        color = AppTheme.errorColor;
-        break;
-      default:
-        color = AppTheme.primaryColor;
+  Widget _buildLessonsList() {
+    final filteredLessons = _getFilteredLessons();
+
+    if (filteredLessons.isEmpty) {
+      return Center(
+        child: Column(
+          children: [
+            const SizedBox(height: 50),
+            Icon(
+              Icons.history_edu,
+              size: 64,
+              color: Colors.grey[400],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Nenhuma lição encontrada',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Tente alterar o filtro de dificuldade',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[500],
+              ),
+            ),
+          ],
+        ),
+      );
     }
 
+    return Column(
+      children:
+          filteredLessons.map((lesson) => _buildLessonCard(lesson)).toList(),
+    );
+  }
+
+  List<HistoryLesson> _getFilteredLessons() {
+    if (_selectedDifficulty == 'all') {
+      return _lessons;
+    }
+
+    return _lessons.where((lesson) {
+      switch (_selectedDifficulty) {
+        case 'easy':
+          return lesson.difficulty == DifficultyLevel.easy;
+        case 'medium':
+          return lesson.difficulty == DifficultyLevel.medium;
+        case 'hard':
+          return lesson.difficulty == DifficultyLevel.hard;
+        case 'expert':
+          return lesson.difficulty == DifficultyLevel.expert;
+        default:
+          return true;
+      }
+    }).toList();
+  }
+
+  Widget _buildLessonCard(HistoryLesson lesson) {
+    final difficultyColor = _getDifficultyColor(lesson.difficulty);
+    final difficultyText = _getDifficultyText(lesson.difficulty);
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Text(
-        difficulty,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          color: color,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () => _startLesson(lesson),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                // Ícone da lição
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: Text(
+                      lesson.icon,
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+
+                // Conteúdo da lição
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              lesson.title,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.primaryColor,
+                              ),
+                            ),
+                          ),
+                          if (lesson.isCompleted)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Text(
+                                '✓',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        lesson.description,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: difficultyColor.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              difficultyText,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: difficultyColor,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Icon(
+                            Icons.access_time,
+                            size: 16,
+                            color: Colors.grey[500],
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${(lesson.timeLimit / 60).round()} min',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Icon(
+                            Icons.star,
+                            size: 16,
+                            color: Colors.amber[600],
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${lesson.xpReward} XP',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Botão de ação
+                Icon(
+                  lesson.isUnlocked ? Icons.play_arrow : Icons.lock,
+                  color: lesson.isUnlocked
+                      ? AppTheme.primaryColor
+                      : Colors.grey[400],
+                  size: 24,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTimeChip(String time) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppTheme.infoColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.infoColor.withOpacity(0.3)),
-      ),
-      child: Text(
-        time,
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          color: AppTheme.infoColor,
-        ),
-      ),
-    );
+  Color _getDifficultyColor(DifficultyLevel difficulty) {
+    switch (difficulty) {
+      case DifficultyLevel.easy:
+        return Colors.green;
+      case DifficultyLevel.medium:
+        return Colors.orange;
+      case DifficultyLevel.hard:
+        return Colors.red;
+      case DifficultyLevel.expert:
+        return Colors.purple;
+    }
   }
 
-  Widget _buildXPChip(int xp) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppTheme.xpColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.xpColor.withOpacity(0.3)),
-      ),
-      child: Text(
-        '+$xp XP',
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          color: AppTheme.xpColor,
-        ),
-      ),
-    );
+  String _getDifficultyText(DifficultyLevel difficulty) {
+    switch (difficulty) {
+      case DifficultyLevel.easy:
+        return 'Fácil';
+      case DifficultyLevel.medium:
+        return 'Médio';
+      case DifficultyLevel.hard:
+        return 'Difícil';
+      case DifficultyLevel.expert:
+        return 'Expert';
+    }
   }
 
-  void _startExercise(Map<String, dynamic> exercise) {
-    if (exercise['isLocked']) {
+  void _startLesson(HistoryLesson lesson) {
+    if (!lesson.isUnlocked) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-              '${exercise['title']} está bloqueado. Complete os exercícios anteriores!'),
+              '${lesson.title} está bloqueado. Complete as lições anteriores!'),
           backgroundColor: AppTheme.warningColor,
         ),
       );
       return;
     }
 
-    // Navegar para o exercício específico
-    if (exercise['id'] == 'brazil_independence') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${exercise['title']} em breve!'),
-          backgroundColor: AppTheme.primaryColor,
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${exercise['title']} em breve!'),
-          backgroundColor: AppTheme.primaryColor,
-        ),
-      );
+    // Navegar para a lição específica
+    switch (lesson.id) {
+      case 'brazil_colonial':
+        context.go(AppRoutes.brazilColonialExplanation);
+        break;
+      default:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${lesson.title} em breve!'),
+            backgroundColor: AppTheme.primaryColor,
+          ),
+        );
     }
   }
 }

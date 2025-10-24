@@ -9,6 +9,8 @@ import '../../presentation/views/study/games/math_generic_games_screen.dart';
 import '../../presentation/views/study/interactive_math_lessons_screen.dart';
 import '../../presentation/views/study/portuguese_screen.dart';
 import '../../presentation/views/study/history_screen.dart';
+import '../../presentation/views/study/brazil_colonial_screen.dart';
+import '../../presentation/views/study/brazil_colonial_explanation_screen.dart';
 import '../../presentation/views/study/science_screen.dart';
 import '../../presentation/views/study/geography_screen.dart';
 import '../../presentation/views/study/games/grammar_basics_game_screen.dart';
@@ -78,6 +80,14 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.historyGames,
         builder: (context, state) => const HistoryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.brazilColonialExplanation,
+        builder: (context, state) => const BrazilColonialExplanationScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.brazilColonial,
+        builder: (context, state) => const BrazilColonialScreen(),
       ),
       GoRoute(
         path: AppRoutes.science,
