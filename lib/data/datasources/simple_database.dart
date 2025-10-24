@@ -3,11 +3,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/entities/math_game.dart';
 import '../../domain/entities/portuguese_lesson.dart';
+import '../../domain/entities/history_lesson.dart';
 
 class SimpleDatabase {
   static const String _userKey = 'current_user';
   static const String _gamesKey = 'math_games';
   static const String _portugueseLessonsKey = 'portuguese_lessons';
+  static const String _historyLessonsKey = 'history_lessons';
   static const String _achievementsKey = 'achievements';
   static const String _gameResultsKey = 'game_results';
 
@@ -256,5 +258,56 @@ class SimpleDatabase {
       return lesson;
     }).toList();
     await savePortugueseLessons(updatedLessons);
+  }
+
+  // History Lessons Management
+  static Future<List<HistoryLesson>> getHistoryLessons() async {
+    final prefs = await SharedPreferences.getInstance();
+    final lessonsJson = prefs.getString(_historyLessonsKey);
+
+    if (lessonsJson == null) {
+      // Initialize with predefined lessons
+      await _initializeHistoryLessons();
+      return getHistoryLessons();
+    }
+
+    final lessonsList = jsonDecode(lessonsJson) as List;
+    return lessonsList.map((lesson) => HistoryLesson.fromJson(lesson)).toList();
+  }
+
+  static Future<void> saveHistoryLessons(List<HistoryLesson> lessons) async {
+    final prefs = await SharedPreferences.getInstance();
+    final lessonsJson =
+        jsonEncode(lessons.map((lesson) => lesson.toJson()).toList());
+    await prefs.setString(_historyLessonsKey, lessonsJson);
+  }
+
+  static Future<void> _initializeHistoryLessons() async {
+    final prefs = await SharedPreferences.getInstance();
+    final lessons = PredefinedHistoryLessons.lessons;
+    await prefs.setString(_historyLessonsKey,
+        jsonEncode(lessons.map((lesson) => lesson.toJson()).toList()));
+  }
+
+  static Future<void> markHistoryLessonCompleted(String lessonId) async {
+    final lessons = await getHistoryLessons();
+    final updatedLessons = lessons.map((lesson) {
+      if (lesson.id == lessonId) {
+        return lesson.copyWith(isCompleted: true);
+      }
+      return lesson;
+    }).toList();
+    await saveHistoryLessons(updatedLessons);
+  }
+
+  static Future<void> unlockHistoryLesson(String lessonId) async {
+    final lessons = await getHistoryLessons();
+    final updatedLessons = lessons.map((lesson) {
+      if (lesson.id == lessonId) {
+        return lesson.copyWith(isUnlocked: true);
+      }
+      return lesson;
+    }).toList();
+    await saveHistoryLessons(updatedLessons);
   }
 }

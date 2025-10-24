@@ -321,7 +321,7 @@ class PredefinedPortugueseLessons {
           type: PortugueseLessonType.textInterpretation,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
 
@@ -387,7 +387,7 @@ class PredefinedPortugueseLessons {
           type: PortugueseLessonType.vocabulary,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
 
@@ -483,7 +483,7 @@ class PredefinedPortugueseLessons {
           type: PortugueseLessonType.writing,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
 
@@ -573,7 +573,7 @@ class PredefinedPortugueseLessons {
           type: PortugueseLessonType.literature,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
 
@@ -669,7 +669,7 @@ class PredefinedPortugueseLessons {
           type: PortugueseLessonType.languageVariations,
         ),
       ],
-      isUnlocked: false,
+      isUnlocked: true,
       isCompleted: false,
     ),
   ];
