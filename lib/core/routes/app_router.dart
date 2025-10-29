@@ -34,17 +34,17 @@ class AppRouter {
       final authState = authBloc.state;
       
       // Se está na tela de splash, não redireciona
-      if (state.location == AppRoutes.splash) {
+      if (state.uri.path == AppRoutes.splash) {
         return null;
       }
       
       // Se está na tela de onboarding, não redireciona
-      if (state.location == AppRoutes.onboarding) {
+      if (state.uri.path == AppRoutes.onboarding) {
         return null;
       }
       
       // Se está na tela de login, não redireciona
-      if (state.location == AppRoutes.login) {
+      if (state.uri.path == AppRoutes.login) {
         return null;
       }
       
@@ -54,7 +54,7 @@ class AppRouter {
       }
       
       // Se está autenticado e está na tela de login, redireciona para home
-      if (authState is AuthAuthenticated && state.location == AppRoutes.login) {
+      if (authState is AuthAuthenticated && state.uri.path == AppRoutes.login) {
         return AppRoutes.home;
       }
       
