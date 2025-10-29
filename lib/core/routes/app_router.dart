@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../presentation/views/onboarding/splash_screen.dart';
 import '../../presentation/views/onboarding/onboarding_screen.dart';
 import '../../presentation/views/auth/login_screen.dart';
 import '../../presentation/views/home/home_screen.dart';
+import '../../presentation/blocs/auth_bloc.dart';
 import '../../presentation/views/study/math_games_screen.dart';
 import '../../presentation/views/study/games/math_generic_games_screen.dart';
 import '../../presentation/views/study/interactive_math_lessons_screen.dart';
@@ -27,6 +29,37 @@ import 'app_routes.dart';
 class AppRouter {
   static final GoRouter _router = GoRouter(
     initialLocation: AppRoutes.splash,
+    redirect: (context, state) {
+      final authBloc = context.read<AuthBloc>();
+      final authState = authBloc.state;
+      
+      // Se está na tela de splash, não redireciona
+      if (state.location == AppRoutes.splash) {
+        return null;
+      }
+      
+      // Se está na tela de onboarding, não redireciona
+      if (state.location == AppRoutes.onboarding) {
+        return null;
+      }
+      
+      // Se está na tela de login, não redireciona
+      if (state.location == AppRoutes.login) {
+        return null;
+      }
+      
+      // Se não está autenticado, redireciona para login
+      if (authState is AuthUnauthenticated) {
+        return AppRoutes.login;
+      }
+      
+      // Se está autenticado e está na tela de login, redireciona para home
+      if (authState is AuthAuthenticated && state.location == AppRoutes.login) {
+        return AppRoutes.home;
+      }
+      
+      return null;
+    },
     routes: [
       // Splash Screen
       GoRoute(
