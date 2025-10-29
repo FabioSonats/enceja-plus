@@ -44,35 +44,35 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'YOUR_WEB_API_KEY',
-    appId: 'YOUR_WEB_APP_ID',
-    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    apiKey: 'AlzaSyBuFhOWhk_tjlKVxrRUTi5uWOUOOTPK89E',
+    appId: '1:153379569318:web:YOUR_WEB_APP_ID',
+    messagingSenderId: '153379569318',
     projectId: 'vencceja-e8a9c',
     authDomain: 'vencceja-e8a9c.firebaseapp.com',
     storageBucket: 'vencceja-e8a9c.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'YOUR_ANDROID_API_KEY',
-    appId: 'YOUR_ANDROID_APP_ID',
-    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    apiKey: 'AlzaSyBuFhOWhk_tjlKVxrRUTi5uWOUOOTPK89E',
+    appId: '1:153379569318:android:YOUR_ANDROID_APP_ID',
+    messagingSenderId: '153379569318',
     projectId: 'vencceja-e8a9c',
     storageBucket: 'vencceja-e8a9c.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'YOUR_IOS_API_KEY',
-    appId: 'YOUR_IOS_APP_ID',
-    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    apiKey: 'AlzaSyBuFhOWhk_tjlKVxrRUTi5uWOUOOTPK89E',
+    appId: '1:153379569318:ios:YOUR_IOS_APP_ID',
+    messagingSenderId: '153379569318',
     projectId: 'vencceja-e8a9c',
     storageBucket: 'vencceja-e8a9c.appspot.com',
     iosBundleId: 'com.example.enccejaPlus',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'YOUR_MACOS_API_KEY',
-    appId: 'YOUR_MACOS_APP_ID',
-    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    apiKey: 'AlzaSyBuFhOWhk_tjlKVxrRUTi5uWOUOOTPK89E',
+    appId: '1:153379569318:ios:YOUR_MACOS_APP_ID',
+    messagingSenderId: '153379569318',
     projectId: 'vencceja-e8a9c',
     storageBucket: 'vencceja-e8a9c.appspot.com',
     iosBundleId: 'com.example.enccejaPlus',
