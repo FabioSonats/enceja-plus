@@ -28,38 +28,7 @@ import 'app_routes.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: AppRoutes.splash,
-    redirect: (context, state) {
-      final authBloc = context.read<AuthBloc>();
-      final authState = authBloc.state;
-      
-      // Se está na tela de splash, não redireciona
-      if (state.uri.path == AppRoutes.splash) {
-        return null;
-      }
-      
-      // Se está na tela de onboarding, não redireciona
-      if (state.uri.path == AppRoutes.onboarding) {
-        return null;
-      }
-      
-      // Se está na tela de login, não redireciona
-      if (state.uri.path == AppRoutes.login) {
-        return null;
-      }
-      
-      // Se não está autenticado, redireciona para login
-      if (authState is AuthUnauthenticated) {
-        return AppRoutes.login;
-      }
-      
-      // Se está autenticado e está na tela de login, redireciona para home
-      if (authState is AuthAuthenticated && state.uri.path == AppRoutes.login) {
-        return AppRoutes.home;
-      }
-      
-      return null;
-    },
+    initialLocation: AppRoutes.login,
     routes: [
       // Splash Screen
       GoRoute(
