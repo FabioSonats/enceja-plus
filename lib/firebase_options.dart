@@ -44,7 +44,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AlzaSyBuFhOWhk_tjlKVxrRUTi5uWOUOOTPK89E',
+    apiKey: 'AIzaSyBuFhOWhk_tjlKVxrRUTi5uWOUooTPK89E',
     appId: '1:153379569318:web:YOUR_WEB_APP_ID',
     messagingSenderId: '153379569318',
     projectId: 'vencceja-e8a9c',
@@ -53,28 +53,28 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AlzaSyBuFhOWhk_tjlKVxrRUTi5uWOUOOTPK89E',
-    appId: '1:153379569318:android:YOUR_ANDROID_APP_ID',
+    apiKey: 'AIzaSyBuFhOWhk_tjlKVxrRUTi5uWOUooTPK89E',
+    appId: '1:153379569318:android:cbc42e17baf7aa328cfe67',
     messagingSenderId: '153379569318',
     projectId: 'vencceja-e8a9c',
     storageBucket: 'vencceja-e8a9c.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AlzaSyBuFhOWhk_tjlKVxrRUTi5uWOUOOTPK89E',
+    apiKey: 'AIzaSyBuFhOWhk_tjlKVxrRUTi5uWOUooTPK89E',
     appId: '1:153379569318:ios:YOUR_IOS_APP_ID',
     messagingSenderId: '153379569318',
     projectId: 'vencceja-e8a9c',
     storageBucket: 'vencceja-e8a9c.appspot.com',
-    iosBundleId: 'com.example.enccejaPlus',
+    iosBundleId: 'com.company.vencceja',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AlzaSyBuFhOWhk_tjlKVxrRUTi5uWOUOOTPK89E',
+    apiKey: 'AIzaSyBuFhOWhk_tjlKVxrRUTi5uWOUooTPK89E',
     appId: '1:153379569318:ios:YOUR_MACOS_APP_ID',
     messagingSenderId: '153379569318',
     projectId: 'vencceja-e8a9c',
     storageBucket: 'vencceja-e8a9c.appspot.com',
-    iosBundleId: 'com.example.enccejaPlus',
+    iosBundleId: 'com.company.vencceja',
   );
 }

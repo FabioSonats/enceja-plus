@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.encceja_plus"
+    namespace = "com.company.vencceja"
     compileSdk = 35
     ndkVersion = "26.1.10909125"
 

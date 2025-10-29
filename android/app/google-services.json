@@ -1,23 +1,23 @@
 {
   "project_info": {
-    "project_number": "YOUR_PROJECT_NUMBER",
+    "project_number": "153379569318",
     "project_id": "vencceja-e8a9c",
     "storage_bucket": "vencceja-e8a9c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "YOUR_ANDROID_APP_ID",
+        "mobilesdk_app_id": "1:153379569318:android:cbc42e17baf7aa328cfe67",
         "android_client_info": {
-          "package_name": "com.example.encceja_plus"
+          "package_name": "com.company.vencceja"
         }
       },
       "oauth_client": [
         {
-          "client_id": "YOUR_ANDROID_CLIENT_ID",
+          "client_id": "1:153379569318:android:cbc42e17baf7aa328cfe67",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.encceja_plus",
+            "package_name": "com.company.vencceja",
             "certificate_hash": "YOUR_CERTIFICATE_HASH"
           }
         },
@@ -28,7 +28,7 @@
       ],
       "api_key": [
         {
-          "current_key": "YOUR_ANDROID_API_KEY"
+          "current_key": "AIzaSyBuFhOWhk_tjlKVxrRUTi5uWOUooTPK89E"
         }
       ],
       "services": {
