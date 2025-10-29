@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../presentation/views/onboarding/splash_screen.dart';
 import '../../presentation/views/onboarding/onboarding_screen.dart';
 import '../../presentation/views/auth/login_screen.dart';
 import '../../presentation/views/home/home_screen.dart';
-import '../../presentation/blocs/auth_bloc.dart';
 import '../../presentation/views/study/math_games_screen.dart';
 import '../../presentation/views/study/games/math_generic_games_screen.dart';
 import '../../presentation/views/study/interactive_math_lessons_screen.dart';

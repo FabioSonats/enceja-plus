@@ -112,7 +112,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (user != null) {
         add(AuthCheckRequested());
       } else {
-        emit(AuthUnauthenticated());
+        add(AuthCheckRequested());
       }
     });
 
