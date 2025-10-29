@@ -293,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Container(
-          height: 120,
+          height: 130, // Aumentei a altura
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
@@ -318,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: Text(
                     icon,
-                    style: const TextStyle(fontSize: 36), // Maior
+                    style: const TextStyle(fontSize: 32), // Reduzi um pouco
                   ),
                 ),
               ),
@@ -332,37 +332,37 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       title,
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 20, // Reduzi um pouco
                         fontWeight: FontWeight.bold,
                         color: Colors.black, // Preto para máximo contraste
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6), // Reduzi o espaçamento
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
                           'Progresso',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14, // Reduzi um pouco
                             color: Colors.black87,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
+                            horizontal: 6, // Reduzi o padding
+                            vertical: 3,
                           ),
                           decoration: BoxDecoration(
                             color: color.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(6),
                             border: Border.all(color: color, width: 1),
                           ),
                           child: Text(
                             '${(progress * 100).round()}%',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14, // Reduzi um pouco
                               fontWeight: FontWeight.bold,
                               color: color,
                             ),
@@ -370,13 +370,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4), // Reduzi o espaçamento
                     LinearProgressIndicator(
                       value: progress,
                       backgroundColor: Colors.grey[300], // Fundo claro
                       valueColor: AlwaysStoppedAnimation<Color>(color),
-                      minHeight: 8, // Mais alta
-                      borderRadius: BorderRadius.circular(4),
+                      minHeight: 6, // Reduzi um pouco
+                      borderRadius: BorderRadius.circular(3),
                     ),
                   ],
                 ),
