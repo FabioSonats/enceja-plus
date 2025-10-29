@@ -147,22 +147,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
         color: AppTheme.surfaceDark,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppTheme.primaryColor.withOpacity(0.3),
-          width: 1,
+          color: AppTheme.primaryColor.withOpacity(0.4),
+          width: 1.5,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Progresso Geral',
-            style: TextStyle(
-              fontSize: 20,
+            style: const TextStyle(
+              fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: AppTheme.textLight,
+              color: Colors.white,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Row(
             children: [
               Expanded(
@@ -172,38 +179,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Text(
                       '${(_overallProgress * 100).round()}% Concluído',
                       style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
                         color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
                     const SizedBox(height: 8),
+                    Text(
+                      'Continue estudando para completar o curso',
+                      style: TextStyle(
+                        color: Colors.grey[300], // Mais claro
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
                     LinearProgressIndicator(
                       value: _overallProgress,
-                      backgroundColor: AppTheme.backgroundDark,
+                      backgroundColor: Colors.grey[600], // Mais claro
                       valueColor: const AlwaysStoppedAnimation<Color>(
                         AppTheme.primaryColor,
                       ),
-                      minHeight: 8,
+                      minHeight: 12, // Mais alta
+                      borderRadius: BorderRadius.circular(6),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 20),
               Container(
-                width: 60,
-                height: 60,
+                width: 70,
+                height: 70,
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(30),
+                  color: AppTheme.primaryColor.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(35),
+                  border: Border.all(
+                    color: AppTheme.primaryColor.withOpacity(0.4),
+                    width: 2,
+                  ),
                 ),
                 child: Center(
                   child: Text(
                     '${(_overallProgress * 100).round()}%',
                     style: const TextStyle(
-                      fontSize: 16,
+                      color: Colors.white, // Branco para máximo contraste
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.primaryColor,
+                      fontSize: 18,
                     ),
                   ),
                 ),
@@ -249,23 +270,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: BoxDecoration(
         color: AppTheme.surfaceDark,
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Progresso por Matéria',
-            style: TextStyle(
-              fontSize: 20,
+            style: const TextStyle(
+              fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: AppTheme.textLight,
+              color: Colors.white,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           ...subjects.map((subject) {
             final progress =
                 _subjectProgress[(subject['name'] as String).toLowerCase()] ??
                     0.0;
+            final subjectColor = subject['color'] as Color;
+            
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: InkWell(
@@ -277,9 +307,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: AppTheme.backgroundDark,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: (subject['color'] as Color).withOpacity(0.3),
-                      width: 1,
+                      color: subjectColor.withOpacity(0.4),
+                      width: 1.5,
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: subjectColor.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
@@ -287,8 +324,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: 50,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: (subject['color'] as Color).withOpacity(0.1),
+                          color: subjectColor.withOpacity(0.15),
                           borderRadius: BorderRadius.circular(25),
+                          border: Border.all(
+                            color: subjectColor.withOpacity(0.3),
+                            width: 1,
+                          ),
                         ),
                         child: Center(
                           child: Text(
@@ -302,39 +343,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // Título da matéria com máximo contraste
                             Text(
                               subject['name'] as String,
                               style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: AppTheme.textLight,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 8),
+                            // Subtítulo "Progresso" com cor mais clara
+                            Text(
+                              'Progresso',
+                              style: TextStyle(
+                                color: Colors.grey[300], // Mais claro que antes
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            // Barra de progresso com máximo contraste
                             LinearProgressIndicator(
                               value: progress,
-                              backgroundColor: AppTheme.surfaceDark,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                subject['color'] as Color,
-                              ),
-                              minHeight: 6,
+                              backgroundColor: Colors.grey[600], // Mais claro
+                              valueColor: AlwaysStoppedAnimation<Color>(subjectColor),
+                              minHeight: 10, // Mais alta
+                              borderRadius: BorderRadius.circular(5),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 16),
-                      Text(
-                        '${(progress * 100).round()}%',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: subject['color'] as Color,
+                      // Percentual com máximo destaque e contraste
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: subjectColor.withOpacity(0.3), // Mais opaco
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: subjectColor, // Borda sólida
+                            width: 2,
+                          ),
+                        ),
+                        child: Text(
+                          '${(progress * 100).round()}%',
+                          style: TextStyle(
+                            color: Colors.white, // Branco para máximo contraste
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 12),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: (subject['color'] as Color).withOpacity(0.7),
+                        color: subjectColor.withOpacity(0.8),
                         size: 16,
                       ),
                     ],
@@ -355,19 +422,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: BoxDecoration(
         color: AppTheme.surfaceDark,
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Estatísticas de Estudo',
-            style: TextStyle(
-              fontSize: 20,
+            style: const TextStyle(
+              fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: AppTheme.textLight,
+              color: Colors.white,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Row(
             children: [
               Expanded(
@@ -408,35 +482,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: color.withOpacity(0.3),
-          width: 1,
+          color: color.withOpacity(0.4),
+          width: 1.5,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [
           Icon(
             icon,
             color: color,
-            size: 24,
+            size: 28,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Text(
             value,
             style: TextStyle(
-              fontSize: 18,
+              color: Colors.white, // Branco para máximo contraste
               fontWeight: FontWeight.bold,
-              color: color,
+              fontSize: 18,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Text(
             title,
             style: const TextStyle(
+              color: Colors.white,
               fontSize: 12,
-              color: AppTheme.textLight,
+              fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,
           ),

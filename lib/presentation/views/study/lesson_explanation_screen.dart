@@ -118,51 +118,60 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
           ),
         ],
       ),
-      body: AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          return FadeTransition(
-            opacity: _fadeAnimation,
-            child: SlideTransition(
-              position: _slideAnimation,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header da lição
-                    _buildLessonHeader(),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppTheme.backgroundDark, AppTheme.surfaceDark],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, child) {
+            return FadeTransition(
+              opacity: _fadeAnimation,
+              child: SlideTransition(
+                position: _slideAnimation,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header da lição
+                      _buildLessonHeader(),
 
-                    const SizedBox(height: 32),
+                      const SizedBox(height: 32),
 
-                    // Conteúdo da explicação
-                    _buildExplanationContent(),
+                      // Conteúdo da explicação
+                      _buildExplanationContent(),
 
-                    const SizedBox(height: 32),
+                      const SizedBox(height: 32),
 
-                    // Objetivos da lição
-                    _buildLessonObjectives(),
+                      // Objetivos da lição
+                      _buildLessonObjectives(),
 
-                    const SizedBox(height: 32),
+                      const SizedBox(height: 32),
 
-                    // Dicas importantes
-                    _buildImportantTips(),
+                      // Dicas importantes
+                      _buildImportantTips(),
 
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 24),
 
-                    // Exemplos práticos
-                    _buildExamples(),
+                      // Exemplos práticos
+                      _buildExamples(),
 
-                    const SizedBox(height: 40),
+                      const SizedBox(height: 40),
 
-                    // Botão para começar
-                    _buildStartButton(),
-                  ],
+                      // Botão para começar
+                      _buildStartButton(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -172,12 +181,19 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppTheme.primaryColor.withOpacity(0.1),
+        color: Colors.white, // Fundo branco para máximo contraste
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppTheme.primaryColor.withOpacity(0.3),
-          width: 2,
+          color: AppTheme.primaryColor,
+          width: 3, // Borda mais grossa
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -202,9 +218,9 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
           Text(
             widget.lessonTitle,
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 26,
               fontWeight: FontWeight.bold,
-              color: AppTheme.textLight,
+              color: Colors.black, // Preto para máximo contraste
             ),
             textAlign: TextAlign.center,
           ),
@@ -215,8 +231,9 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
           Text(
             widget.lessonDescription,
             style: const TextStyle(
-              fontSize: 16,
-              color: AppTheme.textLight,
+              fontSize: 18,
+              color: Colors.black87, // Preto mais claro
+              fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
           ),
@@ -229,12 +246,19 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceLight,
+        color: Colors.white, // Fundo branco para máximo contraste
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.grey.shade300,
-          width: 1,
+          color: AppTheme.accentColor,
+          width: 2,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.accentColor.withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -244,15 +268,15 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
               Icon(
                 Icons.lightbulb_outline,
                 color: AppTheme.accentColor,
-                size: 24,
+                size: 28, // Maior
               ),
               const SizedBox(width: 8),
               const Text(
                 'O que você vai aprender:',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.textLight,
+                  color: Colors.black, // Preto para máximo contraste
                 ),
               ),
             ],
@@ -265,21 +289,22 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 6,
-                    height: 6,
+                    width: 8,
+                    height: 8,
                     margin: const EdgeInsets.only(top: 8, right: 12),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor,
-                      borderRadius: BorderRadius.circular(3),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                   ),
                   Expanded(
                     child: Text(
                       explanation,
                       style: const TextStyle(
-                        fontSize: 15,
-                        color: AppTheme.textLight,
-                        height: 1.4,
+                        fontSize: 16,
+                        color: Colors.black, // Preto para máximo contraste
+                        height: 1.5,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -296,12 +321,19 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.secondaryColor.withOpacity(0.1),
+        color: Colors.white, // Fundo branco para máximo contraste
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppTheme.secondaryColor.withOpacity(0.3),
-          width: 1,
+          color: AppTheme.secondaryColor,
+          width: 2,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.secondaryColor.withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,15 +343,15 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
               Icon(
                 Icons.flag_outlined,
                 color: AppTheme.secondaryColor,
-                size: 24,
+                size: 28, // Maior
               ),
               const SizedBox(width: 8),
               const Text(
                 'Objetivos desta lição:',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.textLight,
+                  color: Colors.black, // Preto para máximo contraste
                 ),
               ),
             ],
@@ -333,15 +365,16 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
                   Icon(
                     Icons.check_circle_outline,
                     color: AppTheme.secondaryColor,
-                    size: 20,
+                    size: 24, // Maior
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       objective,
                       style: const TextStyle(
-                        fontSize: 15,
-                        color: AppTheme.textLight,
+                        fontSize: 16,
+                        color: Colors.black, // Preto para máximo contraste
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
