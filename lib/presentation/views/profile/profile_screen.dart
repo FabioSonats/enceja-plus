@@ -163,9 +163,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Text(
             'Progresso Geral',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
               color: Colors.white,
-              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 20),
@@ -177,29 +178,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Text(
                       '${(_overallProgress * 100).round()}% Concluído',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      style: const TextStyle(
                         color: AppTheme.primaryColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Continue estudando para completar o curso',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[400],
+                      style: TextStyle(
+                        color: Colors.grey[300], // Mais claro
                         fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 12),
                     LinearProgressIndicator(
                       value: _overallProgress,
-                      backgroundColor: Colors.grey[700],
+                      backgroundColor: Colors.grey[600], // Mais claro
                       valueColor: const AlwaysStoppedAnimation<Color>(
                         AppTheme.primaryColor,
                       ),
-                      minHeight: 10,
-                      borderRadius: BorderRadius.circular(5),
+                      minHeight: 12, // Mais alta
+                      borderRadius: BorderRadius.circular(6),
                     ),
                   ],
                 ),
@@ -219,8 +221,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Center(
                   child: Text(
                     '${(_overallProgress * 100).round()}%',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.primaryColor,
+                    style: const TextStyle(
+                      color: Colors.white, // Branco para máximo contraste
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
@@ -281,9 +283,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Text(
             'Progresso por Matéria',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
               color: Colors.white,
-              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 20),
@@ -340,12 +343,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Título da matéria com melhor contraste
+                            // Título da matéria com máximo contraste
                             Text(
                               subject['name'] as String,
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              style: const TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                                 fontSize: 18,
                               ),
                             ),
@@ -353,43 +356,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             // Subtítulo "Progresso" com cor mais clara
                             Text(
                               'Progresso',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[400],
+                              style: TextStyle(
+                                color: Colors.grey[300], // Mais claro que antes
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             const SizedBox(height: 6),
-                            // Barra de progresso com melhor contraste
+                            // Barra de progresso com máximo contraste
                             LinearProgressIndicator(
                               value: progress,
-                              backgroundColor: Colors.grey[700],
+                              backgroundColor: Colors.grey[600], // Mais claro
                               valueColor: AlwaysStoppedAnimation<Color>(subjectColor),
-                              minHeight: 8,
-                              borderRadius: BorderRadius.circular(4),
+                              minHeight: 10, // Mais alta
+                              borderRadius: BorderRadius.circular(5),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 16),
-                      // Percentual com destaque e melhor contraste
+                      // Percentual com máximo destaque e contraste
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
+                          horizontal: 14,
+                          vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: subjectColor.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(8),
+                          color: subjectColor.withOpacity(0.3), // Mais opaco
+                          borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: subjectColor.withOpacity(0.5),
-                            width: 1,
+                            color: subjectColor, // Borda sólida
+                            width: 2,
                           ),
                         ),
                         child: Text(
                           '${(progress * 100).round()}%',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: subjectColor,
+                          style: TextStyle(
+                            color: Colors.white, // Branco para máximo contraste
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -432,9 +435,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Text(
             'Estatísticas de Estudo',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
               color: Colors.white,
-              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 20),
@@ -502,8 +506,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 12),
           Text(
             value,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: color,
+            style: TextStyle(
+              color: Colors.white, // Branco para máximo contraste
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -511,10 +515,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 6),
           Text(
             title,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,
           ),
