@@ -80,44 +80,70 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: _selectedIndex == 0 ? _buildEnrollmentFAB() : null,
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          if (index == 2) {
-            // Perfil
-            context.go(AppRoutes.profile);
-          } else {
-            setState(() {
-              _selectedIndex = index;
-            });
-          }
-        },
-        selectedItemColor: AppTheme.primaryColor,
-        unselectedItemColor: Colors.grey,
-        items: _navigationItems.map((item) {
-          return BottomNavigationBarItem(
-            icon: Icon(item.icon),
-            label: item.label,
-          );
-        }).toList(),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: AppTheme.surfaceDark,
+          border: Border(
+            top: BorderSide(color: AppTheme.primaryColor, width: 2),
+          ),
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          backgroundColor: AppTheme.surfaceDark,
+          onTap: (index) {
+            if (index == 2) {
+              // Perfil
+              context.go(AppRoutes.profile);
+            } else {
+              setState(() {
+                _selectedIndex = index;
+              });
+            }
+          },
+          selectedItemColor: Colors.white, // Branco para máximo contraste
+          unselectedItemColor: Colors.grey[400], // Cinza mais claro
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 12,
+          ),
+          items: _navigationItems.map((item) {
+            return BottomNavigationBarItem(
+              icon: Icon(item.icon),
+              label: item.label,
+            );
+          }).toList(),
+        ),
       ),
     );
   }
 
   Widget _buildHomeContent() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header simples
-          _buildSimpleHeader(),
-          const SizedBox(height: 32),
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [AppTheme.backgroundDark, AppTheme.surfaceDark],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header simples
+            _buildSimpleHeader(),
+            const SizedBox(height: 32),
 
-          // Matérias principais
-          _buildSubjectsGrid(),
-        ],
+            // Matérias principais
+            _buildSubjectsGrid(),
+          ],
+        ),
       ),
     );
   }
@@ -178,9 +204,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 'Matérias',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.textLight,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -261,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _progressData[title.toLowerCase().replaceAll('ç', 'c')] ?? 0.0;
 
     return Card(
-      elevation: 4,
+      elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: onTap,
@@ -271,16 +297,16 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: AppTheme.surfaceDark,
+            color: Colors.white, // Fundo branco para máximo contraste
             border: Border.all(
-              color: color.withOpacity(0.3),
-              width: 2,
+              color: color,
+              width: 3, // Borda mais grossa
             ),
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
+                color: color.withOpacity(0.3),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
               ),
             ],
           ),
@@ -292,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: Text(
                     icon,
-                    style: const TextStyle(fontSize: 32),
+                    style: const TextStyle(fontSize: 36), // Maior
                   ),
                 ),
               ),
@@ -305,10 +331,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 20,
+                      style: TextStyle(
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.textLight,
+                        color: Colors.black, // Preto para máximo contraste
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -318,26 +344,39 @@ class _HomeScreenState extends State<HomeScreen> {
                         const Text(
                           'Progresso',
                           style: TextStyle(
-                            fontSize: 14,
-                            color: AppTheme.textLight,
+                            fontSize: 16,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Text(
-                          '${(progress * 100).round()}%',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: color,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: color.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: color, width: 1),
+                          ),
+                          child: Text(
+                            '${(progress * 100).round()}%',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: color,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     LinearProgressIndicator(
                       value: progress,
-                      backgroundColor: AppTheme.surfaceDark,
+                      backgroundColor: Colors.grey[300], // Fundo claro
                       valueColor: AlwaysStoppedAnimation<Color>(color),
-                      minHeight: 6,
+                      minHeight: 8, // Mais alta
+                      borderRadius: BorderRadius.circular(4),
                     ),
                   ],
                 ),
@@ -720,3 +759,4 @@ class NavigationItem {
     required this.route,
   });
 }
+
