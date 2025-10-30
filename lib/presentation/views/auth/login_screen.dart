@@ -247,27 +247,6 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
         const SizedBox(height: 12),
-        
-            // Login Anônimo
-            SocialLoginButton(
-              text: 'Continuar sem conta',
-              icon: Icons.person_outline,
-              backgroundColor: Colors.grey[800],
-              onPressed: () {
-                context.read<AuthBloc>().add(AuthAnonymousSignInRequested());
-              },
-            ),
-            const SizedBox(height: 12),
-            
-            // Botão de Teste Firebase
-            SocialLoginButton(
-              text: 'Testar Conexão Firebase',
-              icon: Icons.bug_report,
-              backgroundColor: Colors.orange[800],
-              onPressed: () {
-                _testFirebaseConnection();
-              },
-            ),
       ],
     );
   }
@@ -319,34 +298,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       }
-    }
-  }
-
-  void _testFirebaseConnection() async {
-    try {
-      // Testar conexão com Firebase
-      final authBloc = context.read<AuthBloc>();
-      final authState = authBloc.state;
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Estado atual: ${authState.runtimeType}'),
-          backgroundColor: Colors.blue,
-          duration: const Duration(seconds: 3),
-        ),
-      );
-      
-      // Testar login anônimo
-      authBloc.add(AuthAnonymousSignInRequested());
-      
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erro no Firebase: $e'),
-          backgroundColor: AppTheme.errorColor,
-          duration: const Duration(seconds: 5),
-        ),
-      );
     }
   }
 
