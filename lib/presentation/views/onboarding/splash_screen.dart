@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../blocs/auth_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,12 +17,32 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  bool _hasNavigated = false;
 
   @override
   void initState() {
     super.initState();
     _setupAnimations();
-    _navigateToNextScreen();
+    // Aguardar verificação de autenticação antes de navegar
+    Future.delayed(const Duration(seconds: 2), () {
+      _checkAuthAndNavigate();
+    });
+  }
+
+  void _checkAuthAndNavigate() {
+    if (_hasNavigated || !mounted) return;
+    _hasNavigated = true;
+    
+    final authBloc = context.read<AuthBloc>();
+    final authState = authBloc.state;
+    
+    if (authState is AuthAuthenticated) {
+      // Usuário já está logado - ir direto para home
+      context.go(AppRoutes.home);
+    } else {
+      // Usuário não está logado - ir para onboarding/login
+      context.go(AppRoutes.onboarding);
+    }
   }
 
   void _setupAnimations() {
@@ -48,22 +70,33 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController.forward();
   }
 
-  void _navigateToNextScreen() {
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        context.go(AppRoutes.onboarding);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    // Listener para mudanças de autenticação
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (_hasNavigated || !mounted) return;
+        
+        // Se autenticado, ir para home
+        if (state is AuthAuthenticated) {
+          _hasNavigated = true;
+          context.go(AppRoutes.home);
+        }
+        // Se não autenticado (e ainda não navegou), ir para onboarding
+        else if (state is AuthUnauthenticated) {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (!_hasNavigated && mounted) {
+              _hasNavigated = true;
+              context.go(AppRoutes.onboarding);
+            }
+          });
+        }
+      },
+      child: _buildSplashContent(),
+    );
+  }
+
+  Widget _buildSplashContent() {
     return Scaffold(
       backgroundColor: AppTheme.primaryColor,
       body: Center(
@@ -136,5 +169,11 @@ class _SplashScreenState extends State<SplashScreen>
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 }

@@ -1,0 +1,108 @@
+﻿ID;Matéria;Tópico Principal;Subtópico;Tipo de Exercício;Descrição/Enunciado (Exemplo);Dificuldade (1-5);Qtde Questões Estimada;Tempo por Questão (seg);XP por Questão;Observações;Status
+1;Matemática;Matemática: uma construção humana;História dos números;Múltipla Escolha;Qual foi o primeiro sistema de numeração conhecido?;2;5;30;10;Foco em origem e evolução dos números;Planejado
+2;Matemática;Matemática: uma construção humana;História dos números;Verdadeiro/Falso;Os números romanos são um sistema de numeração antigo que ainda é usado hoje.;2;3;25;8;;Planejado
+3;Matemática;Matemática: uma construção humana;Matemática no cotidiano;Múltipla Escolha;Em qual situação do dia a dia usamos matemática?;1;8;25;8;;Planejado
+4;Matemática;A arte de raciocinar;Lógica;Puzzle/Quebra-cabeça;Complete: Se 2 + 3 = 5, então 5 - 3 = ?;2;10;30;12;Exercícios de adição simples;Planejado
+5;Matemática;A arte de raciocinar;Lógica;Múltipla Escolha;Qual é o resultado de 15 + 27?;2;10;30;12;Operações básicas;Planejado
+6;Matemática;A arte de raciocinar;Sequências;Ordering;Ordene os números: 3, 1, 5, 2, 4 (do menor ao maior);2;8;35;10;;Planejado
+7;Matemática;Os números: seus usos e seus significados;Números Naturais;Múltipla Escolha;Qual é o maior número natural menor que 100?;1;8;25;8;;Planejado
+8;Matemática;Os números: seus usos e seus significados;Números Inteiros;Múltipla Escolha;Qual é a temperatura mais baixa: -5°C ou -10°C?;3;8;30;12;;Planejado
+9;Matemática;Os números: seus usos e seus significados;Frações;Puzzle/Quebra-cabeça;Complete: 1/2 + 1/4 = ?;3;10;40;15;;Planejado
+10;Matemática;Os números: seus usos e seus significados;Frações;Múltipla Escolha;Qual fração é equivalente a 1/2? a) 2/4 b) 3/4 c) 1/3;2;8;30;10;;Planejado
+11;Matemática;Geometria: leitura e representação da realidade;Formas Geométricas;Matching;Ligue cada forma geométrica ao seu nome: círculo, quadrado, triângulo;2;10;35;12;;Planejado
+12;Matemática;Geometria: leitura e representação da realidade;Formas Geométricas;Múltipla Escolha;Quantos lados tem um triângulo?;1;8;25;8;;Planejado
+13;Matemática;Geometria: leitura e representação da realidade;Perímetro e Área;Múltipla Escolha;Qual é o perímetro de um quadrado de lado 5cm?;3;8;35;12;;Planejado
+14;Matemática;Geometria: leitura e representação da realidade;Perímetro e Área;Fill Blank;A área de um retângulo é calculada por: ___ x ___;3;8;35;12;;Planejado
+15;Matemática;As medidas e a compreensão da realidade;Medidas de Comprimento;Múltipla Escolha;Quantos centímetros tem 1 metro?;2;8;25;10;;Planejado
+16;Matemática;As medidas e a compreensão da realidade;Medidas de Peso;Múltipla Escolha;Qual unidade é maior: 1kg ou 1000g?;2;8;25;10;;Planejado
+17;Matemática;As medidas e a compreensão da realidade;Medidas de Tempo;Múltipla Escolha;Quantos minutos tem 1 hora?;1;8;25;8;;Planejado
+18;Matemática;As medidas e a compreensão da realidade;Medidas de Volume;Múltipla Escolha;Quantos litros tem 1000ml?;2;8;25;10;;Planejado
+19;Matemática;Proporcionalidade: uma ideia fundamental;Razão e Proporção;Múltipla Escolha;Se 2 litros de suco custam R$ 6, quanto custam 4 litros?;3;10;40;15;Regra de três simples;Planejado
+20;Matemática;Proporcionalidade: uma ideia fundamental;Porcentagem;Puzzle/Quebra-cabeça;Complete: 50% de 100 é igual a ___;2;10;30;12;;Planejado
+21;Matemática;Proporcionalidade: uma ideia fundamental;Porcentagem;Múltipla Escolha;Qual é 20% de 50?;3;10;35;12;;Planejado
+22;Matemática;A Álgebra: suas funções e seus usos;Equações Simples;Fill Blank;Complete: Se x + 5 = 10, então x = ___;3;10;40;15;;Planejado
+23;Matemática;A Álgebra: suas funções e seus usos;Equações Simples;Múltipla Escolha;Qual é o valor de x na equação: 2x = 10?;3;10;35;12;;Planejado
+24;Matemática;A Álgebra: suas funções e seus usos;Expressões Algébricas;Múltipla Escolha;Qual é o resultado de 3x + 2x?;2;8;30;10;;Planejado
+25;Matemática;A Estatística e sua importância no mundo da informação;Média;Múltipla Escolha;Qual é a média de 10, 20 e 30?;3;8;35;12;;Planejado
+26;Matemática;A Estatística e sua importância no mundo da informação;Gráficos;Múltipla Escolha;Qual tipo de gráfico é melhor para comparar dados?;2;8;30;10;;Planejado
+27;Matemática;A Estatística e sua importância no mundo da informação;Moda;Múltipla Escolha;Qual é a moda de: 2, 3, 3, 4, 3, 5?;3;8;35;12;;Planejado
+28;Matemática;Explorando situações numéricas;Problemas Contextualizados;Múltipla Escolha;João tem 15 reais e compra um lanche de 8 reais. Quanto sobra?;2;12;40;15;Problemas do cotidiano;Planejado
+29;Matemática;Explorando situações numéricas;Problemas Contextualizados;Fill Blank;Uma pizza foi dividida em 8 pedaços. Se comei 3 pedaços, comi ___ da pizza.;3;12;40;15;;Planejado
+101;Português;Interligando as linguagens;Funções da Linguagem;Múltipla Escolha;Qual função da linguagem é predominante em um anúncio publicitário?;4;8;40;15;;Planejado
+102;Português;Interligando as linguagens;Linguagem Verbal e Não-Verbal;Múltipla Escolha;Um sinal de trânsito usa linguagem verbal ou não-verbal?;2;8;30;10;;Planejado
+103;Português;Compreendendo as línguas estrangeiras;Estrangeirismos;Múltipla Escolha;"A palavra ""download"" é um exemplo de:";2;6;25;10;;Planejado
+104;Português;Compreendendo as línguas estrangeiras;Tradução;Fill Blank;"Complete: ""Hello"" em português significa ""___""";1;5;20;8;;Planejado
+105;Português;Corpo e sociedade;Corpo como Expressão;Verdadeiro/Falso;A linguagem corporal faz parte da comunicação.;2;5;25;10;;Planejado
+106;Português;Arte: olhos para a vida;Texto Literário;Múltipla Escolha;Qual é a principal característica de um texto literário?;3;8;35;12;;Planejado
+107;Português;Arte: olhos para a vida;Gêneros Literários;Múltipla Escolha;Qual é um exemplo de texto narrativo?;2;8;30;10;;Planejado
+108;Português;Ler e viver o texto literário;Interpretação de Texto;Múltipla Escolha;Assinale a alternativa que melhor resume o texto apresentado:;4;15;60;20;Textos literários diversos;Planejado
+109;Português;Ler e viver o texto literário;Elementos Narrativos;Múltipla Escolha;Quem é o personagem principal da história?;3;10;40;15;;Planejado
+110;Português;Ler e viver o texto literário;Figuras de Linguagem;Múltipla Escolha;"A frase ""Ele é um leão"" é um exemplo de:";3;8;35;12;Metáfora;Planejado
+111;Português;Gêneros de texto: temas, formas, recursos e suportes;Gêneros Textuais;Matching;Ligue cada gênero ao seu exemplo: carta, receita, notícia;3;12;45;15;;Planejado
+112;Português;Gêneros de texto: temas, formas, recursos e suportes;Estrutura Textual;Múltipla Escolha;Um texto dissertativo-argumentativo possui introdução, desenvolvimento e:;3;10;40;15;;Planejado
+113;Português;Gêneros de texto: temas, formas, recursos e suportes;Suportes Textuais;Múltipla Escolha;Qual é a principal diferença entre um livro e um blog?;2;8;30;10;;Planejado
+114;Português;Você sabe com quem está falando?;Linguagem Formal e Informal;Múltipla Escolha;Qual situação exige linguagem formal?;2;8;30;10;;Planejado
+115;Português;Você sabe com quem está falando?;Variedades Linguísticas;Múltipla Escolha;A variação linguística está relacionada a:;3;8;35;12;;Planejado
+116;Português;Os tons e mil tons do português do Brasil;Regiões Dialetais;Múltipla Escolha;"A palavra ""trem"" no Sudeste corresponde a ""___"" no Nordeste";2;6;30;10;;Planejado
+117;Português;Os tons e mil tons do português do Brasil;Sotaques;Verdadeiro/Falso;Todos os brasileiros falam português da mesma forma.;1;5;25;8;;Planejado
+118;Português;Na boca do povo;Gírias;Múltipla Escolha;"O que significa a gíria ""legal""?";1;6;25;8;;Planejado
+119;Português;Na boca do povo;Expressões Populares;Múltipla Escolha;"Qual é o significado da expressão ""estar com a corda toda""?";2;6;30;10;;Planejado
+120;Português;Na boca do povo;Gramática Normativa;Múltipla Escolha;Qual frase está de acordo com a norma culta?;4;10;45;15;Verbos, concordância, regência;Planejado
+201;Ciências;A ciência é atividade humana;Método Científico;Múltipla Escolha;Qual é a primeira etapa do método científico?;3;8;35;12;;Planejado
+202;Ciências;A ciência é atividade humana;Método Científico;Ordering;Ordene as etapas: Hipótese, Observação, Conclusão, Experimento;3;8;40;15;;Planejado
+203;Ciências;Ciência e tecnologia: benefícios e riscos;Impacto da Tecnologia;Múltipla Escolha;Qual é um benefício da tecnologia na medicina?;2;8;30;10;;Planejado
+204;Ciências;Ciência e tecnologia: benefícios e riscos;Riscos Ambientais;Múltipla Escolha;Qual é um risco do uso excessivo de tecnologia?;2;8;30;10;;Planejado
+205;Ciências;Compreender a natureza e preservar a vida;Ecossistemas;Múltipla Escolha;O que é um ecossistema?;2;8;30;10;;Planejado
+206;Ciências;Compreender a natureza e preservar a vida;Preservação;Verdadeiro/Falso;Preservar a natureza é importante para nossa sobrevivência.;1;6;25;8;;Planejado
+207;Ciências;A saúde é um direito do cidadão;Sistema de Saúde;Múltipla Escolha;O SUS (Sistema Único de Saúde) é um direito:;2;8;30;10;;Planejado
+208;Ciências;A saúde é um direito do cidadão;Prevenção de Doenças;Múltipla Escolha;Qual é uma forma de prevenir doenças?;1;8;25;8;;Planejado
+209;Ciências;Conhecendo e respeitando o próprio corpo;Sistema Digestório;Matching;Ligue cada órgão à sua função: estômago, intestino, boca;3;10;40;15;;Planejado
+210;Ciências;Conhecendo e respeitando o próprio corpo;Sistema Respiratório;Múltipla Escolha;Qual é a função dos pulmões?;2;8;30;10;;Planejado
+211;Ciências;Conhecendo e respeitando o próprio corpo;Sistema Circulatório;Múltipla Escolha;Qual é a função do coração?;2;8;30;10;;Planejado
+212;Ciências;Um bom cidadão sabe escolher;Alimentação Saudável;Múltipla Escolha;Qual alimento é mais saudável?;2;8;30;10;;Planejado
+213;Ciências;Um bom cidadão sabe escolher;Hábitos de Vida;Múltipla Escolha;Qual é um hábito saudável?;1;8;25;8;;Planejado
+214;Ciências;Conhecimento científico: importante aliado da população;Informação Científica;Múltipla Escolha;Como identificar uma informação científica confiável?;3;8;35;12;;Planejado
+215;Ciências;Conhecimento científico: importante aliado da população;Aplicações Práticas;Múltipla Escolha;Um exemplo de aplicação do conhecimento científico é:;2;8;30;10;;Planejado
+216;Ciências;Falando do nosso planeta e do universo;Sistema Solar;Múltipla Escolha;Qual é o planeta mais próximo do Sol?;2;8;30;10;;Planejado
+217;Ciências;Falando do nosso planeta e do universo;Sistema Solar;Ordering;Ordene os planetas pela distância do Sol: Terra, Vênus, Marte;3;8;40;15;;Planejado
+218;Ciências;Falando do nosso planeta e do universo;Camadas da Terra;Múltipla Escolha;Qual é a camada mais externa da Terra?;2;8;30;10;;Planejado
+219;Ciências;Recursos da natureza;Recursos Renováveis;Múltipla Escolha;Qual é um recurso renovável?;2;8;30;10;;Planejado
+220;Ciências;Recursos da natureza;Recursos Não-Renováveis;Múltipla Escolha;Qual é um recurso não-renovável?;2;8;30;10;;Planejado
+221;Ciências;Recursos da natureza;Conservação de Recursos;Verdadeiro/Falso;É importante economizar água.;1;6;25;8;;Planejado
+301;História;Confrontos sociais e território nacional;Revoluções no Brasil;Múltipla Escolha;Qual foi a principal revolta colonial brasileira?;3;8;35;12;;Planejado
+302;História;Confrontos sociais e território nacional;Conflitos Sociais;Múltipla Escolha;O que motivou os conflitos sociais no Brasil colonial?;3;8;35;12;;Planejado
+303;História;Mudanças no espaço geográfico do Brasil;Expansão Territorial;Múltipla Escolha;Qual foi uma das principais formas de expansão territorial do Brasil?;3;8;35;12;;Planejado
+304;História;Mudanças no espaço geográfico do Brasil;Povoamento;Múltipla Escolha;Qual região foi mais densamente povoada no período colonial?;3;8;35;12;;Planejado
+305;História;O valor da memória;Memória Histórica;Múltipla Escolha;Por que a memória histórica é importante?;2;8;30;10;;Planejado
+306;História;O valor da memória;Fontes Históricas;Múltipla Escolha;Qual é um exemplo de fonte histórica?;2;8;30;10;;Planejado
+307;História;Cidadania e democracia;Direitos do Cidadão;Múltipla Escolha;Qual é um direito garantido pela Constituição?;2;8;30;10;;Planejado
+308;História;Cidadania e democracia;Participação Política;Múltipla Escolha;Como os cidadãos participam da democracia?;2;8;30;10;;Planejado
+309;História;Movimentos políticos pelos direitos dos índios;Direitos Indígenas;Múltipla Escolha;Qual é um direito constitucional dos povos indígenas?;3;8;35;12;;Planejado
+310;História;Movimentos políticos pelos direitos dos índios;Cultura Indígena;Múltipla Escolha;Por que é importante preservar a cultura indígena?;2;8;30;10;;Planejado
+311;História;A cidade e o campo no Brasil contemporâneo;Urbanização;Múltipla Escolha;Qual foi uma consequência da urbanização no Brasil?;3;8;35;12;;Planejado
+312;História;A cidade e o campo no Brasil contemporâneo;Êxodo Rural;Múltipla Escolha;O que é o êxodo rural?;2;8;30;10;;Planejado
+313;História;As sociedades e os ambientes;Relação Homem-Natureza;Múltipla Escolha;Como as sociedades se relacionam com o ambiente?;3;8;35;12;;Planejado
+314;História;As sociedades e os ambientes;Impacto Ambiental;Verdadeiro/Falso;As ações humanas podem causar impactos no meio ambiente.;1;6;25;8;;Planejado
+315;História;A organização econômica das sociedades na atualidade;Sistemas Econômicos;Múltipla Escolha;Qual é o sistema econômico predominante no Brasil?;3;8;35;12;;Planejado
+316;História;A organização econômica das sociedades na atualidade;Globalização;Múltipla Escolha;O que é globalização?;3;8;35;12;;Planejado
+317;História;Estado e democracia no Brasil;Sistema Político;Múltipla Escolha;O Brasil é uma:;2;8;30;10;;Planejado
+318;História;Estado e democracia no Brasil;Poderes da República;Matching;Ligue cada poder à sua função: Executivo, Legislativo, Judiciário;3;8;35;12;;Planejado
+401;Geografia;Confrontos sociais e território nacional;Conflitos Territoriais;Múltipla Escolha;O que pode gerar conflitos territoriais?;3;8;35;12;;Planejado
+402;Geografia;Confrontos sociais e território nacional;Fronteiras;Múltipla Escolha;O que são fronteiras nacionais?;2;8;30;10;;Planejado
+403;Geografia;Mudanças no espaço geográfico do Brasil;Regiões Brasileiras;Múltipla Escolha;Quantas regiões tem o Brasil?;1;8;25;8;;Planejado
+404;Geografia;Mudanças no espaço geográfico do Brasil;Regiões Brasileiras;Matching;Ligue cada região ao seu estado: Sudeste, Nordeste, Norte;2;10;35;12;;Planejado
+405;Geografia;Mudanças no espaço geográfico do Brasil;Brasília;Múltipla Escolha;Brasília foi construída em qual região?;2;8;30;10;;Planejado
+406;Geografia;O valor da memória;Patrimônio Geográfico;Múltipla Escolha;O que é um patrimônio geográfico?;2;8;30;10;;Planejado
+407;Geografia;Cidadania e democracia;Território e Cidadania;Múltipla Escolha;Como o território se relaciona com a cidadania?;3;8;35;12;;Planejado
+408;Geografia;Movimentos políticos pelos direitos dos índios;Terras Indígenas;Múltipla Escolha;Por que as terras indígenas são importantes?;2;8;30;10;;Planejado
+409;Geografia;A cidade e o campo no Brasil contemporâneo;Zona Rural;Múltipla Escolha;Qual é uma característica da zona rural?;2;8;30;10;;Planejado
+410;Geografia;A cidade e o campo no Brasil contemporâneo;Zona Urbana;Múltipla Escolha;Qual é uma característica da zona urbana?;2;8;30;10;;Planejado
+411;Geografia;A cidade e o campo no Brasil contemporâneo;Diferenças Urbano-Rural;Múltipla Escolha;Qual é a principal diferença entre zona urbana e rural?;2;8;30;10;;Planejado
+412;Geografia;As sociedades e os ambientes;Biomas Brasileiros;Múltipla Escolha;Qual é o maior bioma do Brasil?;2;8;30;10;;Planejado
+413;Geografia;As sociedades e os ambientes;Biomas Brasileiros;Matching;Ligue cada bioma à sua característica: Amazônia, Cerrado, Caatinga;3;10;40;15;;Planejado
+414;Geografia;As sociedades e os ambientes;Clima e Vegetação;Múltipla Escolha;O clima tropical é característico de qual região brasileira?;2;8;30;10;;Planejado
+415;Geografia;A organização econômica das sociedades na atualidade;Atividades Econômicas;Múltipla Escolha;Qual é a principal atividade econômica do Brasil?;2;8;30;10;;Planejado
+416;Geografia;A organização econômica das sociedades na atualidade;Agricultura;Múltipla Escolha;Qual região é conhecida como celeiro do Brasil?;3;8;35;12;;Planejado
+417;Geografia;A organização econômica das sociedades na atualidade;Indústria;Múltipla Escolha;Qual região concentra mais indústrias no Brasil?;3;8;35;12;;Planejado
+418;Geografia;Estado e democracia no Brasil;Estados e Capitais;Matching;Ligue cada estado à sua capital: São Paulo, Rio de Janeiro, Minas Gerais;2;15;45;18;;Planejado
+419;Geografia;Estado e democracia no Brasil;Organização Política;Múltipla Escolha;Quantos estados formam o Brasil?;1;8;25;8;;Planejado
