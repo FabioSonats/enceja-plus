@@ -1,0 +1,64 @@
+═══════════════════════════════════════════════
+PASSO A PASSO PARA IMPORTAR CSV NO EXCEL
+═══════════════════════════════════════════════
+
+MÉTODO 1: Via aba "Dados"
+───────────────────────────────────────────────
+1. Abra o Excel
+2. Clique na aba "Dados" (no topo)
+3. No grupo "Importar Dados" (lado direito), clique em:
+   "Importar Dados" → "Importar dados"
+4. Selecione o arquivo: exercicios_encceja.csv
+5. No assistente:
+   - Delimitador: Ponto e vírgula (;)
+   - Codificação: UTF-8
+   - Primeira linha como cabeçalho: ✅ marcado
+6. Clique em "Importar" ou "Carregar"
+
+MÉTODO 2: Via duplo clique no arquivo
+───────────────────────────────────────────────
+1. Abra o Explorer (Windows Explorer)
+2. Navegue até: C:\Users\Micro\encceja_plus\
+3. Dê duplo clique em: exercicios_encceja.csv
+4. O Excel abrirá o assistente de importação
+5. Configure:
+   - Tipo: Delimitado
+   - Delimitador: Ponto e vírgula (;)
+   - Codificação: UTF-8
+   - Primeira linha como cabeçalho: ✅ marcado
+6. Clique em "Concluir"
+
+MÉTODO 3: Arrastar e soltar
+───────────────────────────────────────────────
+1. Abra o Excel
+2. Abra o Explorer na pasta do projeto
+3. Arraste o arquivo exercicios_encceja.csv
+   para dentro do Excel
+4. Configure o assistente (mesmo do método 2)
+
+═══════════════════════════════════════════════
+LOCALIZAÇÃO EXATA DO BOTÃO
+═══════════════════════════════════════════════
+
+Aba: Dados (clicar aqui primeiro)
+  ↓
+No ribbon, procure pelo grupo "Importar Dados"
+  ↓
+Botão: "Importar Dados" (grande, com ícone)
+  ↓
+Clique no botão (não no dropdown)
+  ↓
+Ou use: "Obter Dados" → "De Arquivo" → "De Texto/CSV"
+
+═══════════════════════════════════════════════
+SE NÃO APARECER "IMPORTAR DADOS"
+═══════════════════════════════════════════════
+
+Versões mais recentes do Excel têm:
+"Aba Dados" → "Obter Dados" → "De Arquivo" → "De Texto/CSV"
+
+Esta é a opção mais confiável!
+
+═══════════════════════════════════════════════
+
+

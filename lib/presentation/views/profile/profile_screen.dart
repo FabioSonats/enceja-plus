@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../blocs/auth_bloc.dart';
+import '../../../data/services/profile_service.dart';
+import '../../../data/services/storage_service.dart';
+import '../../../data/repositories/auth_repository.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -11,47 +17,148 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // Dados mockados do usuário
-  final String _userName = 'João Silva';
-  final String _userEmail = 'joao.silva@email.com';
-  final String _userPhoto = '👨‍🎓';
-
-  // Dados de progresso mockados
-  final Map<String, double> _subjectProgress = {
-    'matematica': 0.75,
-    'portugues': 0.60,
-    'historia': 0.45,
-    'ciencias': 0.30,
+  final ProfileService _profileService = ProfileService();
+  final StorageService _storageService = StorageService();
+  final ImagePicker _imagePicker = ImagePicker();
+  
+  bool _isLoading = true;
+  
+  // Dados do usuário
+  String _userName = 'Carregando...';
+  String _userEmail = '';
+  String? _userPhotoURL;
+  String? _userPhone;
+  
+  // Dados de progresso
+  Map<String, double> _subjectProgress = {
+    'matematica': 0.0,
+    'portugues': 0.0,
+    'historia': 0.0,
+    'ciencias': 0.0,
   };
+  
+  double _overallProgress = 0.0;
+  int _totalStudyTime = 0;
+  int _streakDays = 0;
+  int _completedLessons = 0;
 
-  final double _overallProgress = 0.525; // 52.5%
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+  }
 
-  // Estatísticas mockadas
-  final int _totalStudyTime = 145; // horas
-  final int _streakDays = 7;
-  final int _completedLessons = 28;
+  Future<void> _loadProfileData() async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final authBloc = context.read<AuthBloc>();
+      final authState = authBloc.state;
+      
+      if (authState is AuthAuthenticated) {
+        final uid = authState.user.uid;
+        final email = authState.user.email ?? '';
+        final displayName = authState.user.displayName;
+        final photoURL = authState.user.photoURL;
+        
+        // Carregar dados do Firestore
+        final profileData = await _profileService.getUserProfile(uid);
+        final progressData = await _profileService.getUserProgress(uid);
+        
+        setState(() {
+          _userEmail = email;
+          _userName = displayName ?? email.split('@').first;
+          _userPhotoURL = photoURL;
+          
+          // Carregar dados do Firestore (telefone, etc)
+          if (profileData != null) {
+            _userName = profileData['displayName'] ?? _userName;
+            _userPhotoURL = profileData['photoURL'] ?? photoURL;
+            _userPhone = profileData['phone'];
+          }
+          
+          // Se não tem perfil criado, criar um inicial
+          if (profileData == null && uid.isNotEmpty) {
+            _profileService.createInitialProfile(
+              uid: uid,
+              email: email,
+              displayName: displayName,
+            );
+          }
+          
+          // Carregar progresso
+          if (progressData != null) {
+            final subjectProgress = progressData['subjectProgress'] as Map?;
+            if (subjectProgress != null) {
+              _subjectProgress = Map<String, double>.from(
+                subjectProgress.map(
+                  (key, value) => MapEntry(key.toString(), (value as num).toDouble()),
+                ),
+              );
+            }
+            
+            _overallProgress = (progressData['overallProgress'] as num?)?.toDouble() ?? 0.0;
+            _totalStudyTime = (progressData['totalStudyTime'] as int?) ?? 0;
+            _streakDays = (progressData['streakDays'] as int?) ?? 0;
+            _completedLessons = (progressData['completedLessons'] as int?) ?? 0;
+          }
+          
+          _isLoading = false;
+        });
+      } else {
+        // Se não está autenticado, redirecionar para login
+        if (mounted) {
+          context.go(AppRoutes.login);
+        }
+      }
+    } catch (e) {
+      print('Erro ao carregar perfil: $e');
+      setState(() => _isLoading = false);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao carregar dados: $e')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.backgroundDark,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildProfileHeader(),
-            const SizedBox(height: 24),
-            _buildOverallProgress(),
-            const SizedBox(height: 24),
-            _buildSubjectProgress(),
-            const SizedBox(height: 24),
-            _buildStudyStats(),
-            const SizedBox(height: 24),
-            _buildAchievements(),
-            const SizedBox(height: 24),
-            _buildSettingsMenu(),
-            const SizedBox(height: 24),
-          ],
-        ),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthUnauthenticated) {
+          context.go(AppRoutes.login);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppTheme.backgroundDark,
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : RefreshIndicator(
+                onRefresh: _loadProfileData,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      _buildProfileHeader(),
+                      const SizedBox(height: 24),
+                      _buildOverallProgress(),
+                      const SizedBox(height: 24),
+                      _buildSubjectProgress(),
+                      const SizedBox(height: 24),
+                      _buildStudyStats(),
+                      const SizedBox(height: 24),
+                      _buildAchievements(),
+                      const SizedBox(height: 24),
+                      _buildSettingsMenu(),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
+                ),
+              ),
       ),
     );
   }
@@ -72,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       child: Column(
         children: [
-          const SizedBox(height: 40), // Espaço para o status bar
+          const SizedBox(height: 40),
           Row(
             children: [
               Expanded(
@@ -81,12 +188,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          _userName,
-                          style: const TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                        Expanded(
+                          child: Text(
+                            _userName,
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -107,29 +218,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontSize: 16,
                         color: Colors.white70,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    if (_userPhone != null && _userPhone!.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        _userPhone!,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white60,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ],
                 ),
               ),
               GestureDetector(
                 onTap: () => _showPhotoOptions(),
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(40),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.3),
-                      width: 2,
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(40),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.3),
+                          width: 2,
+                        ),
+                      ),
+                      child: _userPhotoURL != null && _userPhotoURL!.isNotEmpty
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(38),
+                              child: Image.network(
+                                _userPhotoURL!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Center(
+                                    child: Text(
+                                      _userName.isNotEmpty
+                                          ? _userName[0].toUpperCase()
+                                          : '👨‍🎓',
+                                      style: const TextStyle(fontSize: 40),
+                                    ),
+                                  );
+                                },
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          : Center(
+                              child: Text(
+                                _userName.isNotEmpty
+                                    ? _userName[0].toUpperCase()
+                                    : '👨‍🎓',
+                                style: const TextStyle(fontSize: 40),
+                              ),
+                            ),
                     ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      _userPhoto,
-                      style: const TextStyle(fontSize: 40),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ],
@@ -161,9 +337,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Progresso Geral',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -188,7 +364,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Text(
                       'Continue estudando para completar o curso',
                       style: TextStyle(
-                        color: Colors.grey[300], // Mais claro
+                        color: Colors.grey[300],
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
@@ -196,11 +372,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 12),
                     LinearProgressIndicator(
                       value: _overallProgress,
-                      backgroundColor: Colors.grey[600], // Mais claro
+                      backgroundColor: Colors.grey[600],
                       valueColor: const AlwaysStoppedAnimation<Color>(
                         AppTheme.primaryColor,
                       ),
-                      minHeight: 12, // Mais alta
+                      minHeight: 12,
                       borderRadius: BorderRadius.circular(6),
                     ),
                   ],
@@ -222,7 +398,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Text(
                     '${(_overallProgress * 100).round()}%',
                     style: const TextStyle(
-                      color: Colors.white, // Branco para máximo contraste
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
@@ -240,24 +416,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final subjects = [
       {
         'name': 'Matemática',
+        'key': 'matematica',
         'icon': '🧮',
         'color': AppTheme.primaryColor,
         'route': AppRoutes.mathGames
       },
       {
         'name': 'Português',
+        'key': 'portugues',
         'icon': '📚',
         'color': AppTheme.secondaryColor,
         'route': AppRoutes.portuguese
       },
       {
         'name': 'História',
+        'key': 'historia',
         'icon': '🏛️',
         'color': AppTheme.accentColor,
         'route': AppRoutes.history
       },
       {
         'name': 'Ciências',
+        'key': 'ciencias',
         'icon': '🔬',
         'color': AppTheme.infoColor,
         'route': AppRoutes.science
@@ -281,9 +461,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Progresso por Matéria',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -292,8 +472,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 20),
           ...subjects.map((subject) {
             final progress =
-                _subjectProgress[(subject['name'] as String).toLowerCase()] ??
-                    0.0;
+                _subjectProgress[subject['key'] as String] ?? 0.0;
             final subjectColor = subject['color'] as Color;
             
             return Padding(
@@ -343,7 +522,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Título da matéria com máximo contraste
                             Text(
                               subject['name'] as String,
                               style: const TextStyle(
@@ -353,46 +531,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            // Subtítulo "Progresso" com cor mais clara
                             Text(
                               'Progresso',
                               style: TextStyle(
-                                color: Colors.grey[300], // Mais claro que antes
+                                color: Colors.grey[300],
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             const SizedBox(height: 6),
-                            // Barra de progresso com máximo contraste
                             LinearProgressIndicator(
                               value: progress,
-                              backgroundColor: Colors.grey[600], // Mais claro
+                              backgroundColor: Colors.grey[600],
                               valueColor: AlwaysStoppedAnimation<Color>(subjectColor),
-                              minHeight: 10, // Mais alta
+                              minHeight: 10,
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 16),
-                      // Percentual com máximo destaque e contraste
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 14,
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: subjectColor.withOpacity(0.3), // Mais opaco
+                          color: subjectColor.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: subjectColor, // Borda sólida
+                            color: subjectColor,
                             width: 2,
                           ),
                         ),
                         child: Text(
                           '${(progress * 100).round()}%',
-                          style: TextStyle(
-                            color: Colors.white, // Branco para máximo contraste
+                          style: const TextStyle(
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -433,9 +608,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Estatísticas de Estudo',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -506,8 +681,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 12),
           Text(
             value,
-            style: TextStyle(
-              color: Colors.white, // Branco para máximo contraste
+            style: const TextStyle(
+              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -533,37 +708,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
         'title': 'Primeira Aula',
         'icon': '🎓',
         'color': AppTheme.primaryColor,
-        'earned': true
+        'earned': _completedLessons > 0
       },
       {
         'title': 'Simulado Finalizado',
         'icon': '🏆',
         'color': AppTheme.achievementColor,
-        'earned': true
+        'earned': _completedLessons >= 5
       },
       {
         'title': 'Nota Máxima',
         'icon': '⭐',
         'color': AppTheme.xpColor,
-        'earned': false
+        'earned': _overallProgress >= 0.8
       },
       {
         'title': '7 Dias Seguidos',
         'icon': '🔥',
         'color': AppTheme.accentColor,
-        'earned': true
+        'earned': _streakDays >= 7
       },
       {
         'title': 'Matemática Completa',
         'icon': '🧮',
         'color': AppTheme.primaryColor,
-        'earned': false
+        'earned': _subjectProgress['matematica']! >= 1.0
       },
       {
         'title': 'Estudante Dedicado',
         'icon': '📚',
         'color': AppTheme.secondaryColor,
-        'earned': false
+        'earned': _totalStudyTime >= 100
       },
     ];
 
@@ -727,35 +902,354 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showEditProfileDialog() {
+    final nameController = TextEditingController(text: _userName);
+    final phoneController = TextEditingController(text: _userPhone ?? '');
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Editar Perfil'),
-        content: const Text('Funcionalidade será implementada em breve!'),
+        backgroundColor: AppTheme.surfaceDark,
+        title: const Text(
+          'Editar Perfil',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                labelText: 'Nome',
+                labelStyle: TextStyle(color: Colors.grey),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppTheme.primaryColor),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: phoneController,
+              style: const TextStyle(color: Colors.white),
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                labelText: 'Telefone (opcional)',
+                labelStyle: TextStyle(color: Colors.grey),
+                hintText: '(11) 99999-9999',
+                hintStyle: TextStyle(color: Colors.grey),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppTheme.primaryColor),
+                ),
+              ),
+            ),
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (nameController.text.trim().isNotEmpty) {
+                await _updateProfile(
+                  nameController.text.trim(),
+                  phoneController.text.trim().isEmpty 
+                      ? null 
+                      : phoneController.text.trim(),
+                );
+                if (mounted) {
+                  Navigator.of(context).pop();
+                }
+              }
+            },
+            child: const Text('Salvar'),
           ),
         ],
       ),
     );
   }
 
+  Future<void> _updateProfile(String newName, String? newPhone) async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final authBloc = context.read<AuthBloc>();
+      final authState = authBloc.state;
+      
+      if (authState is AuthAuthenticated) {
+        final uid = authState.user.uid;
+        
+        // Atualizar no Firebase Auth
+        final authRepo = AuthRepository();
+        await authRepo.updateUserProfile(displayName: newName);
+        
+        // Atualizar no Firestore
+        await _profileService.saveUserProfile(
+          uid: uid,
+          displayName: newName,
+          phone: newPhone,
+        );
+        
+        setState(() {
+          _userName = newName;
+          _userPhone = newPhone;
+        });
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Perfil atualizado com sucesso!')),
+          );
+        }
+      }
+    } catch (e) {
+      print('Erro ao atualizar perfil: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao atualizar: $e')),
+        );
+      }
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
   void _showPhotoOptions() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Alterar Foto'),
-        content: const Text('Funcionalidade será implementada em breve!'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
+        backgroundColor: AppTheme.surfaceDark,
+        title: const Text(
+          'Alterar Foto',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: Colors.white),
+              title: const Text('Tirar Foto', style: TextStyle(color: Colors.white)),
+              onTap: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library, color: Colors.white),
+              title: const Text('Escolher da Galeria', style: TextStyle(color: Colors.white)),
+              onTap: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+            if (_userPhotoURL != null && _userPhotoURL!.isNotEmpty)
+              ListTile(
+                leading: const Icon(Icons.delete, color: Colors.red),
+                title: const Text(
+                  'Remover Foto',
+                  style: TextStyle(color: Colors.red),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _removePhoto();
+                },
+              ),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      print('📷 Selecionando imagem da fonte: $source');
+      final XFile? image = await _imagePicker.pickImage(
+        source: source,
+        imageQuality: 80,
+        maxWidth: 512,
+        maxHeight: 512,
+      );
+
+      if (image != null) {
+        print('✅ Imagem selecionada: ${image.path}');
+        await _uploadPhoto(image);
+      } else {
+        print('ℹ️ Nenhuma imagem selecionada');
+      }
+    } catch (e, stackTrace) {
+      print('❌ Erro ao selecionar imagem:');
+      print('   Erro: $e');
+      print('   StackTrace: $stackTrace');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao selecionar imagem: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _uploadPhoto(XFile imageFile) async {
+    if (!mounted) return;
+    
+    setState(() => _isLoading = true);
+    
+    // Mostrar diálogo de loading
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surfaceDark,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16),
+            const Text(
+              'Enviando foto...',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+    
+    try {
+      print('📤 Iniciando upload da foto...');
+      final authBloc = context.read<AuthBloc>();
+      final authState = authBloc.state;
+      
+      if (authState is! AuthAuthenticated) {
+        throw 'Usuário não autenticado';
+      }
+      
+      final uid = authState.user.uid;
+      print('👤 UID do usuário: $uid');
+      
+      // Upload para Firebase Storage
+      print('☁️ Fazendo upload para Firebase Storage...');
+      final photoURL = await _storageService.uploadProfilePhoto(
+        uid: uid,
+        imageFile: imageFile,
+      );
+      print('✅ URL obtida: $photoURL');
+      
+      // Atualizar no Firebase Auth
+      print('🔐 Atualizando Firebase Auth...');
+      final authRepo = AuthRepository();
+      await authRepo.updateUserProfile(photoURL: photoURL);
+      print('✅ Firebase Auth atualizado');
+      
+      // Atualizar no Firestore
+      print('📝 Atualizando Firestore...');
+      await _profileService.saveUserProfile(
+        uid: uid,
+        photoURL: photoURL,
+      );
+      print('✅ Firestore atualizado');
+      
+      if (mounted) {
+        setState(() {
+          _userPhotoURL = photoURL;
+        });
+        
+        // Fechar diálogo de loading
+        Navigator.of(context).pop();
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Foto atualizada com sucesso!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e, stackTrace) {
+      print('❌ Erro completo no upload:');
+      print('   Erro: $e');
+      print('   Tipo: ${e.runtimeType}');
+      print('   StackTrace: $stackTrace');
+      
+      if (mounted) {
+        // Fechar diálogo de loading
+        Navigator.of(context).pop();
+        
+        String errorMessage = 'Erro ao fazer upload';
+        if (e.toString().contains('permission-denied')) {
+          errorMessage = 'Permissão negada. Verifique as regras do Storage.';
+        } else if (e.toString().contains('Storage') || e.toString().contains('bucket')) {
+          errorMessage = 'Storage não configurado. Faça upgrade do plano Firebase.';
+        } else if (e.toString().contains('Timeout')) {
+          errorMessage = 'Upload demorou muito. Verifique sua conexão.';
+        } else {
+          errorMessage = 'Erro: ${e.toString()}';
+        }
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _removePhoto() async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final authBloc = context.read<AuthBloc>();
+      final authState = authBloc.state;
+      
+      if (authState is AuthAuthenticated) {
+        final uid = authState.user.uid;
+        
+        // Deletar do Storage
+        await _storageService.deleteProfilePhoto(uid);
+        
+        // Atualizar no Firebase Auth
+        final authRepo = AuthRepository();
+        await authRepo.updateUserProfile(photoURL: '');
+        
+        // Atualizar no Firestore
+        await _profileService.saveUserProfile(
+          uid: uid,
+          photoURL: null,
+        );
+        
+        setState(() {
+          _userPhotoURL = null;
+        });
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Foto removida com sucesso!')),
+          );
+        }
+      }
+    } catch (e) {
+      print('Erro ao remover foto: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao remover foto: $e')),
+        );
+      }
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   void _handleSettingsAction(String action, dynamic route) {
@@ -778,15 +1272,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showChangePasswordDialog() {
+    final oldPasswordController = TextEditingController();
+    final newPasswordController = TextEditingController();
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Alterar Senha'),
-        content: const Text('Funcionalidade será implementada em breve!'),
+        backgroundColor: AppTheme.surfaceDark,
+        title: const Text(
+          'Alterar Senha',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: oldPasswordController,
+              obscureText: true,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                labelText: 'Senha Atual',
+                labelStyle: TextStyle(color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: newPasswordController,
+              obscureText: true,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                labelText: 'Nova Senha',
+                labelStyle: TextStyle(color: Colors.grey),
+              ),
+            ),
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Funcionalidade em desenvolvimento'),
+                ),
+              );
+            },
+            child: const Text('Alterar'),
           ),
         ],
       ),
@@ -797,9 +1332,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Ajuda e Suporte'),
+        backgroundColor: AppTheme.surfaceDark,
+        title: const Text(
+          'Ajuda e Suporte',
+          style: TextStyle(color: Colors.white),
+        ),
         content: const Text(
-            'Entre em contato conosco através do email: suporte@enccejaplus.com'),
+          'Entre em contato conosco através do email: suporte@enccejaplus.com',
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -814,8 +1355,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Sair da Conta'),
-        content: const Text('Tem certeza que deseja sair da sua conta?'),
+        backgroundColor: AppTheme.surfaceDark,
+        title: const Text(
+          'Sair da Conta',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: const Text(
+          'Tem certeza que deseja sair da sua conta?',
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -824,9 +1372,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              context.go(AppRoutes.login);
+              context.read<AuthBloc>().add(AuthSignOutRequested());
             },
-            child: const Text('Sair'),
+            child: const Text('Sair', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),

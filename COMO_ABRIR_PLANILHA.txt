@@ -1,0 +1,91 @@
+==========================================
+COMO VISUALIZAR A PLANILHA DE EXERCÍCIOS
+==========================================
+
+📁 Arquivo: exercicios_encceja.csv
+📍 Localização: C:\Users\Micro\encceja_plus\exercicios_encceja.csv
+
+═══════════════════════════════════════
+OPÇÃO 1: ABRIR NO EXCEL (RECOMENDADO)
+═══════════════════════════════════════
+
+1. Abra o Microsoft Excel
+2. Clique em "Arquivo" → "Abrir"
+3. Navegue até: C:\Users\Micro\encceja_plus\
+4. Selecione "exercicios_encceja.csv"
+5. Se aparecer uma janela "Assistente de Importação":
+   - Tipo de arquivo: Delimitado
+   - Delimitador: Ponto e vírgula (;)
+   - Codificação: UTF-8
+   - Marque "Primeira linha contém cabeçalhos"
+   - Clique em "Concluir"
+
+OU use o método moderno:
+1. Excel → Aba "Dados"
+2. "Obter Dados" → "De Arquivo" → "De Texto/CSV"
+3. Selecione exercicios_encceja.csv
+4. Ajuste:
+   - Delimitador: Ponto e vírgula
+   - Codificação: UTF-8
+5. Clique em "Carregar"
+
+═══════════════════════════════════════
+OPÇÃO 2: GOOGLE SHEETS (ONLINE)
+═══════════════════════════════════════
+
+1. Acesse: https://sheets.google.com
+2. Clique em "Arquivo" → "Importar"
+3. Escolha "Fazer upload" e selecione exercicios_encceja.csv
+4. Nas opções de importação:
+   - Tipo: Substituir planilha atual
+   - Separador: Ponto e vírgula
+   - Converter texto para números: Sim
+5. Clique em "Importar dados"
+
+═══════════════════════════════════════
+OPÇÃO 3: LIBREOFFICE CALC (GRATUITO)
+═══════════════════════════════════════
+
+1. Abra o LibreOffice Calc
+2. Arquivo → Abrir
+3. Selecione exercicios_encceja.csv
+4. No assistente de importação:
+   - Separador: Ponto e vírgula
+   - Codificação: UTF-8
+   - Primeira linha como cabeçalho: Sim
+5. Clique em OK
+
+═══════════════════════════════════════
+ESTRUTURA DA PLANILHA
+═══════════════════════════════════════
+
+Colunas:
+- ID: Identificador único
+- Matéria: Matemática, Português, Ciências, História, Geografia
+- Tópico Principal: Tema do ENCCEJA
+- Subtópico: Subtema específico
+- Tipo de Exercício: Múltipla Escolha, Puzzle, Matching, etc.
+- Descrição/Enunciado: Exemplo de questão
+- Dificuldade: 1 (fácil) a 5 (difícil)
+- Qtde Questões Estimada: Número de questões
+- Tempo por Questão: Segundos
+- XP por Questão: Pontos de experiência
+- Observações: Notas adicionais
+- Status: Planejado/Desenvolvido/Testado
+
+Total: ~400 exercícios planejados
+
+═══════════════════════════════════════
+PROBLEMA: ARQUIVO APARECE EM BRANCO
+═══════════════════════════════════════
+
+Se o Excel abrir mas mostrar em branco:
+
+1. Verifique se o separador está correto (ponto e vírgula)
+2. Tente importar manualmente (método "Obter Dados")
+3. Verifique a codificação (deve ser UTF-8)
+4. Use Google Sheets como alternativa (funciona melhor com CSV)
+
+═══════════════════════════════════════
+
+

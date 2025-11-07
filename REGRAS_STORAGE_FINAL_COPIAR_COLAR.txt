@@ -1,0 +1,43 @@
+⚠️ COPIE E COLE EXATAMENTE ISTO NO FIREBASE CONSOLE → STORAGE → REGRAS ⚠️
+
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Fotos de perfil - aceita qualquer arquivo no diretório profile_photos/{userId}/
+    match /profile_photos/{userId}/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Bloqueia acesso a tudo mais (segurança)
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+    
+  }
+}
+
+═══════════════════════════════════════════════════════════════════════════
+
+✅ O QUE MUDOU:
+- Antes: match /profile_photos/{userId}.jpg  ❌ (não funciona)
+- Agora: match /profile_photos/{userId}/{fileName}  ✅ (funciona!)
+
+✅ ESTRUTURA DOS ARQUIVOS:
+- Antes: profile_photos/usuario123.jpg
+- Agora: profile_photos/usuario123/photo.jpg
+
+═══════════════════════════════════════════════════════════════════════════
+
+📝 PASSO A PASSO:
+
+1. Abra Firebase Console → Storage → Regras
+2. DELETE tudo que está lá
+3. COLE exatamente o código acima
+4. Clique em "Publicar"
+5. Deve aparecer "✅ Regras publicadas com sucesso"
+
+═══════════════════════════════════════════════════════════════════════════
+
+

@@ -108,6 +108,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         super(AuthInitial()) {
     
     // Listen to auth state changes
+    // Firebase Auth mantém a sessão persistente automaticamente
+    // Este listener será chamado imediatamente com o estado atual
     _authRepository.authStateChanges.listen((user) {
       if (user != null) {
         add(AuthCheckRequested());
@@ -124,6 +126,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignOutRequested>(_onSignOutRequested);
     on<AuthPasswordResetRequested>(_onPasswordResetRequested);
     on<AuthEmailVerificationRequested>(_onEmailVerificationRequested);
+    
+    // Verificar autenticação imediatamente após registrar todos os handlers
+    // Isso garante que o estado seja definido logo após a criação do bloc
+    // Firebase Auth mantém a sessão persistente automaticamente
+    add(AuthCheckRequested());
   }
 
   void _onAuthCheckRequested(AuthCheckRequested event, Emitter<AuthState> emit) {

@@ -38,6 +38,30 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadProgressData();
+    _updateSelectedIndexFromRoute();
+  }
+
+  void _updateSelectedIndexFromRoute() {
+    // Sincronizar índice do bottom bar com a rota atual
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final router = GoRouter.of(context);
+      final currentPath = router.routerDelegate.currentConfiguration.uri.path;
+      
+      if (currentPath == AppRoutes.home || currentPath == '/') {
+        if (_selectedIndex != 0) {
+          setState(() => _selectedIndex = 0);
+        }
+      } else if (currentPath == AppRoutes.library) {
+        if (_selectedIndex != 1) {
+          setState(() => _selectedIndex = 1);
+        }
+      } else if (currentPath == AppRoutes.profile) {
+        if (_selectedIndex != 2) {
+          setState(() => _selectedIndex = 2);
+        }
+      }
+    });
   }
 
   Future<void> _loadProgressData() async {
@@ -71,45 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
             bottomRight: Radius.circular(16),
           ),
         ),
-        actions: [
-          BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              if (state is AuthAuthenticated) {
-                return PopupMenuButton<String>(
-                  icon: const Icon(Icons.account_circle),
-                  onSelected: (value) {
-                    if (value == 'logout') {
-                      _showLogoutDialog(context);
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 'profile',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.person),
-                          const SizedBox(width: 8),
-                          Text(state.user.displayName ?? 'Usuário'),
-                        ],
-                      ),
-                    ),
-                    const PopupMenuItem(
-                      value: 'logout',
-                      child: Row(
-                        children: [
-                          Icon(Icons.logout),
-                          SizedBox(width: 8),
-                          Text('Sair'),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-        ],
       ),
       body: IndexedStack(
         index: _selectedIndex,
@@ -133,13 +118,33 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: _selectedIndex,
           backgroundColor: AppTheme.surfaceDark,
           onTap: (index) {
-            if (index == 2) {
-              // Perfil
-              context.go(AppRoutes.profile);
-            } else {
-              setState(() {
-                _selectedIndex = index;
-              });
+            setState(() {
+              _selectedIndex = index;
+            });
+            
+            // Navegar para a rota correspondente
+            final router = GoRouter.of(context);
+            final currentPath = router.routerDelegate.currentConfiguration.uri.path;
+            
+            switch (index) {
+              case 0:
+                // Home
+                if (currentPath != AppRoutes.home && currentPath != '/') {
+                  router.go(AppRoutes.home);
+                }
+                break;
+              case 1:
+                // Biblioteca
+                if (currentPath != AppRoutes.library) {
+                  router.go(AppRoutes.library);
+                }
+                break;
+              case 2:
+                // Perfil
+                if (currentPath != AppRoutes.profile) {
+                  router.go(AppRoutes.profile);
+                }
+                break;
             }
           },
           selectedItemColor: Colors.white, // Branco para máximo contraste
