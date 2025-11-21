@@ -121,7 +121,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [AppTheme.backgroundDark, AppTheme.surfaceDark],
+            colors: [AppTheme.backgroundLight, AppTheme.surfaceLight],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

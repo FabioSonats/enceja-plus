@@ -132,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppTheme.backgroundDark,
+        backgroundColor: AppTheme.backgroundLight,
         body: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -320,7 +320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
+        color: AppTheme.surfaceLight,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppTheme.primaryColor.withOpacity(0.4),
@@ -448,7 +448,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
+        color: AppTheme.surfaceLight,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -483,7 +483,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppTheme.backgroundDark,
+                    color: AppTheme.backgroundLight,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: subjectColor.withOpacity(0.4),
@@ -595,7 +595,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
+        color: AppTheme.surfaceLight,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -746,7 +746,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
+        color: AppTheme.surfaceLight,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -779,7 +779,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 decoration: BoxDecoration(
                   color: isEarned
                       ? (achievement['color'] as Color).withOpacity(0.1)
-                      : AppTheme.backgroundDark,
+                      : AppTheme.backgroundLight,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isEarned
@@ -836,7 +836,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
+        color: AppTheme.surfaceLight,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -861,7 +861,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppTheme.backgroundDark,
+                    color: AppTheme.backgroundLight,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: Colors.grey.withOpacity(0.3),
@@ -908,7 +908,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surfaceDark,
+        backgroundColor: AppTheme.surfaceLight,
         title: const Text(
           'Editar Perfil',
           style: TextStyle(color: Colors.white),
@@ -1024,7 +1024,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surfaceDark,
+        backgroundColor: AppTheme.surfaceLight,
         title: const Text(
           'Alterar Foto',
           style: TextStyle(color: Colors.white),
@@ -1107,7 +1107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surfaceDark,
+        backgroundColor: AppTheme.surfaceLight,
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -1278,7 +1278,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surfaceDark,
+        backgroundColor: AppTheme.surfaceLight,
         title: const Text(
           'Alterar Senha',
           style: TextStyle(color: Colors.white),
@@ -1332,7 +1332,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surfaceDark,
+        backgroundColor: AppTheme.surfaceLight,
         title: const Text(
           'Ajuda e Suporte',
           style: TextStyle(color: Colors.white),
@@ -1355,7 +1355,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surfaceDark,
+        backgroundColor: AppTheme.surfaceLight,
         title: const Text(
           'Sair da Conta',
           style: TextStyle(color: Colors.white),

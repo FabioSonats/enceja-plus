@@ -103,7 +103,7 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: AppTheme.textDark,
+            color: AppTheme.textLight,
           ),
           textAlign: TextAlign.center,
         ),
@@ -113,7 +113,7 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppTheme.surfaceDark,
+            color: AppTheme.surfaceLight,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppTheme.primaryColor.withOpacity(0.3)),
           ),
@@ -142,7 +142,7 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: AppTheme.textDark,
+            color: AppTheme.textLight,
           ),
         ),
         const SizedBox(height: 16),
@@ -159,7 +159,7 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
                 height: 60,
                 decoration: BoxDecoration(
                   color:
-                      isSelected ? AppTheme.primaryColor : AppTheme.surfaceDark,
+                      isSelected ? AppTheme.primaryColor : AppTheme.surfaceLight,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: isSelected
@@ -174,7 +174,7 @@ class _PuzzleWidgetState extends State<PuzzleWidget> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: isSelected ? Colors.white : AppTheme.textDark,
+                      color: isSelected ? Colors.white : AppTheme.textLight,
                     ),
                   ),
                 ),

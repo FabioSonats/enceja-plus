@@ -5,10 +5,10 @@ class AppTheme {
   // CORES PRINCIPAIS DO SISTEMA
   // ===========================================
   
-  // Cores primárias - Paleta principal
-  static const Color primaryColor = Color(0xFF4A90E2); // Azul principal
-  static const Color secondaryColor = Color(0xFF7ED321); // Verde secundário
-  static const Color accentColor = Color(0xFFFF9500); // Laranja de destaque
+  // Cores primárias - Paleta principal (tons azuis baseados no onboarding)
+  static const Color primaryColor = Color(0xFF4A90E2); // Azul principal (onboarding)
+  static const Color secondaryColor = Color(0xFF5AC8FA); // Azul claro secundário
+  static const Color accentColor = Color(0xFF2196F3); // Azul médio de destaque
   
   // Cores de status
   static const Color errorColor = Color(0xFFFF3B30); // Vermelho de erro
@@ -54,22 +54,23 @@ class AppTheme {
   // CORES DE GAMIFICAÇÃO
   // ===========================================
   
-  static const Color xpColor = Color(0xFFFFCC00); // Amarelo XP
-  static const Color levelColor = Color(0xFFAF52DE); // Roxo de nível
-  static const Color achievementColor = Color(0xFFFF6B35); // Laranja conquista
-  static const Color progressColor = Color(0xFF4CAF50); // Verde progresso
-  static const Color streakColor = Color(0xFFFF5722); // Laranja sequência
+  // Cores de gamificação - Tons azuis
+  static const Color xpColor = Color(0xFF4A90E2); // Azul principal para XP
+  static const Color levelColor = Color(0xFF2196F3); // Azul médio para nível
+  static const Color achievementColor = Color(0xFF1976D2); // Azul escuro para conquista
+  static const Color progressColor = Color(0xFF5AC8FA); // Azul claro para progresso
+  static const Color streakColor = Color(0xFF0D47A1); // Azul muito escuro para sequência
 
   // ===========================================
   // CORES DE FUNDO E SUPERFÍCIE
   // ===========================================
   
-  // Modo claro
-  static const Color backgroundLight = Color(0xFFF7F9FC);
-  static const Color surfaceLight = Color(0xFFFFFFFF);
-  static const Color surfaceVariantLight = Color(0xFFF5F5F5);
-  static const Color textLight = Color(0xFF2C2C2E);
-  static const Color textSecondaryLight = Color(0xFF6C6C70);
+  // Modo claro - Tons azuis suaves
+  static const Color backgroundLight = Color(0xFFF0F7FF); // Azul muito claro
+  static const Color surfaceLight = Color(0xFFFFFFFF); // Branco
+  static const Color surfaceVariantLight = Color(0xFFE8F4FD); // Azul bem claro
+  static const Color textLight = Color(0xFF1A1A1A); // Preto suave para legibilidade
+  static const Color textSecondaryLight = Color(0xFF4A5568); // Cinza azulado escuro
   
   // Modo escuro
   static const Color backgroundDark = Color(0xFF1C1C1E);
@@ -176,9 +177,9 @@ class AppTheme {
   // GRADIENTES PREDEFINIDOS
   // ===========================================
   
-  /// Gradiente principal do app
+  /// Gradiente principal do app - Tons azuis
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [primaryColor, secondaryColor],
+    colors: [primaryColor, accentColor],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );

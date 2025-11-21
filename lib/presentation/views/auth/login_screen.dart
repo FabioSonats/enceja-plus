@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: AppTheme.darkBackgroundGradient,
+          gradient: AppTheme.lightBackgroundGradient,
         ),
         child: SafeArea(
           child: Center(
@@ -95,10 +95,10 @@ class _LoginScreenState extends State<LoginScreen> {
         // Título
         Text(
           _isSignUp ? 'Criar Conta' : 'Entrar',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: AppTheme.textLight,
           ),
         ),
         const SizedBox(height: 8),
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
               : 'Entre na sua conta para continuar',
           style: TextStyle(
             fontSize: 16,
-            color: Colors.grey[300],
+            color: AppTheme.textSecondaryLight,
           ),
           textAlign: TextAlign.center,
         ),
@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(
           _isSignUp ? 'Já tem uma conta?' : 'Não tem uma conta?',
           style: TextStyle(
-            color: Colors.grey[300],
+            color: AppTheme.textSecondaryLight,
             fontSize: 16,
           ),
         ),
@@ -270,8 +270,8 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           child: Text(
             _isSignUp ? 'Entrar' : 'Criar conta',
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppTheme.primaryColor,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

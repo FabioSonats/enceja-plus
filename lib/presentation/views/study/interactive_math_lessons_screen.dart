@@ -776,7 +776,7 @@ class _PuzzleLessonFlowState extends State<_PuzzleLessonFlow> {
                 'Carregando próxima questão...',
                 style: TextStyle(
                   fontSize: 16,
-                  color: AppTheme.textDark,
+                  color: AppTheme.textLight,
                 ),
               ),
             ],

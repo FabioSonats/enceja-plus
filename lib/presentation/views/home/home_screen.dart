@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: _selectedIndex == 0 ? _buildEnrollmentFAB() : null,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: AppTheme.surfaceDark,
+          color: AppTheme.surfaceLight,
           border: Border(
             top: BorderSide(color: AppTheme.primaryColor, width: 2),
           ),
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
-          backgroundColor: AppTheme.surfaceDark,
+          backgroundColor: AppTheme.surfaceLight,
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
@@ -147,8 +147,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 break;
             }
           },
-          selectedItemColor: Colors.white, // Branco para máximo contraste
-          unselectedItemColor: Colors.grey[400], // Cinza mais claro
+          selectedItemColor: AppTheme.primaryColor, // Azul para item selecionado
+          unselectedItemColor: AppTheme.textSecondaryLight, // Cinza para item não selecionado
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 12,
@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.backgroundDark, AppTheme.surfaceDark],
+          colors: [AppTheme.backgroundLight, AppTheme.surfaceLight],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -207,20 +207,20 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Olá, Estudante! 👋',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: AppTheme.textLight,
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Escolha uma matéria para estudar',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white70,
+                    color: AppTheme.textSecondaryLight,
                   ),
                 ),
               ],
@@ -245,14 +245,14 @@ class _HomeScreenState extends State<HomeScreen> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 'Matérias',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppTheme.textLight,
                 ),
               ),
             ),
