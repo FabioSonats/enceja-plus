@@ -84,48 +84,34 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Cancelar Lição'),
+                content: const Text(
+                    'Tem certeza que deseja cancelar esta lição? Seu progresso será salvo.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Continuar'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      context.go(AppRoutes.home);
+                    },
+                    child: const Text('Cancelar'),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Cancelar Lição'),
-                  content: const Text(
-                      'Tem certeza que deseja cancelar esta lição? Seu progresso será salvo.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Continuar'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        context.go(AppRoutes.home);
-                      },
-                      child: const Text('Cancelar'),
-                    ),
-                  ],
-                ),
-              );
-            },
-            child: const Text(
-              'Cancelar',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
       ),
+      backgroundColor: AppTheme.backgroundLight,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [AppTheme.backgroundLight, AppTheme.surfaceLight],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        color: AppTheme.backgroundLight,
         child: AnimatedBuilder(
           animation: _animationController,
           builder: (context, child) {
@@ -391,11 +377,11 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.warningColor.withOpacity(0.1),
+        color: AppTheme.goldLight.withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppTheme.warningColor.withOpacity(0.3),
-          width: 1,
+          color: AppTheme.goldLight.withOpacity(0.6),
+          width: 2,
         ),
       ),
       child: Column(
@@ -405,7 +391,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
             children: [
               Icon(
                 Icons.tips_and_updates,
-                color: AppTheme.warningColor,
+                color: AppTheme.goldLight,
                 size: 24,
               ),
               const SizedBox(width: 8),
@@ -428,7 +414,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
                 children: [
                   Icon(
                     Icons.star_outline,
-                    color: AppTheme.warningColor,
+                    color: AppTheme.goldLight,
                     size: 20,
                   ),
                   const SizedBox(width: 12),
@@ -488,9 +474,15 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
             ],
           ),
           const SizedBox(height: 16),
-          ...examples.map<Widget>((example) {
+          ...examples.asMap().entries.map<Widget>((entry) {
+            final index = entry.key;
+            final example = entry.value;
             return Container(
-              margin: const EdgeInsets.only(bottom: 16),
+              margin: EdgeInsets.only(
+                bottom: index < examples.length - 1 ? 16 : 0,
+              ),
+              height: 160,
+              width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppTheme.surfaceLight,
@@ -502,6 +494,7 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     example['title'],
@@ -512,12 +505,16 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    example['description'],
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppTheme.textLight,
-                      height: 1.4,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Text(
+                        example['description'],
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.textLight,
+                          height: 1.4,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),

@@ -32,10 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.backgroundMedium,
       body: Container(
-        decoration: BoxDecoration(
-          gradient: AppTheme.lightBackgroundGradient,
-        ),
+        color: AppTheme.backgroundMedium,
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -46,15 +45,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Logo e Título
                   _buildHeader(),
                   const SizedBox(height: 48),
-                  
+
                   // Formulário
                   _buildForm(),
                   const SizedBox(height: 24),
-                  
+
                   // Botões Sociais
                   _buildSocialButtons(),
                   const SizedBox(height: 24),
-                  
+
                   // Alternar entre Login e Cadastro
                   _buildToggleAuth(),
                 ],
@@ -91,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         const SizedBox(height: 24),
-        
+
         // Título
         Text(
           _isSignUp ? 'Criar Conta' : 'Entrar',
@@ -102,10 +101,10 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        
+
         // Subtítulo
         Text(
-          _isSignUp 
+          _isSignUp
               ? 'Crie sua conta e comece a estudar'
               : 'Entre na sua conta para continuar',
           style: TextStyle(
@@ -147,14 +146,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 if (value == null || value.isEmpty) {
                   return 'Digite seu email';
                 }
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                    .hasMatch(value)) {
                   return 'Digite um email válido';
                 }
                 return null;
               },
             ),
             const SizedBox(height: 16),
-            
+
             // Campo de Senha
             CustomTextField(
               controller: _passwordController,
@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             ),
             const SizedBox(height: 24),
-            
+
             // Botão Principal
             BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
@@ -214,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
               },
             ),
-            
+
             // Esqueci minha senha
             if (!_isSignUp) ...[
               const SizedBox(height: 16),
@@ -285,25 +285,25 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       if (_isSignUp) {
         context.read<AuthBloc>().add(
-          AuthSignUpRequested(
-            email: _emailController.text.trim(),
-            password: _passwordController.text,
-          ),
-        );
+              AuthSignUpRequested(
+                email: _emailController.text.trim(),
+                password: _passwordController.text,
+              ),
+            );
       } else {
         context.read<AuthBloc>().add(
-          AuthSignInRequested(
-            email: _emailController.text.trim(),
-            password: _passwordController.text,
-          ),
-        );
+              AuthSignInRequested(
+                email: _emailController.text.trim(),
+                password: _passwordController.text,
+              ),
+            );
       }
     }
   }
 
   void _showForgotPasswordDialog() {
     final emailController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -353,10 +353,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ? null
                     : () {
                         context.read<AuthBloc>().add(
-                          AuthPasswordResetRequested(
-                            email: emailController.text.trim(),
-                          ),
-                        );
+                              AuthPasswordResetRequested(
+                                email: emailController.text.trim(),
+                              ),
+                            );
                       },
                 child: state is AuthLoading
                     ? const SizedBox(

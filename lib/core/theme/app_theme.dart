@@ -4,47 +4,52 @@ class AppTheme {
   // ===========================================
   // CORES PRINCIPAIS DO SISTEMA
   // ===========================================
-  
+
   // Cores primárias - Paleta principal (tons azuis baseados no onboarding)
-  static const Color primaryColor = Color(0xFF4A90E2); // Azul principal (onboarding)
-  static const Color secondaryColor = Color(0xFF5AC8FA); // Azul claro secundário
+  static const Color primaryColor =
+      Color(0xFF4A90E2); // Azul principal (onboarding)
+  static const Color secondaryColor =
+      Color(0xFF5AC8FA); // Azul claro secundário
   static const Color accentColor = Color(0xFF2196F3); // Azul médio de destaque
-  
+  static const Color backgroundMedium =
+      Color(0xFF2E4A6B); // Azul opaco intensidade média
+
   // Cores de status
   static const Color errorColor = Color(0xFFFF3B30); // Vermelho de erro
   static const Color warningColor = Color(0xFFFF9500); // Laranja de aviso
   static const Color successColor = Color(0xFF7ED321); // Verde de sucesso
   static const Color infoColor = Color(0xFF5AC8FA); // Azul de informação
+  static const Color goldLight = Color(0xFFFFE135); // Dourado claro
 
   // ===========================================
   // CORES POR MATÉRIA - SISTEMA TEMÁTICO
   // ===========================================
-  
+
   // Matemática - Azul e tons relacionados
   static const Color mathColor = Color(0xFF4A90E2);
   static const Color mathLight = Color(0xFFE3F2FD);
   static const Color mathDark = Color(0xFF1976D2);
-  
+
   // Português - Verde e tons relacionados
   static const Color portugueseColor = Color(0xFF7ED321);
   static const Color portugueseLight = Color(0xFFE8F5E8);
   static const Color portugueseDark = Color(0xFF4CAF50);
-  
+
   // Ciências - Roxo e tons relacionados
   static const Color scienceColor = Color(0xFF9C27B0);
   static const Color scienceLight = Color(0xFFF3E5F5);
   static const Color scienceDark = Color(0xFF7B1FA2);
-  
+
   // História - Laranja e tons relacionados
   static const Color historyColor = Color(0xFFFF9800);
   static const Color historyLight = Color(0xFFFFF3E0);
   static const Color historyDark = Color(0xFFF57C00);
-  
+
   // Geografia - Verde-azulado e tons relacionados
   static const Color geographyColor = Color(0xFF00BCD4);
   static const Color geographyLight = Color(0xFFE0F2F1);
   static const Color geographyDark = Color(0xFF0097A7);
-  
+
   // Redação - Vermelho e tons relacionados
   static const Color essayColor = Color(0xFFE91E63);
   static const Color essayLight = Color(0xFFFCE4EC);
@@ -53,25 +58,30 @@ class AppTheme {
   // ===========================================
   // CORES DE GAMIFICAÇÃO
   // ===========================================
-  
+
   // Cores de gamificação - Tons azuis
   static const Color xpColor = Color(0xFF4A90E2); // Azul principal para XP
   static const Color levelColor = Color(0xFF2196F3); // Azul médio para nível
-  static const Color achievementColor = Color(0xFF1976D2); // Azul escuro para conquista
-  static const Color progressColor = Color(0xFF5AC8FA); // Azul claro para progresso
-  static const Color streakColor = Color(0xFF0D47A1); // Azul muito escuro para sequência
+  static const Color achievementColor =
+      Color(0xFF1976D2); // Azul escuro para conquista
+  static const Color progressColor =
+      Color(0xFF5AC8FA); // Azul claro para progresso
+  static const Color streakColor =
+      Color(0xFF0D47A1); // Azul muito escuro para sequência
 
   // ===========================================
   // CORES DE FUNDO E SUPERFÍCIE
   // ===========================================
-  
+
   // Modo claro - Tons azuis suaves
-  static const Color backgroundLight = Color(0xFFF0F7FF); // Azul muito claro
+  static const Color backgroundLight = Color(0xFF0D1B2A); // Azul muito escuro
   static const Color surfaceLight = Color(0xFFFFFFFF); // Branco
   static const Color surfaceVariantLight = Color(0xFFE8F4FD); // Azul bem claro
-  static const Color textLight = Color(0xFF1A1A1A); // Preto suave para legibilidade
-  static const Color textSecondaryLight = Color(0xFF4A5568); // Cinza azulado escuro
-  
+  static const Color textLight =
+      Color(0xFF1A1A1A); // Preto suave para legibilidade
+  static const Color textSecondaryLight =
+      Color(0xFF4A5568); // Cinza azulado escuro
+
   // Modo escuro
   static const Color backgroundDark = Color(0xFF1C1C1E);
   static const Color surfaceDark = Color(0xFF2C2C2E);
@@ -82,7 +92,7 @@ class AppTheme {
   // ===========================================
   // CORES NEUTRAS E AUXILIARES
   // ===========================================
-  
+
   static const Color neutral50 = Color(0xFFFAFAFA);
   static const Color neutral100 = Color(0xFFF5F5F5);
   static const Color neutral200 = Color(0xFFEEEEEE);
@@ -97,7 +107,7 @@ class AppTheme {
   // ===========================================
   // MÉTODOS UTILITÁRIOS PARA CORES
   // ===========================================
-  
+
   /// Retorna a cor da matéria especificada
   static Color getSubjectColor(String subject) {
     switch (subject.toLowerCase()) {
@@ -122,7 +132,7 @@ class AppTheme {
         return primaryColor;
     }
   }
-  
+
   /// Retorna a cor clara da matéria especificada
   static Color getSubjectLightColor(String subject) {
     switch (subject.toLowerCase()) {
@@ -147,7 +157,7 @@ class AppTheme {
         return neutral100;
     }
   }
-  
+
   /// Retorna a cor escura da matéria especificada
   static Color getSubjectDarkColor(String subject) {
     switch (subject.toLowerCase()) {
@@ -176,70 +186,70 @@ class AppTheme {
   // ===========================================
   // GRADIENTES PREDEFINIDOS
   // ===========================================
-  
+
   /// Gradiente principal do app - Tons azuis
   static const LinearGradient primaryGradient = LinearGradient(
     colors: [primaryColor, accentColor],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  
+
   /// Gradiente de matemática
   static const LinearGradient mathGradient = LinearGradient(
     colors: [mathColor, mathDark],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  
+
   /// Gradiente de português
   static const LinearGradient portugueseGradient = LinearGradient(
     colors: [portugueseColor, portugueseDark],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  
+
   /// Gradiente de ciências
   static const LinearGradient scienceGradient = LinearGradient(
     colors: [scienceColor, scienceDark],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  
+
   /// Gradiente de história
   static const LinearGradient historyGradient = LinearGradient(
     colors: [historyColor, historyDark],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  
+
   /// Gradiente de geografia
   static const LinearGradient geographyGradient = LinearGradient(
     colors: [geographyColor, geographyDark],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  
+
   /// Gradiente de redação
   static const LinearGradient essayGradient = LinearGradient(
     colors: [essayColor, essayDark],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  
+
   /// Gradiente de gamificação
   static const LinearGradient gamificationGradient = LinearGradient(
     colors: [xpColor, achievementColor],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  
+
   /// Gradiente de fundo escuro
   static const LinearGradient darkBackgroundGradient = LinearGradient(
     colors: [backgroundDark, surfaceDark],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  
+
   /// Gradiente de fundo claro
   static const LinearGradient lightBackgroundGradient = LinearGradient(
     colors: [backgroundLight, surfaceLight],
@@ -261,8 +271,8 @@ class AppTheme {
         background: backgroundLight,
         error: errorColor,
         onError: Colors.white,
-        onSurface: textLight,
-        onBackground: textLight,
+        onSurface: Colors.white,
+        onBackground: Colors.white,
       ),
       scaffoldBackgroundColor: backgroundLight,
       appBarTheme: const AppBarTheme(
@@ -322,81 +332,82 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: errorColor, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 32,
           fontWeight: FontWeight.bold,
         ),
         displayMedium: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 28,
           fontWeight: FontWeight.bold,
         ),
         displaySmall: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 24,
           fontWeight: FontWeight.w600,
         ),
         headlineLarge: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 22,
           fontWeight: FontWeight.w600,
         ),
         headlineMedium: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.w600,
         ),
         headlineSmall: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),
         titleLarge: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
         titleMedium: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
         titleSmall: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 12,
           fontWeight: FontWeight.w500,
         ),
         bodyLarge: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 16,
           fontWeight: FontWeight.normal,
         ),
         bodyMedium: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 14,
           fontWeight: FontWeight.normal,
         ),
         bodySmall: TextStyle(
-          color: textSecondaryLight,
+          color: Colors.white70,
           fontSize: 12,
           fontWeight: FontWeight.normal,
         ),
         labelLarge: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
         labelMedium: TextStyle(
-          color: textLight,
+          color: Colors.white,
           fontSize: 12,
           fontWeight: FontWeight.w500,
         ),
         labelSmall: TextStyle(
-          color: textSecondaryLight,
+          color: Colors.white70,
           fontSize: 10,
           fontWeight: FontWeight.w500,
         ),
@@ -475,7 +486,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: errorColor, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(

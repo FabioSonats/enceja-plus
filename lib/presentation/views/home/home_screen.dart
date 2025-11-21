@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!mounted) return;
       final router = GoRouter.of(context);
       final currentPath = router.routerDelegate.currentConfiguration.uri.path;
-      
+
       if (currentPath == AppRoutes.home || currentPath == '/') {
         if (_selectedIndex != 0) {
           setState(() => _selectedIndex = 0);
@@ -83,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.backgroundLight,
       appBar: AppBar(
         title: const Text('ENCCEJA+'),
         centerTitle: true,
@@ -116,16 +117,17 @@ class _HomeScreenState extends State<HomeScreen> {
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
-          backgroundColor: AppTheme.surfaceLight,
+          backgroundColor: AppTheme.surfaceDark,
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
             });
-            
+
             // Navegar para a rota correspondente
             final router = GoRouter.of(context);
-            final currentPath = router.routerDelegate.currentConfiguration.uri.path;
-            
+            final currentPath =
+                router.routerDelegate.currentConfiguration.uri.path;
+
             switch (index) {
               case 0:
                 // Home
@@ -147,8 +149,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 break;
             }
           },
-          selectedItemColor: AppTheme.primaryColor, // Azul para item selecionado
-          unselectedItemColor: AppTheme.textSecondaryLight, // Cinza para item não selecionado
+          selectedItemColor:
+              AppTheme.primaryColor, // Azul para item selecionado
+          unselectedItemColor:
+              AppTheme.textSecondaryLight, // Cinza para item não selecionado
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 12,
@@ -170,13 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHomeContent() {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppTheme.backgroundLight, AppTheme.surfaceLight],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
+      color: AppTheme.backgroundLight,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -852,4 +850,3 @@ class NavigationItem {
     required this.route,
   });
 }
-

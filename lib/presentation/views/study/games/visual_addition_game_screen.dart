@@ -181,39 +181,30 @@ class _VisualAdditionGameScreenState extends State<VisualAdditionGameScreen>
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppRoutes.mathGames),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Desistir da Lição'),
+                content: const Text(
+                    'Tem certeza que deseja desistir desta lição? Seu progresso será salvo.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Continuar'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      context.go(AppRoutes.mathGames);
+                    },
+                    child: const Text('Desistir'),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Desistir da Lição'),
-                  content: const Text(
-                      'Tem certeza que deseja desistir desta lição? Seu progresso será salvo.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Continuar'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        context.go(AppRoutes.mathGames);
-                      },
-                      child: const Text('Desistir'),
-                    ),
-                  ],
-                ),
-              );
-            },
-            child: const Text(
-              'Desistir',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: Column(
