@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/routes/app_routes.dart';
+import '../../../widgets/mascot/app_mascot.dart';
+import '../../../widgets/mascot/mascot_helper.dart';
 import '../../../../data/datasources/simple_database.dart';
 import '../../../widgets/celebration_widget.dart';
 import '../../../widgets/retry_widget.dart';
@@ -172,39 +174,76 @@ class _GrammarBasicsGameScreenState extends State<GrammarBasicsGameScreen>
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppRoutes.portuguese),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Desistir da Lição'),
-                  content: const Text(
-                      'Tem certeza que deseja desistir desta lição? Seu progresso será salvo.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Continuar'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        context.go(AppRoutes.portuguese);
-                      },
-                      child: const Text('Desistir'),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: AppTheme.surfaceLight,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                title: Row(
+                  children: [
+                    MascotHelper.dialogMascot(MascotEmotion.curious),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Cancelar Lição',
+                        style: TextStyle(
+                          color: AppTheme.textLight,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              );
-            },
-            child: const Text(
-              'Desistir',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
+                content: Text(
+                  'Tem certeza que deseja cancelar esta lição? Seu progresso será salvo, mas você precisará começar novamente na próxima vez.',
+                  style: TextStyle(
+                    color: AppTheme.textLight,
+                    fontSize: 16,
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      'Continuar Estudando',
+                      style: TextStyle(
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      context.go(AppRoutes.portuguese);
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const AppMascot(
+                          emotion: MascotEmotion.sad,
+                          size: 24.0,
+                          animated: false,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Desistir',
+                          style: TextStyle(
+                            color: AppTheme.errorColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
       body: SafeArea(
         child: Column(

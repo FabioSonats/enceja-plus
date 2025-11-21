@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../../core/utils/validators.dart';
 import '../../blocs/auth_bloc.dart';
 import '../../widgets/auth/custom_text_field.dart';
 import '../../widgets/auth/auth_button.dart';
@@ -142,16 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
               hint: 'Digite seu email',
               keyboardType: TextInputType.emailAddress,
               prefixIcon: Icons.email_outlined,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Digite seu email';
-                }
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                    .hasMatch(value)) {
-                  return 'Digite um email válido';
-                }
-                return null;
-              },
+              validator: Validators.validateEmail,
             ),
             const SizedBox(height: 16),
 
@@ -159,7 +151,9 @@ class _LoginScreenState extends State<LoginScreen> {
             CustomTextField(
               controller: _passwordController,
               label: 'Senha',
-              hint: 'Digite sua senha',
+              hint: _isSignUp
+                  ? 'Mínimo 8 caracteres com maiúscula, minúscula, número e símbolo'
+                  : 'Digite sua senha',
               obscureText: _obscurePassword,
               prefixIcon: Icons.lock_outlined,
               suffixIcon: IconButton(
@@ -173,15 +167,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                 },
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Digite sua senha';
-                }
-                if (value.length < 6) {
-                  return 'A senha deve ter pelo menos 6 caracteres';
-                }
-                return null;
-              },
+              validator: _isSignUp
+                  ? Validators.validatePasswordSignUp
+                  : Validators.validatePasswordLogin,
             ),
             const SizedBox(height: 24),
 
@@ -282,6 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _submitForm() {
+    // Validar formulário antes de submeter
     if (_formKey.currentState!.validate()) {
       if (_isSignUp) {
         context.read<AuthBloc>().add(
@@ -298,6 +287,19 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             );
       }
+    } else {
+      // Se a validação falhar, mostrar mensagem
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            _isSignUp
+                ? 'Por favor, corrija os erros no formulário'
+                : 'Verifique seu email e senha',
+          ),
+          backgroundColor: AppTheme.errorColor,
+          duration: const Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -313,13 +315,14 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             const Text('Digite seu email para receber o link de recuperação:'),
             const SizedBox(height: 16),
-            TextField(
+            TextFormField(
               controller: emailController,
               decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,
+              validator: Validators.validateEmail,
             ),
           ],
         ),

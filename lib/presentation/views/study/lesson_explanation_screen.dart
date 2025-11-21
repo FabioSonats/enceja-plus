@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../widgets/mascot/app_mascot.dart';
+import '../../widgets/mascot/mascot_helper.dart';
 
 class LessonExplanationScreen extends StatefulWidget {
   final String lessonId;
@@ -88,20 +90,66 @@ class _LessonExplanationScreenState extends State<LessonExplanationScreen>
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Cancelar Lição'),
-                content: const Text(
-                    'Tem certeza que deseja cancelar esta lição? Seu progresso será salvo.'),
+                backgroundColor: AppTheme.surfaceLight,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                title: Row(
+                  children: [
+                    MascotHelper.dialogMascot(MascotEmotion.curious),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Cancelar Lição',
+                        style: TextStyle(
+                          color: AppTheme.textLight,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                content: Text(
+                  'Tem certeza que deseja cancelar esta lição? Seu progresso será salvo, mas você precisará começar novamente na próxima vez.',
+                  style: TextStyle(
+                    color: AppTheme.textLight,
+                    fontSize: 16,
+                  ),
+                ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('Continuar'),
+                    child: Text(
+                      'Continuar Estudando',
+                      style: TextStyle(
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                       context.go(AppRoutes.home);
                     },
-                    child: const Text('Cancelar'),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const AppMascot(
+                          emotion: MascotEmotion.sad,
+                          size: 24.0,
+                          animated: false,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Cancelar',
+                          style: TextStyle(
+                            color: AppTheme.errorColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

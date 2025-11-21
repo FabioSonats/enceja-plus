@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../widgets/mascot/app_mascot.dart';
+import '../../widgets/mascot/mascot_helper.dart';
 import '../../blocs/auth_bloc.dart';
 import '../../../data/services/profile_service.dart';
 import '../../../data/services/storage_service.dart';
@@ -20,15 +22,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ProfileService _profileService = ProfileService();
   final StorageService _storageService = StorageService();
   final ImagePicker _imagePicker = ImagePicker();
-  
+
   bool _isLoading = true;
-  
+
   // Dados do usuário
   String _userName = 'Carregando...';
   String _userEmail = '';
   String? _userPhotoURL;
   String? _userPhone;
-  
+
   // Dados de progresso
   Map<String, double> _subjectProgress = {
     'matematica': 0.0,
@@ -36,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     'historia': 0.0,
     'ciencias': 0.0,
   };
-  
+
   double _overallProgress = 0.0;
   int _totalStudyTime = 0;
   int _streakDays = 0;
@@ -50,33 +52,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadProfileData() async {
     setState(() => _isLoading = true);
-    
+
     try {
       final authBloc = context.read<AuthBloc>();
       final authState = authBloc.state;
-      
+
       if (authState is AuthAuthenticated) {
         final uid = authState.user.uid;
         final email = authState.user.email ?? '';
         final displayName = authState.user.displayName;
         final photoURL = authState.user.photoURL;
-        
+
         // Carregar dados do Firestore
         final profileData = await _profileService.getUserProfile(uid);
         final progressData = await _profileService.getUserProgress(uid);
-        
+
         setState(() {
           _userEmail = email;
           _userName = displayName ?? email.split('@').first;
           _userPhotoURL = photoURL;
-          
+
           // Carregar dados do Firestore (telefone, etc)
           if (profileData != null) {
             _userName = profileData['displayName'] ?? _userName;
             _userPhotoURL = profileData['photoURL'] ?? photoURL;
             _userPhone = profileData['phone'];
           }
-          
+
           // Se não tem perfil criado, criar um inicial
           if (profileData == null && uid.isNotEmpty) {
             _profileService.createInitialProfile(
@@ -85,24 +87,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
               displayName: displayName,
             );
           }
-          
+
           // Carregar progresso
           if (progressData != null) {
             final subjectProgress = progressData['subjectProgress'] as Map?;
             if (subjectProgress != null) {
               _subjectProgress = Map<String, double>.from(
                 subjectProgress.map(
-                  (key, value) => MapEntry(key.toString(), (value as num).toDouble()),
+                  (key, value) =>
+                      MapEntry(key.toString(), (value as num).toDouble()),
                 ),
               );
             }
-            
-            _overallProgress = (progressData['overallProgress'] as num?)?.toDouble() ?? 0.0;
+
+            _overallProgress =
+                (progressData['overallProgress'] as num?)?.toDouble() ?? 0.0;
             _totalStudyTime = (progressData['totalStudyTime'] as int?) ?? 0;
             _streakDays = (progressData['streakDays'] as int?) ?? 0;
             _completedLessons = (progressData['completedLessons'] as int?) ?? 0;
           }
-          
+
           _isLoading = false;
         });
       } else {
@@ -114,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } catch (e) {
       print('Erro ao carregar perfil: $e');
       setState(() => _isLoading = false);
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Erro ao carregar dados: $e')),
@@ -267,12 +271,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   );
                                 },
-                                loadingBuilder: (context, child, loadingProgress) {
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
                                   if (loadingProgress == null) return child;
                                   return const Center(
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
                                     ),
                                   );
                                 },
@@ -471,10 +477,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           const SizedBox(height: 20),
           ...subjects.map((subject) {
-            final progress =
-                _subjectProgress[subject['key'] as String] ?? 0.0;
+            final progress = _subjectProgress[subject['key'] as String] ?? 0.0;
             final subjectColor = subject['color'] as Color;
-            
+
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: InkWell(
@@ -543,7 +548,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             LinearProgressIndicator(
                               value: progress,
                               backgroundColor: Colors.grey[600],
-                              valueColor: AlwaysStoppedAnimation<Color>(subjectColor),
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(subjectColor),
                               minHeight: 10,
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -904,7 +910,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _showEditProfileDialog() {
     final nameController = TextEditingController(text: _userName);
     final phoneController = TextEditingController(text: _userPhone ?? '');
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -960,8 +966,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (nameController.text.trim().isNotEmpty) {
                 await _updateProfile(
                   nameController.text.trim(),
-                  phoneController.text.trim().isEmpty 
-                      ? null 
+                  phoneController.text.trim().isEmpty
+                      ? null
                       : phoneController.text.trim(),
                 );
                 if (mounted) {
@@ -978,30 +984,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _updateProfile(String newName, String? newPhone) async {
     setState(() => _isLoading = true);
-    
+
     try {
       final authBloc = context.read<AuthBloc>();
       final authState = authBloc.state;
-      
+
       if (authState is AuthAuthenticated) {
         final uid = authState.user.uid;
-        
+
         // Atualizar no Firebase Auth
         final authRepo = AuthRepository();
         await authRepo.updateUserProfile(displayName: newName);
-        
+
         // Atualizar no Firestore
         await _profileService.saveUserProfile(
           uid: uid,
           displayName: newName,
           phone: newPhone,
         );
-        
+
         setState(() {
           _userName = newName;
           _userPhone = newPhone;
         });
-        
+
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Perfil atualizado com sucesso!')),
@@ -1034,7 +1040,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             ListTile(
               leading: const Icon(Icons.camera_alt, color: Colors.white),
-              title: const Text('Tirar Foto', style: TextStyle(color: Colors.white)),
+              title: const Text('Tirar Foto',
+                  style: TextStyle(color: Colors.white)),
               onTap: () {
                 Navigator.of(context).pop();
                 _pickImage(ImageSource.camera);
@@ -1042,7 +1049,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.photo_library, color: Colors.white),
-              title: const Text('Escolher da Galeria', style: TextStyle(color: Colors.white)),
+              title: const Text('Escolher da Galeria',
+                  style: TextStyle(color: Colors.white)),
               onTap: () {
                 Navigator.of(context).pop();
                 _pickImage(ImageSource.gallery);
@@ -1099,9 +1107,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _uploadPhoto(XFile imageFile) async {
     if (!mounted) return;
-    
+
     setState(() => _isLoading = true);
-    
+
     // Mostrar diálogo de loading
     showDialog(
       context: context,
@@ -1121,19 +1129,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
-    
+
     try {
       print('📤 Iniciando upload da foto...');
       final authBloc = context.read<AuthBloc>();
       final authState = authBloc.state;
-      
+
       if (authState is! AuthAuthenticated) {
         throw 'Usuário não autenticado';
       }
-      
+
       final uid = authState.user.uid;
       print('👤 UID do usuário: $uid');
-      
+
       // Upload para Firebase Storage
       print('☁️ Fazendo upload para Firebase Storage...');
       final photoURL = await _storageService.uploadProfilePhoto(
@@ -1141,13 +1149,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         imageFile: imageFile,
       );
       print('✅ URL obtida: $photoURL');
-      
+
       // Atualizar no Firebase Auth
       print('🔐 Atualizando Firebase Auth...');
       final authRepo = AuthRepository();
       await authRepo.updateUserProfile(photoURL: photoURL);
       print('✅ Firebase Auth atualizado');
-      
+
       // Atualizar no Firestore
       print('📝 Atualizando Firestore...');
       await _profileService.saveUserProfile(
@@ -1155,15 +1163,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         photoURL: photoURL,
       );
       print('✅ Firestore atualizado');
-      
+
       if (mounted) {
         setState(() {
           _userPhotoURL = photoURL;
         });
-        
+
         // Fechar diálogo de loading
         Navigator.of(context).pop();
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Foto atualizada com sucesso!'),
@@ -1176,22 +1184,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print('   Erro: $e');
       print('   Tipo: ${e.runtimeType}');
       print('   StackTrace: $stackTrace');
-      
+
       if (mounted) {
         // Fechar diálogo de loading
         Navigator.of(context).pop();
-        
+
         String errorMessage = 'Erro ao fazer upload';
         if (e.toString().contains('permission-denied')) {
           errorMessage = 'Permissão negada. Verifique as regras do Storage.';
-        } else if (e.toString().contains('Storage') || e.toString().contains('bucket')) {
-          errorMessage = 'Storage não configurado. Faça upgrade do plano Firebase.';
+        } else if (e.toString().contains('Storage') ||
+            e.toString().contains('bucket')) {
+          errorMessage =
+              'Storage não configurado. Faça upgrade do plano Firebase.';
         } else if (e.toString().contains('Timeout')) {
           errorMessage = 'Upload demorou muito. Verifique sua conexão.';
         } else {
           errorMessage = 'Erro: ${e.toString()}';
         }
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage),
@@ -1209,31 +1219,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _removePhoto() async {
     setState(() => _isLoading = true);
-    
+
     try {
       final authBloc = context.read<AuthBloc>();
       final authState = authBloc.state;
-      
+
       if (authState is AuthAuthenticated) {
         final uid = authState.user.uid;
-        
+
         // Deletar do Storage
         await _storageService.deleteProfilePhoto(uid);
-        
+
         // Atualizar no Firebase Auth
         final authRepo = AuthRepository();
         await authRepo.updateUserProfile(photoURL: '');
-        
+
         // Atualizar no Firestore
         await _profileService.saveUserProfile(
           uid: uid,
           photoURL: null,
         );
-        
+
         setState(() {
           _userPhotoURL = null;
         });
-        
+
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Foto removida com sucesso!')),
@@ -1274,7 +1284,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _showChangePasswordDialog() {
     final oldPasswordController = TextEditingController();
     final newPasswordController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -1354,29 +1364,108 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _showLogoutDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surfaceLight,
-        title: const Text(
-          'Sair da Conta',
-          style: TextStyle(color: Colors.white),
-        ),
-        content: const Text(
-          'Tem certeza que deseja sair da sua conta?',
-          style: TextStyle(color: Colors.white),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancelar'),
+      builder: (context) => BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthUnauthenticated) {
+            Navigator.of(context).pop();
+            context.go(AppRoutes.login);
+          } else if (state is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Erro ao sair: ${state.message}'),
+                backgroundColor: AppTheme.errorColor,
+              ),
+            );
+          }
+        },
+        child: AlertDialog(
+          backgroundColor: AppTheme.surfaceLight,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              context.read<AuthBloc>().add(AuthSignOutRequested());
-            },
-            child: const Text('Sair', style: TextStyle(color: Colors.red)),
+          title: Row(
+            children: [
+              MascotHelper.dialogMascot(MascotEmotion.curious),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Sair da Conta',
+                  style: TextStyle(
+                    color: AppTheme.textLight,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+          content: Text(
+            'Tem certeza que deseja sair da sua conta? Você precisará fazer login novamente para continuar estudando.',
+            style: TextStyle(
+              color: AppTheme.textLight,
+              fontSize: 16,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Cancelar',
+                style: TextStyle(color: AppTheme.textSecondaryLight),
+              ),
+            ),
+            BlocConsumer<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state is AuthUnauthenticated) {
+                  Navigator.of(context).pop();
+                  context.go(AppRoutes.login);
+                } else if (state is AuthError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Erro ao sair: ${state.message}'),
+                      backgroundColor: AppTheme.errorColor,
+                    ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                return TextButton(
+                  onPressed: state is AuthLoading
+                      ? null
+                      : () {
+                          context.read<AuthBloc>().add(AuthSignOutRequested());
+                        },
+                  child: state is AuthLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.red,
+                          ),
+                        )
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const AppMascot(
+                              emotion: MascotEmotion.sad,
+                              size: 24.0,
+                              animated: false,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Sair',
+                              style: TextStyle(
+                                color: AppTheme.errorColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

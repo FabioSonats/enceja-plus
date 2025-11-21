@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../widgets/mascot/app_mascot.dart';
+import '../../widgets/mascot/mascot_helper.dart';
 import '../../blocs/auth_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -96,6 +98,13 @@ class _HomeScreenState extends State<HomeScreen> {
             bottomRight: Radius.circular(16),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sair',
+            onPressed: () => _showLogoutDialog(context),
+          ),
+        ],
       ),
       body: IndexedStack(
         index: _selectedIndex,
@@ -751,12 +760,42 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Sair da Conta'),
-        content: const Text('Tem certeza que deseja sair da sua conta?'),
+        backgroundColor: AppTheme.surfaceLight,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Row(
+          children: [
+            MascotHelper.dialogMascot(MascotEmotion.curious),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Sair da Conta',
+                style: TextStyle(
+                  color: AppTheme.textLight,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          'Tem certeza que deseja sair da sua conta? Você precisará fazer login novamente para continuar estudando.',
+          style: TextStyle(
+            color: AppTheme.textLight,
+            fontSize: 16,
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(
+              'Cancelar',
+              style: TextStyle(
+                color: AppTheme.textSecondaryLight,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
           BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
@@ -785,7 +824,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text('Sair'),
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const AppMascot(
+                            emotion: MascotEmotion.sad,
+                            size: 24.0,
+                            animated: false,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Sair',
+                            style: TextStyle(
+                              color: AppTheme.errorColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
               );
             },
           ),
