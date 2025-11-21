@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!mounted) return;
       final router = GoRouter.of(context);
       final currentPath = router.routerDelegate.currentConfiguration.uri.path;
-      
+
       if (currentPath == AppRoutes.home || currentPath == '/') {
         if (_selectedIndex != 0) {
           setState(() => _selectedIndex = 0);
@@ -83,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.backgroundLight,
       appBar: AppBar(
         title: const Text('ENCCEJA+'),
         centerTitle: true,
@@ -108,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: _selectedIndex == 0 ? _buildEnrollmentFAB() : null,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: AppTheme.surfaceDark,
+          color: AppTheme.surfaceLight,
           border: Border(
             top: BorderSide(color: AppTheme.primaryColor, width: 2),
           ),
@@ -121,11 +122,12 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               _selectedIndex = index;
             });
-            
+
             // Navegar para a rota correspondente
             final router = GoRouter.of(context);
-            final currentPath = router.routerDelegate.currentConfiguration.uri.path;
-            
+            final currentPath =
+                router.routerDelegate.currentConfiguration.uri.path;
+
             switch (index) {
               case 0:
                 // Home
@@ -147,8 +149,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 break;
             }
           },
-          selectedItemColor: Colors.white, // Branco para máximo contraste
-          unselectedItemColor: Colors.grey[400], // Cinza mais claro
+          selectedItemColor:
+              AppTheme.primaryColor, // Azul para item selecionado
+          unselectedItemColor:
+              AppTheme.textSecondaryLight, // Cinza para item não selecionado
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 12,
@@ -170,13 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHomeContent() {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppTheme.backgroundDark, AppTheme.surfaceDark],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
+      color: AppTheme.backgroundLight,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -207,20 +205,20 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Olá, Estudante! 👋',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: AppTheme.textLight,
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Escolha uma matéria para estudar',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white70,
+                    color: AppTheme.textSecondaryLight,
                   ),
                 ),
               ],
@@ -245,14 +243,14 @@ class _HomeScreenState extends State<HomeScreen> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 'Matérias',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppTheme.textLight,
                 ),
               ),
             ),
@@ -852,4 +850,3 @@ class NavigationItem {
     required this.route,
   });
 }
-

@@ -39,9 +39,8 @@ class ENCCEJAPlusApp extends StatelessWidget {
       child: MaterialApp.router(
         title: AppConstants.appName,
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.darkTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
+        theme: AppTheme.lightTheme,
+        themeMode: ThemeMode.light,
         routerConfig: AppRouter.router,
       ),
     );
