@@ -173,7 +173,7 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
                 '✅ As provas do ENCCEJA 2025 já foram realizadas em 3 de agosto de 2025.\n\n🔄 A reaplicação ocorreu nos dias 23 e 24 de setembro de 2025.\n\n📅 O próximo ENCCEJA será em 2026.',
                 style: TextStyle(
                   fontSize: 14,
-                  color: AppTheme.textLight,
+                  color: AppTheme.textSecondaryLight,
                   height: 1.4,
                 ),
               ),
@@ -216,7 +216,7 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
               'O Exame Nacional para Certificação de Competências de Jovens e Adultos (ENCCEJA) é uma prova gratuita e voluntária que oferece a oportunidade de obter a certificação do ensino fundamental ou médio.',
               style: TextStyle(
                 fontSize: 14,
-                color: AppTheme.textLight,
+                color: AppTheme.textSecondaryLight,
                 height: 1.5,
               ),
             ),
@@ -259,7 +259,7 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.textLight,
+                  color: AppTheme.textSecondaryLight,
                 ),
               ),
               const SizedBox(height: 4),
@@ -267,7 +267,7 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
                 description,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: AppTheme.textLight,
+                  color: AppTheme.textSecondaryLight,
                   height: 1.3,
                 ),
               ),
@@ -391,7 +391,7 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.textLight,
+                  color: AppTheme.textSecondaryLight,
                 ),
               ),
               const SizedBox(height: 2),
@@ -399,7 +399,7 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
                 description,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: AppTheme.textLight,
+                  color: AppTheme.textSecondaryLight,
                 ),
               ),
             ],
@@ -469,7 +469,7 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
                 '⚠️ As datas do ENCCEJA 2026 podem sofrer alterações. Sempre consulte o site oficial do INEP para informações atualizadas e confirmação das datas exatas.',
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppTheme.textLight,
+                  color: AppTheme.textSecondaryLight,
                   fontStyle: FontStyle.italic,
                 ),
               ),
@@ -494,14 +494,14 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.textLight,
+                  color: AppTheme.textSecondaryLight,
                 ),
               ),
               Text(
                 date,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: AppTheme.textLight,
+                  color: AppTheme.textSecondaryLight,
                 ),
               ),
             ],
