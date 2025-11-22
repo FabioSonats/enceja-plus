@@ -46,4 +46,7 @@ class AppConstants {
   static const int quizTimeLimit = 30; // segundos
   static const int simulatedTimeLimit = 180; // 3 minutos
   static const int lessonTimeLimit = 600; // 10 minutos
+
+  // Feature toggles
+  static const bool skipAuthentication = true;
 }

@@ -108,9 +108,9 @@ class _LoginScreenState extends State<LoginScreen> {
           _isSignUp
               ? 'Crie sua conta e comece a estudar'
               : 'Entre na sua conta para continuar',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
-            color: AppTheme.textSecondaryLight,
+            color: Colors.white70,
           ),
           textAlign: TextAlign.center,
         ),
@@ -245,8 +245,8 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Text(
           _isSignUp ? 'Já tem uma conta?' : 'Não tem uma conta?',
-          style: TextStyle(
-            color: AppTheme.textSecondaryLight,
+          style: const TextStyle(
+            color: Colors.white70,
             fontSize: 16,
           ),
         ),

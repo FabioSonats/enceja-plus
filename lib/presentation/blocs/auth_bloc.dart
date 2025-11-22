@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../data/models/user_model.dart';
+import '../../core/constants/app_constants.dart';
 import '../../data/repositories/auth_repository.dart';
 
 // Events
@@ -106,7 +107,44 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required AuthRepository authRepository})
       : _authRepository = authRepository,
         super(AuthInitial()) {
-    
+    if (AppConstants.skipAuthentication) {
+      on<AuthCheckRequested>((event, emit) {
+        emit(AuthAuthenticated(user: _fakeUser()));
+      });
+      on<AuthSignInRequested>((event, emit) {
+        emit(AuthAuthenticated(
+          user: _fakeUser(email: event.email),
+        ));
+      });
+      on<AuthSignUpRequested>((event, emit) {
+        emit(AuthAuthenticated(
+          user: _fakeUser(email: event.email),
+        ));
+      });
+      on<AuthGoogleSignInRequested>((event, emit) {
+        emit(AuthAuthenticated(
+          user: _fakeUser(email: 'google.demo@encceja.app'),
+        ));
+      });
+      on<AuthAnonymousSignInRequested>((event, emit) {
+        emit(AuthAuthenticated(
+          user: _fakeUser(email: 'anon@encceja.app'),
+        ));
+      });
+      on<AuthSignOutRequested>((event, emit) {
+        emit(AuthUnauthenticated());
+      });
+      on<AuthPasswordResetRequested>((event, emit) {
+        emit(AuthPasswordResetSent(email: event.email));
+      });
+      on<AuthEmailVerificationRequested>((event, emit) {
+        emit(AuthEmailVerificationSent());
+      });
+
+      add(AuthCheckRequested());
+      return;
+    }
+
     // Listen to auth state changes
     // Firebase Auth mantém a sessão persistente automaticamente
     // Este listener será chamado imediatamente com o estado atual
@@ -126,14 +164,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignOutRequested>(_onSignOutRequested);
     on<AuthPasswordResetRequested>(_onPasswordResetRequested);
     on<AuthEmailVerificationRequested>(_onEmailVerificationRequested);
-    
+
     // Verificar autenticação imediatamente após registrar todos os handlers
     // Isso garante que o estado seja definido logo após a criação do bloc
     // Firebase Auth mantém a sessão persistente automaticamente
     add(AuthCheckRequested());
   }
 
-  void _onAuthCheckRequested(AuthCheckRequested event, Emitter<AuthState> emit) {
+  UserModel _fakeUser({String? email}) {
+    final now = DateTime.now();
+    return UserModel(
+      uid: 'local-skip-auth',
+      email: email ?? 'demo@encceja.app',
+      displayName: 'Demo User',
+      photoURL: null,
+      emailVerified: true,
+      createdAt: now,
+      lastSignIn: now,
+      isAnonymous: false,
+    );
+  }
+
+  void _onAuthCheckRequested(
+      AuthCheckRequested event, Emitter<AuthState> emit) {
     final user = _authRepository.currentUser;
     if (user != null) {
       emit(AuthAuthenticated(user: user));
